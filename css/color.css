@@ -59,7 +59,7 @@ header nav ul li a:hover,
 .listen-on-platforms .listen-dv > ul li > h4:hover,
 .listen-dv > ul li > h4:hover,
 header nav ul li a.active {
-	color: #00d665;
+	color: #FF731D;
 }
 
 .radio-stations table thead,
@@ -100,7 +100,7 @@ div.maudio .audio-control a.play,
 .text-info,
 .blog-post.v2 .like-post:hover,
 .listen-now {
-	background: #00d665;
+	background: #FF731D;
 }
 
 .testi-img:before,
@@ -109,5 +109,5 @@ div.maudio .audio-control a.play,
 .svs-icon:before,
 .posted-by > strong,
 .view-btn:hover {
-	border-color: #00d665;
+	border-color: #FF731D;
 }

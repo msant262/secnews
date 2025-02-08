@@ -479,7 +479,7 @@ nav ul ul li a {
 /* MAIN BANNER SECTION */
 
 .main-banner {
-	background-image: url(https://via.placeholder.com/1920x730);
+	background-image: url(../images/banner.png);
 	background-repeat: no-repeat;
 	background-size: cover;
 	padding: 160px 0 150px;
