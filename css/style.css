@@ -759,6 +759,11 @@ nav ul ul li a {
 	margin-bottom: 10px;
 	align-items: center;
 }
+.songs-list2 li {
+	margin-bottom: 10px;
+	align-items: center;
+	text-align: center;
+}
 .songs-list li:last-child {
 	margin-bottom: 0;
 }
