@@ -1894,10 +1894,10 @@ div.maudio .audio-control a.fast-reverse:hover:before, div.maudio .audio-control
 /* PARTNERS SECTION */
 
 .partner {
-	background-color: #fafafa;
+	background-color: #00000085;
 	text-align: center;
 	padding: 30px 0;
-	height: 210px;
+	height: 150px;
 	text-align: center;
 }
 .pt-logo > img {
