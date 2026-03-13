@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="css/color.css">
     <link rel="stylesheet" type="text/css" href="css/rtl.css">
 	<link rel="stylesheet" type="text/css" href="css/responsive.css">
+	<link rel="stylesheet" type="text/css" href="css/newsletter.css">
 	
 </head>
 
@@ -59,6 +60,7 @@
 							<ul>
 								<li><a class="active" href="index.html" title="">Home.</a>
 								</li>
+								<li><a href="newsletter.html" title="">Newsletter.</a></li>
 								<li><a href="authors.html" title="">Equipe.</a></li>
 								<li><a href="sponsors.html" title="">Patrocínios.</a></li>
 								<li><a href="contact.html" title="">Contato.</a></li>
@@ -78,6 +80,7 @@
 			<ul class="mb-menu">
 				<li><a href="index.html" title="">Home.</a>
 				</li>
+				<li><a href="newsletter.html" title="">Newsletter.</a></li>
 				<li><a href="authors.html" title="">Equipe.</a></li>
 				<li><a href="sponsors.html" title="">Patrocínios.</a></li>
 				<li><a href="contact.html" title="">Contato.</a></li>
@@ -250,6 +253,20 @@
 			</section>
 		</section>
 	
+			<section class="block">
+			<div class="container">
+				<div class="section-title text-center">
+					<span>Fique Informado</span>
+					<h2>ÚLTIMAS <span>Newsletters</span></h2>
+					<i class="fa fa-envelope-open-text" style="color: #FF731D; font-size: 24px; margin-top: 15px;"></i>
+				</div>
+				<div id="home-newsletters"></div>
+				<div class="nl-home-cta">
+					<a href="newsletter.html" title="" class="btn-default"><i class="fa fa-envelope"></i> Ver Todas as Newsletters <span></span></a>
+				</div>
+			</div>
+		</section>
+
 		<section class="block">
 			<div class="container">
 				<div class="section-title text-center">
@@ -260,12 +277,9 @@
 				<div class="podcast-episodes">
 					<div class='sk-ww-spotify-podcast' data-embed-id='25521074'></div><script src='https://widgets.sociablekit.com/spotify-podcast/widget.js' defer></script>
 				</div><!--podcast-episodes end-->
-				<!-- <div class="load-more text-center">
-					<a href="#" title="" class="btn-default"><i class="flaticon-reload"></i>Load More <span></span></a>
-				</div>load-more end -->
 			</div>
 		</section>
-		
+
 		<footer>
 			<div class="container">	
 				<div class="bottom-footer">
@@ -278,8 +292,9 @@
 						<div class="col-md-9">
 							<ul class="btm-links">
 								<li><a href="index.html" title="">Home.</a></li>
-								<li><a href="#" title="">Equipe.</a></li>
-								<li><a href="#" title="">Patrocínios.</a></li>
+								<li><a href="newsletter.html" title="">Newsletter.</a></li>
+								<li><a href="authors.html" title="">Equipe.</a></li>
+								<li><a href="sponsors.html" title="">Patrocínios.</a></li>
 								<li><a href="contact.html" title="">Contato.</a></li>
 							</ul><!--btm-links end-->
 							<p class="copyright-txt"><strong>CyberSecNews</strong> - Copyright 2025. Website by <a href="https://marcosvss.com.br" title="">Marcos Santos</a></p>
@@ -303,6 +318,10 @@
 <script src="js/jquery.jplayer.min.js"></script>
 <script src="js/playlist.js"></script>
 <script src="js/script.js"></script>
+<script src="js/newsletters.js"></script>
+<script>
+	renderNewsletterCards('home-newsletters', 3);
+</script>
 
 
 </body>
