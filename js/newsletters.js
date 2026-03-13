@@ -7,33 +7,6 @@ var NEWSLETTERS = [
     summary: "Nesta edição: Google corrige dois zero-days do Chrome em exploração ativa, Veeam corrige múltiplas vulnerabilidades RCE críticas, Microsoft Office com falha RCE via Preview Pane, grupo iraniano ataca empresa médica dos EUA, e nova tática de flood de phishing em SOCs.",
     tags: ["Zero-Day", "Chrome", "Veeam", "Microsoft", "APT"],
     file: "newsletters/2026-03-16.html"
-  },
-  {
-    id: "2026-03-10",
-    edition: "#11",
-    date: "10 de Março, 2026",
-    title: "Vulnerabilidade crítica no Linux Kernel e atualizações do NIST",
-    summary: "Nesta edição: nova vulnerabilidade zero-day no Linux Kernel, NIST atualiza framework de cybersegurança, grupo APT mira empresas brasileiras, e mais.",
-    tags: ["Zero-Day", "Linux", "NIST", "APT"],
-    file: "newsletters/2026-03-10.html"
-  },
-  {
-    id: "2026-03-03",
-    edition: "#10",
-    date: "03 de Março, 2026",
-    title: "Ransomware atinge infraestrutura crítica na América Latina",
-    summary: "Nesta edição: ataque ransomware a empresa de energia, Microsoft corrige 74 vulnerabilidades, nova técnica de phishing com IA, e mais.",
-    tags: ["Ransomware", "Microsoft", "Phishing", "IA"],
-    file: "newsletters/2026-03-03.html"
-  },
-  {
-    id: "2026-02-24",
-    edition: "#09",
-    date: "24 de Fevereiro, 2026",
-    title: "Vazamento massivo expõe dados de milhões de brasileiros",
-    summary: "Nesta edição: megavazamento de dados pessoais, Google lança nova ferramenta de segurança, tendências de cibersegurança para 2026, e mais.",
-    tags: ["Vazamento", "Google", "Tendências", "Dados"],
-    file: "newsletters/2026-02-24.html"
   }
 ];
 
