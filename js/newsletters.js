@@ -1,5 +1,14 @@
 var NEWSLETTERS = [
   {
+    id: "2026-03-16",
+    edition: "#12",
+    date: "16 de Março, 2026",
+    title: "Zero-days ativos no Chrome e vulnerabilidades críticas em soluções de backup",
+    summary: "Nesta edição: Google corrige dois zero-days do Chrome em exploração ativa, Veeam corrige múltiplas vulnerabilidades RCE críticas, Microsoft Office com falha RCE via Preview Pane, grupo iraniano ataca empresa médica dos EUA, e nova tática de flood de phishing em SOCs.",
+    tags: ["Zero-Day", "Chrome", "Veeam", "Microsoft", "APT"],
+    file: "newsletters/2026-03-16.html"
+  },
+  {
     id: "2026-03-10",
     edition: "#11",
     date: "10 de Março, 2026",
