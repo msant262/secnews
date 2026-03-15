@@ -1,12 +1,21 @@
 var NEWSLETTERS = [
   {
     id: "2026-03-15",
+    edition: "#14",
+    date: "15 de Março, 2026",
+    title: "Zero-days do Chrome, vulnerabilidades críticas em Veeam e Linux, e novo vetor de ataque em infraestrutura corporativa",
+    summary: "Nesta edição: Google corrige dois zero-days do Chrome em exploração ativa (CVSS 8.8), Veeam corrige sete vulnerabilidades RCE críticas (CVSS 9.9), nove falhas CrackArmor no Linux AppArmor permitem escalada de root, Stryker atacada por grupo iraniano usando Microsoft Intune, Telus Digital com vazamento de 1PB via supply chain, Operação Synergia III desativa 45.000 IPs maliciosos, e campanha ativa explora FortiGate para roubar credenciais AD.",
+    tags: ["Zero-Day", "Chrome", "Linux", "APT", "Backup"],
+    file: "newsletters/2026-03-15.html"
+  },
+  {
+    id: "2026-03-16",
     edition: "#13",
     date: "15 de Março, 2026",
     title: "Chrome zero-days, Linux kernel flaws, e ataques de infraestrutura corporativa",
     summary: "Nesta edição: Google corrige dois zero-days do Chrome em exploração ativa (CVSS 8.8), Veeam corrige sete vulnerabilidades RCE críticas (CVSS 9.9), CrackArmor no Linux AppArmor permite escalada de root, Stryker atacada por grupo iraniano usando Intune, LangSmith com falha crítica de account takeover, e Telus Digital com vazamento de 1PB.",
     tags: ["Zero-Day", "Chrome", "Linux", "APT", "Backup"],
-    file: "newsletters/2026-03-15.html"
+    file: "newsletters/2026-03-16.html"
   },
   {
     id: "2026-03-16",
