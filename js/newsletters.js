@@ -1,5 +1,14 @@
 var NEWSLETTERS = [
   {
+    id: "2026-03-15",
+    edition: "#13",
+    date: "15 de Março, 2026",
+    title: "Chrome zero-days, Linux kernel flaws, e ataques de infraestrutura corporativa",
+    summary: "Nesta edição: Google corrige dois zero-days do Chrome em exploração ativa (CVSS 8.8), Veeam corrige sete vulnerabilidades RCE críticas (CVSS 9.9), CrackArmor no Linux AppArmor permite escalada de root, Stryker atacada por grupo iraniano usando Intune, LangSmith com falha crítica de account takeover, e Telus Digital com vazamento de 1PB.",
+    tags: ["Zero-Day", "Chrome", "Linux", "APT", "Backup"],
+    file: "newsletters/2026-03-15.html"
+  },
+  {
     id: "2026-03-16",
     edition: "#12",
     date: "16 de Março, 2026",
