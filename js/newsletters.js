@@ -1,5 +1,14 @@
 var NEWSLETTERS = [
   {
+    id: "2026-03-22",
+    edition: "#15",
+    date: "22 de Março, 2026",
+    title: "Zero-days em Firewall Cisco e n8n, Supply Chain no Trivy e GlassWorm, e Falhas Críticas no Linux e Veeam",
+    summary: "Nesta edição: Cisco Firewall zero-day (CVE-2026-20131) em exploração ativa por ransomware com CVSS 10.0, n8n zero-click flaw (CVE-2026-27493) expondo todas as credenciais armazenadas, Trivy scanner backdoored em supply chain massivo, GlassWorm force-push malware em 433+ repositórios Python, 9 falhas CrackArmor no Linux AppArmor permitem escalada a root, Telnetd critical flaw (CVE-2026-32746) com RCE não autenticado, Veeam corrige 7 vulnerabilidades RCE críticas (CVSS 9.9), DarkSword iOS exploit kit usa 6 vulnerabilidades incluindo 3 zero-days.",
+    tags: ["Zero-Day", "Linux", "Supply Chain", "Backup", "iOS"],
+    file: "newsletters/2026-03-22.html"
+  },
+  {
     id: "2026-03-15",
     edition: "#14",
     date: "15 de Março, 2026",
