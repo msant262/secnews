@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec News #13 - 30 de Março, 2026</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/newsletter-detail.css">
+</head>
+
+<body class="dark-v">
+    <!-- Header Section -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fa fa-shield-alt"></i> CyberSec News
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../newsletter.html">Newsletter</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../about.html">Sobre</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Newsletter Detail Section -->
+    <section class="block nl-detail-section">
+        <div class="container">
+            <div class="newsletter-detail">
+
+                <!-- Back Link -->
+                <a href="../newsletter.html" class="nl-back-link">
+                    <i class="fa fa-arrow-left"></i> Todas as edições
+                </a>
+
+                <!-- Hero Section -->
+                <div class="nl-detail-hero">
+                    <div class="nl-detail-hero-inner">
+                        <div class="nl-detail-edition-badge">#13</div>
+                        <div class="nl-detail-hero-meta">
+                            <span class="nl-detail-date"><i class="fa fa-calendar-alt"></i> 30 de Março, 2026</span>
+                            <span class="nl-detail-read-time"><i class="fa fa-clock"></i> 8 min de leitura</span>
+                        </div>
+                        <h1 class="nl-detail-hero-title">Ataques de Suprimento em Massa, Vulnerabilidades Críticas e Ameaças Emergentes</h1>
+                        <div class="nl-detail-hero-tags">
+                            <span class="nl-tag">Supply Chain</span>
+                            <span class="nl-tag">Zero-Day</span>
+                            <span class="nl-tag">Linux</span>
+                            <span class="nl-tag">Chrome</span>
+                            <span class="nl-tag">Ransomware</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Introduction -->
+                <div class="nl-detail-intro">
+                    <p>Olá, leitores! Bem-vindos a mais uma edição da nossa newsletter semanal sobre segurança da informação. Esta semana, testemunhamos uma série de incidentes graves, incluindo ataques sofisticados de suprimento de software, múltiplas vulnerabilidades zero-day ativamente exploradas e campanhas APT com ampla escala. Desde scanners de vulnerabilidades comprometidos a kits de exploração móvel, o cenário de ameaças continua se expandindo. Vamos aos detalhes.</p>
+                </div>
+
+                <!-- Article Cards Container -->
+                <div class="nl-detail-body">
+
+                    <!-- Article 1: DarkSword iOS Exploit Kit -->
+                    <article class="nl-article-card">
+                        <div class="nl-article-card-accent"></div>
+                        <div class="nl-article-card-inner">
+                            <div class="nl-article-number">01</div>
+                            <div class="nl-article-content">
+                                <div class="nl-article-severity nl-severity-critical">
+                                    <i class="fa fa-exclamation-triangle"></i> Crítico
+                                </div>
+                                <h3>Kit de Exploração DarkSword Usa 6 Vulnerabilidades, 3 Zero-Days para Comprometimento Total do Dispositivo iOS</h3>
+                                <p>Um novo kit de exploração para dispositivos Apple iOS está sendo usado por múltiplos atores ameaças desde novembro de 2025. Segundo relatórios do Google Threat Intelligence Group, iVerify e Lookout, o DarkSword é uma cadeia completa de exploração projetada para roubar dados sensíveis de iPhones executando iOS 18.4 a 18.7. O kit usa 6 vulnerabilidades distintas, incluindo 3 zero-days (CVE-2026-20700, CVE-2025-43529, CVE-2025-14174), permitindo acesso privilegiado e exfiltração de dados através de ataques waterhole via Safari. Grupos suspeitosos de espionagem russo (UNC6353), fornecedores de vigilância comercial (PARS Defense) e outros atores têm utilizado o kit contra usuários na Ucrânia, Turquia, Malásia e Arábia Saudita. A ameaça opera como um infostealer "hit-and-run", coletando dados em segundos/ minutos e limpando evidências antes de sair. Dados roubados incluem emails, arquivos iCloud, contatos, SMS, histórico de navegação, carteiras de criptomoedas e muito mais.</p>
+                                <div class="nl-article-action">
+                                    <span><i class="fa fa-shield-alt"></i> Ação recomendada</span>
+                                    <p><strong>Atualize imediatamente para iOS 18.7.3 ou versões mais recentes</strong>. O DarkSword requer que o dispositivo visite uma página web maliciosa através do Safari, evite clicar em links suspeitos. Monitore contas bancárias e carteiras de criptomoedas quanto a atividades não autorizadas. Empresas: educuem usuários sobre ataques de engenharia social e implementem MFA robusto.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 2: Trivy Supply Chain Attack -->
+                    <article class="nl-article-card">
+                        <div class="nl-article-card-accent"></div>
+                        <div class="nl-article-card-inner">
+                            <div class="nl-article-number">02</div>
+                            <div class="nl-article-content">
+                                <div class="nl-article-severity nl-severity-critical">
+                                    <i class="fa fa-exclamation-triangle"></i> Crítico
+                                </div>
+                                <h3>Trivy Vulnerability Scanner Comprometido em Ataque Sofisticado de Suprimento</h3>
+                                <p>Aqua Security's Trivy, um scanner de vulnerabilidades open-source amplamente adotado, foi comprometido em um ataque sofisticado de suprimento focado em CI/CD. O ator ameaça TeamPCP usou acesso de um incidente anterior não totalmente remedido para injetar malware de roubo de credenciais em binários oficiais, GitHub Actions (trivy-action, setup-trivy) e distribuições de containers. O ataque afetou 76 de 77 tags de versão nas Actions do GitHub, forçando pipelines downstream a executar código controlado pelo ator sem alterações visíveis nos metadados de release. A campanha expandiu para frameworks adicionais incluindo Checkmarx KICS e LiteLLM, com o mesmo padrão: coleta ampla de credenciais com foco em credenciais de nuvem (AWS IAM, GCP service account keys, Azure environment variables), enumeração de segredos do Kubernetes e busca de credenciais de banco de dados. Dados roubados eram criptografados e exfiltrados para domínios controlados pelo ator como arquivos tpcp.tar.gz criptografados.</p>
+                                <div class="nl-article-action">
+                                    <span><i class="fa fa-shield-alt"></i> Ação recomendada</span>
+                                    <p><strong>Atualize imediatamente para versões seguras:</strong> Trivy binary v0.69.2-0.69.3, trivy-action v0.35.0, setup-trivy v0.2.6, LiteLLM v1.82.6 ou inferior, Checkmarx packages conforme orientações. Use commit SHAs fixos em vez de tags mutáveis para GitHub Actions. Realize auditorias de pipelines e tokens de CI/CD. Rote todas as credenciais que possam ter sido expostas, especialmente tokens de nuvem e segredos do Kubernetes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 3: GlassWorm/ForceMemo Campaign -->
+                    <article class="nl-article-card">
+                        <div class="nl-article-card-accent"></div>
+                        <div class="nl-article-card-inner">
+                            <div class="nl-article-number">03</div>
+                            <div class="nl-article-content">
+                                <div class="nl-article-severity nl-severity-critical">
+                                    <i class="fa fa-exclamation-triangle"></i> Crítico
+                                </div>
+                                <h3>Campanha GlassWorm/ForceMemo Usa Tokens GitHub Roubados para Force-Push Malware em Repositórios</h3>
+                                <p>A campanha GlassWorn está sendo usada para atacar projetos Python — incluindo apps Django, código de ML, dashboards Streamlit e pacotes PyPI — através de tokens GitHub roubados. O ator compromete sistemas de desenvolvedores com malware GlassWorn (através de extensões VS Code e Cursor maliciosas), usa as credenciais roubadas para forçar mudanças maliciosas em cada repositório gerenciado pela conta comprometida ao fazer rebase de commits maliciosos para arquivos como setup.py, main.py e app.py. O payload Base64-codificado verifica se o sistema está configurado para russo e salta se estiver. Em todos os outros casos, o malware consulta o campo memo de transações associado a uma carteira Solana para extrair URL de payload. Mais de 433 projetos foram afetados através de GitHub, JavaScript, extensões VS Code e bibliotecas npm. A campanha também comprometeu brevemente pacotes React Native (react-native-international-phone-number 0.11.8, react-native-country-select 0.3.91) com ~130k downloads mensais. Extensões "sleeper" carregam malware adicional do GitHub hospedado, movendo binário malicioso fora do alcance do processo de takedown da Eclipse Foundation.</p>
+                                <div class="nl-article-action">
+                                    <span><i class="fa fa-shield-alt"></i> Ação recomendada</span>
+                                    <p><strong>Revogue imediatamente todos os tokens GitHub que possam ter sido comprometidos</strong>. Use MFA forte e monitore repositórios quanto a pushes não autorizados. Faça pin de GitHub Actions para commit SHAs fixos em vez de tags. Audite repositórios quanto a código suspeitos recentes. Verifique integridade de pacotes npm instalados recentemente, especialmente pacotes React Native. Evite instalar extensões IDE de fontes não verificadas.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 4: PTC Windchill CVSS 10.0 -->
+                    <article class="nl-article-card">
+                        <div class="nl-article-card-accent"></div>
+                        <div class="nl-article-card-inner">
+                            <div class="nl-article-number">04</div>
+                            <div class="nl-article-content">
+                                <div class="nl-article-severity nl-severity-critical">
+                                    <i class="fa fa-exclamation-triangle"></i> CVSS 10.0
+                                </div>
+                                <h3>Vulnerabilidade Crítica RCE em PTC Windchill & FlexPLM (CVE-2026-4681)</h3>
+                                <p>PTC reportou uma vulnerabilidade de Execução Remota de Código (RCE) através de desserialização de dados não confiáveis em produtos Windchill PDMLink e FlexPLM. CVE-2026-4681 recebeu CVSS v3.1 score de 10.0 (Crítico) - a pontuação máxima possível, afetando múltiplas versões desde Windchill 11.0 M030 até FlexPLM 13.0.3.0 e versões CPS anteriores. Não há evidência de exploração confirmada em clientes PTC neste momento, mas a severidade exige ação imediata. A PTC está desenvolvendo e liberando patches de segurança para todas as versões suportadas de Windchill para endereçar a vulnerabilidade identificada. Até que patches oficiais estejam disponíveis, clientes devem tomar passos urgentes para proteger seus ambientes.</p>
+                                <div class="nl-article-action">
+                                    <span><i class="fa fa-shield-alt"></i> Ação recomendada</span>
+                                    <p><strong>Proteja imediatamente todos os sistemas Windchill e FlexPLM publicamente acessíveis</strong>. Aplique workarounds Apache HTTP Server ("Require all denied") ou IIS (regras de URL Rewrite conforme orientações). Desconecte sistemas da internet se não for possível aplicar mitigação rapidamente. Monitore IOCs específicos (arquivos GW.class, payload.bin, dpr_<8-hex-digits>.jsp). Verifique logs quanto a mensagens de erro suspeitas e User-Agents maliciosos. Entre em contato com suporte PTC se necessário (oferecendo cobertura 24x7).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 5: Oracle WebLogic CVSS 10.0 -->
+                    <article class="nl-article-card">
+                        <div class="nl-article-card-accent"></div>
+                        <div class="nl-article-card-inner">
+                            <div class="nl-article-number">05</div>
+                            <div class="nl-article-content">
+                                <div class="nl-article-severity nl-severity-critical">
+                                    <i class="fa fa-exclamation-triangle"></i> CVSS 10.0
+                                </div>
+                                <h3>Vulnerabilidade Crítica RCE não Autenticada em Oracle WebLogic Server Sob Exploração Imediata em Larga Escala</h3>
+                                <p>Uma vulnerabilidade de Execução Remota de Código não autenticada (CVE-2026-21962, CVSS 10.0) no Oracle WebLogic Server Console está sob exploração imediata e ampla. Dados de honeypot de alta interatividade mostram atores usando infraestrutura VPS alugada para escanear instâncias vulneráveis. O ataque permite execução de comandos de sistema operacional arbitrários através de simples requisições HTTP sem autenticação, permitindo acesso total ao servidor. A vulnerabilidade é classificada como "facilmente explorável" e afeta múltiplas versões do WebLogic. Atores estão usando a falha para implantar malware, movimentar-se lateralmente e exfiltrar dados.</p>
+                                <div class="nl-article-action">
+                                    <span><i class="fa fa-shield-alt"></i> Ação recomendada</span>
+                                    <p><strong>Atualize Oracle WebLogic Server imediatamente para versões patchadas</strong>. Aplique patches de segurança conforme orientações Oracle. Se não for possível atualizar imediatamente, desligue instâncias públicas do WebLogic ou bloqueie acesso externo temporariamente. Implemente monitoramento para detectar requisições HTTP suspeitas. Revogue credenciais que possam ter sido comprometidas. Use web application firewalls (WAF) para bloquear tentativas de exploração conhecidas.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 6: Stryker Attack -->
+                    <article class="nl-article-card">
+                        <div class="nl-article-card-accent"></div>
+                        <div class="nl-article-card-inner">
+                            <div class="nl-article-number">06</div>
+                            <div class="nl-article-content">
+                                <div class="nl-article-severity nl-severity-alert">
+                                    <i class="fa fa-bolt"></i> Ataque
+                                </div>
+                                <h3>Ataque Iran-Linked ao Stryker Arma Microsoft Intune para Deletar Dados em Milhares de Dispositivos</h3>
+                                <p>A gigante de dispositivos médicos Stryker (receita de $25B) sofreu um ataque cibernético global por grupo ameaça iraniano Handala/APT34. Ator armou Microsoft Intune — plataforma de gerenciamento de endpoints unificada — para deletar massivamente dados de 56.000 dispositivos dos funcionários em 61 países, causando interrupção global a operações de pedidos, fabricação e envio. O ataque não envolveu ransomware ou malware tradicional, mas weaponizou funcionalidades nativas de gerenciamento para destruição em escala. Funcionários relataram que todos os dispositivos com Microsoft Intune foram limpos de dados. O incidente marca o primeiro ataque importante a empresa dos EUA desde início do conflito Irã-EUA, levantando preocupações sobre proteção de infraestrutura de saúde. Stryker arquivou 8-K na SEC confirmando a interrupção e declarando que cronograma para restauração completa não é conhecido.</p>
+                                <div class="nl-article-action">
+                                    <span><i class="fa fa-shield-alt"></i> Ação recomendada</span>
+                                    <p><strong>Organizações usando Microsoft Intune devem implementar controles imediatos</strong>. Habilite MFA resistente a phishing para contas do Intune. Use aprovação multi-admin para operações destrutivas como wipe de dispositivo. Monitore atividades suspeitas no Intune e logs de auditoria. Revogue credenciais que possam ter sido comprometidas. Eduque usuários sobre engenharia social. Estabeleça planos de continuidade de negócios e resposta a incidentes para ataques destrutivos em escala.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 7: Chrome Zero-Days -->
+                    <article class="nl-article-card">
+                        <div class="nl-article-card-accent"></div>
+                        <div class="nl-article-card-inner">
+                            <div class="nl-article-number">07</div>
+                            <div class="nl-article-content">
+                                <div class="nl-article-severity nl-severity-critical">
+                                    <i class="fa fa-exclamation-triangle"></i> Crítico
+                                </div>
+                                <h3>Google Corrige Duas Vulnerabilidades Zero-Days em Chrome (CVE-2026-3909, CVE-2026-3910) Ativamente Exploradas</h3>
+                                <p>Google lançou atualizações de segurança para Chrome abordando duas vulnerabilidades de alta severidade ativamente exploradas em ambiente selvagem: CVE-2026-3909 (CVSS 8.8) - vulnerabilidade de write out-of-bounds na biblioteca gráfica Skia 2D que permite a um ator remoto realizar acesso de memória out-of-bounds via página HTML fabricada; CVE-2026-3910 (CVSS 8.8) - vulnerabilidade de implementação inapropriada no mecanismo JavaScript e WebAssembly V8 que permite a um ator remoto executar código arbitrário dentro de um sandbox via página HTML fabricada. Ambas vulnerabilidades foram descobertas e reportadas pelo próprio Google em 10 de março de 2026. O desenvolvimento ocorre menos de um mês após Google ter enviado correções para bug use-after-free no componente CSS do Chrome (CVE-2026-2441, CVSS 8.8) que também foi explorado como zero-day. Google já corrigiu um total de três zero-days ativamente weaponizados em Chrome desde início do ano.</p>
+                                <div class="nl-article-action">
+                                    <span><i class="fa fa-shield-alt"></i> Ação recomendada</span>
+                                    <p><strong>Atualize seu navegador Chrome para versão 146.0.7680.75/76 (Windows/macOS) ou 146.0.7680.75 (Linux)</strong>. Verifique se tem a última versão navegando em More > Help > About Google Chrome. Usuários de navegadores baseados em Chromium (Microsoft Edge, Brave, Opera, Vivaldi) também devem aplicar correções quando ficarem disponíveis. CISA adicionou ambas vulnerabilidades ao catálogo de Vulnerabilidades Conhecidamente Exploradas (KEV) com prazo de 27 de março de 2026 para agências federais. Use navegadores atualizados e evite clicar em links suspeitos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 8: CrackArmor AppArmor Flaws -->
+                    <article class="nl-article-card">
+                        <div class="nl-article-card-accent"></div>
+                        <div class="nl-article-card-inner">
+                            <div class="nl-article-number">08</div>
+                            <div class="nl-article-content">
+                                <div class="nl-article-severity nl-severity-critical">
+                                    <i class="fa fa-exclamation-triangle"></i> Crítico
+                                </div>
+                                <h3>Nove Vulnerabilidades CrackArmor em Linux AppArmor Permitem Escalação de Privilégios para Root</h3>
+                                <p>Qualys TRU descobriu nove vulnerabilidades em AppArmor (nomeadas "CrackArmor") que permitem a usuários sem privilégios contornar proteções de kernel, escalar para root e quebrar isolamento de containers. A falha existe desde 2017 (versão v4.11) e afetou mais de 12,6 milhões de sistemas globalmente. AppArmor é módulo de Controle de Acesso Obrigatório (MAC) padrão para Ubuntu, Debian, SUSE e inúmeras plataformas de nuvem, e sua ubiquidade em ambientes enterprise, Kubernetes, IoT e edge amplia significativamente a superfície de ameaça. As vulnerabilidades CracArmor exploram uma falha de "confused deputy" permitindo que usuários sem privilégios manipulem perfis de segurança via pseudo-arquivos, contornem restrições de user-namespace e executem código arbitrário dentro do kernel. Essas falhas facilitam escalação local de privilégios para root através de interações complexas com ferramentas como Sudo e Postfix, além de ataques de negação de serviço via exaustão de pilha e bypasses de KASLR via leituras out-of-bounds. Como resultado, essas descobertas expõem lacunas críticas em nossa dependência de suposições de segurança padrão. Duas CVEs foram atribuídas: CVE-2026-23268 e CVE-2026-23269.</p>
+                                <div class="nl-article-action">
+                                    <span><i class="fa fa-shield-alt"></i> Ação recomendada</span>
+                                    <p><strong>Aplique patches de kernel imediatamente em todos os sistemas Linux afetados</strong>. Verifique orientações de patches do fornecedor (Ubuntu, Debian, SUSE). Monitore /sys/kernel/security/apparmor/ quanto a modificações de perfil não autorizadas. Escaneie ambientes quanto a sistemas vulneráveis usando ferramentas de asset management. Implemente monitoring para detectar atividades suspeitas de escalação de privilégios. Priorize patchamento para sistemas expostos à internet e nodes Kubernetes. Verifique se sistemas estão executando kernels vulneráveis desde v4.11.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <!-- Tip Section -->
+                <div class="nl-detail-tip">
+                    <div class="nl-tip-icon"><i class="fa fa-lightbulb"></i></div>
+                    <div class="nl-tip-content">
+                        <h4>Dica da Semana</h4>
+                        <p>A série recente de ataques de suprimento (Trivy, GlassWorn, TeamPCP) destaca uma tendência crescente: atores estão weaponizando ferramentas de desenvolvedor e CI/CD de confiança. Para mitigar riscos: <strong>sempre use commit SHAs fixos em vez de tags de versão mutáveis</strong> em GitHub Actions. Implemente controles de política de organização para permitir apenas Actions aprovadas. Use tokens de serviço com escopo mínimo e não persista credenciais em disk. Monitore logs de auditoria de pipelines quanto a modificações não autorizadas de versões já lançadas. Segurança de suprimento agora é obrigatória, não opcional.</p>
+                    </div>
+                </div>
+
+                <!-- Footer Section -->
+                <div class="nl-detail-footer">
+                    <div class="nl-detail-sign-off">
+                        <p>Até a próxima semana! Fique seguro.</p>
+                        <span class="nl-detail-author">— Equipe CyberSec News</span>
+                    </div>
+                    <div class="nl-detail-share">
+                        <span>Compartilhe:</span>
+                        <div class="nl-share-links">
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcybersecnews.com.br%2Fnewsletter%2F2026-03-30.html" title="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://twitter.com/intent/tweet?text=CyberSec%20News%20%2313%20-%20Newsletter%20de%2030%20de%20Março%2C%202026&url=https%3A%2F%2Fcybersecnews.com.br%2Fnewsletter%2F2026-03-30.html&hashtags=cybersecurity%2Cseguranca" title="Twitter/X" target="_blank" rel="noopener noreferrer"><i class="fab fa-x-twitter"></i></a>
+                            <a href="https://api.whatsapp.com/send?text=CyberSec%20News%20%2313%20-%20Newsletter%20de%2030%20de%20Março%2C%202026%0A%0Ahttps%3A%2F%2Fcybersecnews.com.br%2Fnewsletter%2F2026-03-30.html" title="WhatsApp" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="nl-detail-nav">
+                    <a href="../newsletter.html" class="nl-nav-all"><i class="fa fa-th-list"></i> Ver todas as edições</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-center py-4 mt-5">
+        <div class="container">
+            <p class="text-muted small">&copy; 2026 CyberSec News. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
