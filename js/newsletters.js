@@ -1,10 +1,28 @@
 var NEWSLETTERS = [
   {
+    id: "2026-04-06",
+    edition: "#19",
+    date: "06 de Abril, 2026",
+    title: "Coreia do Norte compromete Axios, campanha massiva do TeamPCP, zero-days no FortiClient EMS e Chrome, e CVSS 10.0 no Juju",
+    summary: "Nesta edição: supply chain devastador compromete Axios (100M+ downloads/semana), campanha TeamPCP em massa, zero-days no FortiClient EMS e Chrome, vulnerabilidade CVSS 10.0 no Juju, e muito mais.",
+    tags: ["Supply Chain", "Zero-Day", "NPM", "Ransomware", "Chrome"],
+    file: "newsletters/2026-04-06.html"
+  },
+  {
+    id: "2026-03-30",
+    edition: "#13",
+    date: "30 de Março, 2026",
+    title: "Ataques de Suprimento em Massa, Vulnerabilidades Críticas e Ameaças Emergentes",
+    summary: "Nesta edição: DarkSword iOS exploit kit com 6 vulnerabilidades, Trivy scanner backdoored em supply chain massivo, GlassWorm force-push malware em 433+ repositórios, PTC Windchill com CVSS 10.0, e Chrome zero-days.",
+    tags: ["Supply Chain", "Zero-Day", "Linux", "Chrome", "Ransomware"],
+    file: "newsletters/2026-03-30.html"
+  },
+  {
     id: "2026-03-22",
     edition: "#15",
     date: "22 de Março, 2026",
     title: "Zero-days em Firewall Cisco e n8n, Supply Chain no Trivy e GlassWorm, e Falhas Críticas no Linux e Veeam",
-    summary: "Nesta edição: Cisco Firewall zero-day (CVE-2026-20131) em exploração ativa por ransomware com CVSS 10.0, n8n zero-click flaw (CVE-2026-27493) expondo todas as credenciais armazenadas, Trivy scanner backdoored em supply chain massivo, GlassWorm force-push malware em 433+ repositórios Python, 9 falhas CrackArmor no Linux AppArmor permitem escalada a root, Telnetd critical flaw (CVE-2026-32746) com RCE não autenticado, Veeam corrige 7 vulnerabilidades RCE críticas (CVSS 9.9), DarkSword iOS exploit kit usa 6 vulnerabilidades incluindo 3 zero-days.",
+    summary: "Nesta edição: Cisco Firewall zero-day com CVSS 10.0, n8n zero-click expondo credenciais, Trivy scanner backdoored, GlassWorm em 433+ repositórios Python, CrackArmor no Linux, Telnetd RCE, Veeam RCE (CVSS 9.9), e DarkSword iOS exploit kit.",
     tags: ["Zero-Day", "Linux", "Supply Chain", "Backup", "iOS"],
     file: "newsletters/2026-03-22.html"
   },
@@ -13,18 +31,9 @@ var NEWSLETTERS = [
     edition: "#14",
     date: "15 de Março, 2026",
     title: "Zero-days do Chrome, vulnerabilidades críticas em Veeam e Linux, e novo vetor de ataque em infraestrutura corporativa",
-    summary: "Nesta edição: Google corrige dois zero-days do Chrome em exploração ativa (CVSS 8.8), Veeam corrige sete vulnerabilidades RCE críticas (CVSS 9.9), nove falhas CrackArmor no Linux AppArmor permitem escalada de root, Stryker atacada por grupo iraniano usando Microsoft Intune, Telus Digital com vazamento de 1PB via supply chain, Operação Synergia III desativa 45.000 IPs maliciosos, e campanha ativa explora FortiGate para roubar credenciais AD.",
+    summary: "Nesta edição: Google corrige dois zero-days do Chrome (CVSS 8.8), Veeam corrige sete RCEs críticas (CVSS 9.9), CrackArmor no Linux, Stryker atacada por grupo iraniano, Telus Digital com vazamento de 1PB, e Operação Synergia III.",
     tags: ["Zero-Day", "Chrome", "Linux", "APT", "Backup"],
     file: "newsletters/2026-03-15.html"
-  },
-  {
-    id: "2026-03-16",
-    edition: "#13",
-    date: "15 de Março, 2026",
-    title: "Chrome zero-days, Linux kernel flaws, e ataques de infraestrutura corporativa",
-    summary: "Nesta edição: Google corrige dois zero-days do Chrome em exploração ativa (CVSS 8.8), Veeam corrige sete vulnerabilidades RCE críticas (CVSS 9.9), CrackArmor no Linux AppArmor permite escalada de root, Stryker atacada por grupo iraniano usando Intune, LangSmith com falha crítica de account takeover, e Telus Digital com vazamento de 1PB.",
-    tags: ["Zero-Day", "Chrome", "Linux", "APT", "Backup"],
-    file: "newsletters/2026-03-16.html"
   },
   {
     id: "2026-03-16",
