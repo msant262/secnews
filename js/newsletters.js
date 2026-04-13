@@ -1,5 +1,14 @@
 var NEWSLETTERS = [
   {
+    id: "2026-04-12",
+    edition: "#20",
+    date: "12 de Abril, 2026",
+    title: "Zero-day no Adobe Acrobat, Ransomware na ChipSoft paralisando hospitais, CPU-Z trojanizado e breach massivo na Adobe",
+    summary: "Nesta edição: zero-day crítico no Adobe Acrobat Reader explorado há meses, ataque de ransomware em massa na ChipSoft paralisando hospitais holandeses, ferramentas CPUID trojanizadas distribuindo STX RAT, e vazamento massivo de 13 milhões de tickets da Adobe.",
+    tags: ["Zero-Day", "Ransomware", "Adobe", "Supply Chain", "Fintech", "DeFi"],
+    file: "newsletters/2026-04-12.html"
+  },
+  {
     id: "2026-04-06",
     edition: "#19",
     date: "06 de Abril, 2026",
