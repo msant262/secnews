@@ -704,6 +704,12 @@
   border: 1px solid rgba(249, 115, 22, 0.2);
 }
 
+.nl-severity-medium {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
 .nl-severity-alert {
   background: rgba(168, 85, 247, 0.12);
   color: #a855f7;

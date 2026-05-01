@@ -1,5 +1,14 @@
 var NEWSLETTERS = [
   {
+    id: "2026-04-30",
+    edition: "#21",
+    date: "30 de Abril, 2026",
+    title: "Zero-day crítico no cPanel explorado há meses, ataques supply chain no PyTorch Lightning e SAP npm, Linux Copy Fail com root desde 2017, e DPRK usa IA para injetar malware",
+    summary: "Nesta edição: zero-day crítico no cPanel/WHM explorado desde fevereiro, PyTorch Lightning e SAP npm comprometidos em ataques supply chain, vulnerabilidade de escalação de privilégio no Linux afetando todas as distros desde 2017, e Coreia do Norte utilizando IA para gerar malware em pacotes npm.",
+    tags: ["Zero-Day", "Supply Chain", "CVE", "Linux", "APT", "Cloud", "Malware"],
+    file: "newsletters/2026-04-30.html"
+  },
+  {
     id: "2026-04-12",
     edition: "#20",
     date: "12 de Abril, 2026",
