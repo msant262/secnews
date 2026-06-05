@@ -38,8 +38,10 @@
   .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
   .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
     font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
-  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; }
-  .toc-dot.crit { background: var(--ok-danger); } .toc-dot.high { background: var(--ok-warning); } .toc-dot.med { background: var(--ok-cyan); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
   .toc-link:hover { color: var(--ok-fg-soft); }
   .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
   .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
