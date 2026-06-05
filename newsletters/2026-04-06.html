@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #19 — 6 de Abril 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Coreia do Norte compromete Axios, campanha massiva do TeamPCP, zero-days no FortiClient EMS e Chrome, e CVSS 10.0 no Juju">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; }
+  .toc-dot.crit { background: var(--ok-danger); } .toc-dot.high { background: var(--ok-warning); } .toc-dot.med { background: var(--ok-cyan); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#19 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#19</span><span class="mono-tag">6 de Abril 2026</span><span class="mono-tag">8 min de leitura</span></div>
+      <h1>Coreia do Norte compromete Axios, campanha massiva do TeamPCP, zero-days no FortiClient EMS e Chrome, e CVSS 10.0 no Juju</h1>
+      <div class="tags"><span class="badge">Supply Chain</span><span class="badge">Zero-Day</span><span class="badge">NPM</span><span class="badge">Ransomware</span><span class="badge">Chrome</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">2</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">0</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">5</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc"><div class="toc-head">Nesta edição</div><ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>Coreia do Norte compromete o Axios — 100M+ downloads/s</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>TeamPCP: a campanha de supply chain mais agressiva do </a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot med"></span>FortiClient EMS: zero-day ativo e o pesadelo do patch </a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot med"></span>Canonical Juju CVE-2026-4370 — severidade máxima em or</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot med"></span>Chrome zero-day CVE-2026-5281 — 4º do ano em cadência </a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot med"></span>Marquis (fintech bancária): 672 mil registros expostos</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot med"></span>Ransomware: LockBit domina com 24 vítimas em um dia, E</a></li></ul><div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div></aside>
+        <article class="article-col">
+          <div class="read-intro"><p>Olá, leitores! Bem-vindos à edição #19 da CyberSecNews. Essa semana foi das mais intensas do ano. Se eu tivesse que resumir em uma frase: atacantes não estão mais mirando as organizações diretamente — estão comprometendo as ferramentas que essas organizações confiam. Dois ataques de supply chain de escala massiva, dois zero-days ativos, e uma vulnerabilidade com CVSS perfeito. Continuemos.</p></div>
+          <section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Coreia do Norte compromete o Axios — 100M+ downloads/semana atacados</h2>
+    <p>O grupo norte-coreano UNC1069, também conhecido como Sapphire Sleet, comprometeu a conta do mantenedor do Axios, um dos pacotes JavaScript mais utilizados do mundo, através de uma campanha de engenharia social sofisticada. O Axios registra mais de 100 milhões de downloads por semana no NPM e é dependência de praticamente todo projeto JavaScript moderno. Após assumir o controle da conta do mantenedor, os atacantes injetaram uma dependência maliciosa chamada plain-crypto-js que deployou o backdoor WAVESHAPER.V2 simultaneamente em Windows, macOS e Linux. O Google Threat Intelligence Group e a Microsoft atribuíram o ataque ao grupo com alta confiança.</p>
+<p>A técnica utilizada foi cirúrgica: em vez de tentar comprometer o código diretamente ou publicar um pacote typosquatted, os atacantes focaram no mantenedor humano. Através de engenharia social, conseguiram acesso às credenciais da conta NPM do mantenedor legítimo e, a partir daí, injetaram a dependência maliciosa em uma nova versão do Axios. O backdoor WAVESHAPER.V2 é um RAT (Remote Access Trojan) multiplataforma capaz de executar comandos arbitrários, exfiltrar dados e estabelecer persistência no sistema comprometido. A natureza multiplataforma do payload indica um nível de sofisticação considerável, maximizando a superfície de impacto independentemente do sistema operacional da vítima.</p>
+<p>O impacto é potencialmente devastador porque o Axios é ubíquo em ecossistemas JavaScript. Qualquer desenvolvedor que executou npm install na última semana sem verificar a integridade das dependências pode ter instalado o RAT em sua máquina de desenvolvimento. Em ambientes corporativos, isso significa que uma única instalação inadvertida pode comprometer tokens de acesso, credenciais cloud, chaves SSH e código-fonte proprietário. A cadeia de confiança do NPM foi quebrada no seu elo mais forte — um pacote com bilhões de downloads e reputação impecável. Este incidente reforça que a segurança de supply chain não é mais uma preocupação secundária, mas sim o vetor de ataque primário de grupos state-sponsored.</p>
+    <div class="callout"><strong>Ação:</strong> Verificar se seu lockfile contém a dependência plain-crypto-js; revogar tokens de acesso em machines de desenvolvimento; implementar npm provenance verification</div>
+  </div>
+</section><section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>TeamPCP: a campanha de supply chain mais agressiva do ano</h2>
+    <p>A Unit 42 da Palo Alto Networks detalhou uma campanha do grupo TeamPCP que comprometeu quatro ferramentas open-source de segurança e desenvolvimento entre fevereiro e março de 2026: o scanner de vulnerabilidades Trivy (Aqua Security), o scanner de IaC KICS (Checkmarx), a biblioteca de IA LiteLLM (BerriAI) e o Telnyx Python SDK de telecomunicações. O resultado: mais de 300 GB de dados exfiltrados e mais de 500.000 credenciais roubadas, incluindo tokens cloud AWS, GCP e Azure, secrets Kubernetes, chaves SSH e credenciais de banco de dados. O malware utilizado, denominado CanisterWorm, possui comando e controle descentralizado via Internet Computer Protocol (ICP) e capacidade de wiper destrutivo.</p>
+<p>A campanha do TeamPCP é especialmente perversa porque mirou deliberadamente ferramentas de segurança — as que por definição precisam de privilégios elevados para funcionar corretamente. Ao comprometer o Trivy, que precisa acessar registros de container e repositórios de código para escanear vulnerabilidades, o TeamPCP roubou credenciais de organizações que estavam justamente tentando se proteger. A técnica de manipulação de tags Git foi utilizada em múltiplos alvos: atacantes fizeram force-push em tags de versão existentes para apontar para commits maliciosos, preservando metadados originais como nomes de autor, emails e timestamps para evitar detecção. Em alguns casos, 75 de 76 tags de versão foram sobrescritas com código controlado pelo atacante.</p>
+<p>O malware CanisterWorm demonstra sofisticação técnica incomum. Seu C2 descentralizado via Internet Computer Protocol torna o takedown praticamente impossível, pois não depende de servidores fixos que possam ser bloqueados. A capacidade de wiper destrutivo adiciona uma camada de risco além do roubo de credenciais — os atacantes podemdestruir os sistemas comprometidos após a exfiltração, eliminando evidências forenses. O grupo já declarou intenção de parceirar com grupos de ransomware para escalar os ataques, transformando uma campanha de roubo de credenciais em um possível precursor de operações de ransomware em larga escala. A combinação de escala (quatro ferramentas simultaneamente), profundidade (500K+ credenciais) e persistência (C2 descentralizado) faz desta a campanha de supply chain mais agressiva documentada em 2026.</p>
+    <div class="callout"><strong>Ação:</strong> Rotacionar todas as credenciais que passaram por Trivy, KICS, LiteLLM ou Telnyx SDK; assumir que tokens cloud e secrets Kubernetes foram comprometidos</div>
+  </div>
+</section><section class="art" id="a3" data-sev="medium">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">CVSS 9.1</span></div>
+    <h2>FortiClient EMS: zero-day ativo e o pesadelo do patch consecutivo</h2>
+    <p>A Fortinet confirmou uma vulnerabilidade zero-day ativamente explorada no FortiClient EMS, identificada como CVE-2026-35616 com CVSS 9.1. A falha consiste em um bypass de API pré-autenticação que afeta as versões 7.4.5 e 7.4.6 do FortiClient EMS. Exploraç��o ativa foi confirmada desde 31 de março de 2026. Estima-se que entre 2.000 e 2.400 instâncias do EMS estejam expostas na internet, tornando a janela de ataque significativa. A CISA adicionou a vulnerabilidade ao seu catálogo KEV, exigindo remediação urgente por parte de agências federais e, por extensão, de qualquer organização que utilize a solução.</p>
+<p>O detalhe que torna este caso particularmente grave é o padrão de zero-days consecutivos. Organizações que aplicaram o patch para a vulnerabilidade anterior (CVE-2026-21643, uma SQL injection) migrando para a versão 7.4.5 automaticamente se expuseram a esta nova zero-day. Em outras palavras, fazer tudo certo — patchar prontamente — colocou essas organizações em uma situação pior. São dois zero-days em versões consecutivas do mesmo produto, criando um cenário em que não existe versão segura disponível até o lançamento do novo patch. Esse padrão de back-to-back zero-days vai se tornar mais comum conforme atacantes passam a focar em janelas de transição de patch.</p>
+<p>A causa raiz está em falhas de validação de entrada na API REST do FortiClient EMS que permitem que um atacante não autenticado bypassar mecanismos de autenticação e executar operações administrativas arbitrárias. Em ambientes corporativos onde o FortiClient EMS gerencia milhares de endpoints, o comprometimento do servidor EMS dá ao atacante controle total sobre a postura de segurança de toda a frota de dispositivos. A combinação de exploração pré-autenticação, ausência de versão segura e exposição massiva na internet faz desta uma das vulnerabilidades mais urgentes da semana. Organizações em versões afetadas devem assumir comprometimento potencial e investigar logs de API imediatamente.</p>
+    <div class="callout"><strong>Ação:</strong> Upgrade imediato para a versão patcheada; se está em 7.4.5 ou 7.4.6, investigar logs de API para atividade suspeita</div>
+  </div>
+</section><section class="art" id="a4" data-sev="medium">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">CVSS 10.0</span></div>
+    <h2>Canonical Juju CVE-2026-4370 — severidade máxima em orquestração cloud</h2>
+    <p>A Canonical divulgou a CVE-2026-4370, uma vulnerabilidade com a pontuação máxima de CVSS 10.0 no Juju, sua ferramenta de orquestração de infraestrutura cloud amplamente utilizada para gerenciar deployments Kubernetes e outras cargas de trabalho em nuvem. O problema reside no endpoint do cluster Dqlite na porta 17666, que não exige autenticação TLS mútua. Qualquer atacante com acesso à rede pode se juntar ao cluster Dqlite como membro legítimo, ler e modificar todos os dados do cluster, escalar privilégios e abrir portas de firewall arbitrariamente. A vulnerabilidade afeta todos os controllers Juju desde a versão 3.2.0.</p>
+<p>A ausência total de autenticação mútua TLS em um endpoint de gerenciamento de cluster é um erro fundamental de design. O Dqlite é o banco de dados distribuído que armazena todo o estado do controller Juju — incluindo credenciais, configurações de modelo, relações entre aplicações e políticas de firewall. Ao permitir que qualquer nó se junte ao cluster sem verificar sua identidade via certificado TLS, a superfície de ataque se expande para qualquer host que consiga alcançar a porta 17666. Em ambientes cloud onde redes podem ser mais permeáveis do que o esperado, um atacante em uma instância co-locada ou em uma VPC mal configurada pode comprometer toda a infraestrutura gerenciada pelo Juju.</p>
+<p>Patches estão disponíveis nas versões Juju 3.6.20 e 4.0.5. Para operações de segurança corporativa, esta vulnerabilidade representa uma emergência se a organização utiliza Juju para gerenciar clusters Kubernetes de produção. O impacto vai além do comprometimento do controller — um atacante com controle do Juju pode implantar aplicações maliciosas, modificar configurações de serviços existentes e pivotar para a infraestrutura subjacente. A severidade máxima do CVSS reflete a combinação de ausência de autenticação, impacto total sobre confidencialidade/integridade/disponibilidade e a natureza crítica do componente afetado.</p>
+    <div class="callout"><strong>Ação:</strong> Atualizar para Juju 3.6.20 ou 4.0.5 imediatamente; restringir acesso à porta 17666 via network segmentation</div>
+  </div>
+</section><section class="art" id="a5" data-sev="medium">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Zero-Day</span></div>
+    <h2>Chrome zero-day CVE-2026-5281 — 4º do ano em cadência mensal</h2>
+    <p>O Google patcheou mais uma vulnerabilidade zero-day no Chrome, identificada como CVE-2026-5281, um use-after-free no componente Dawn WebGPU que já está sendo ativamente explorado na natureza. A CISA adicionou a vulnerabilidade ao seu catálogo KEV com prazo de remediação até 15 de abril de 2026. Este é o quarto zero-day do Chrome corrigido em 2026, mantendo uma cadência preocupante de um por mês: janeiro, fevereiro, março e agora abril. O ritmo não mostra sinais de desaceleração.</p>
+<p>O componente Dawn é a implementação C++ do WebGPU no Chrome, responsável por acelerar gráficos e computação via GPU diretamente no navegador. Uma vulnerabilidade use-after-free neste componente permite que um atacante explore a liberação prematura de memória para executar código arbitrário dentro do processo do renderer. Embora o sandbox do Chrome limite o impacto imediato, vulnerabilidades no subsistema gráfico frequentemente podem ser combinadas com sandbox escapes para alcançar execução de código completa no sistema da vítima, especialmente quando visitando uma página HTML forjada via um link malicioso.</p>
+<p>Para equipes de segurança corporativa, a cadência de um zero-day por mês no navegador mais utilizado do mundo é um indicador claro de que o Chrome é um alvo prioritário e sustentado para grupos de ameaça. Com mais de 3,5 bilhões de usuários globalmente, cada zero-day tem potencial de impacto massivo. A recomendação é não esperar pelo deadline da CISA — o patch deve ser aplicado imediatamente em frotas corporativas. Além disso, organizações devem garantir que navegadores baseados em Chromium como Microsoft Edge, Brave, Opera e Vivaldi também recebam as correções quando disponibilizadas por seus respectivos mantenedores.</p>
+    <div class="callout"><strong>Ação:</strong> Atualizar Chrome imediatamente; não esperar o deadline CISA de 15 de abril; verificar também navegadores baseados em Chromium</div>
+  </div>
+</section><section class="art" id="a6" data-sev="medium">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Vazamento</span></div>
+    <h2>Marquis (fintech bancária): 672 mil registros expostos via SonicWall comprometido</h2>
+    <p>A fintech texana Marquis, que atende centenas de bancos com ferramentas de analytics financeiro, sofreu um ataque ransomware que resultou na exposição de dados de 672.075 pessoas. Os registros comprometidos incluem informações de máxima sensibilidade: nomes completos, Social Security Numbers (SSNs), números de contas bancárias e números de cartão de crédito. A Marquis alega em processo judicial que o vetor de entrada foi o comprometimento do backup cloud do SonicWall, onde arquivos de configuração do firewall estavam armazenados e expuseram o blueprint completo das defesas de rede da empresa.</p>
+<p>A ironia deste incidente é amarga: o vendor de segurança (SonicWall) foi o vetor de entrada para o comprometimento de uma instituição financeira. Os atacantes obtiveram acesso aos backups cloud do SonicWall, onde encontraram arquivos de configuração do firewall contendo regras de filtragem, zonas de rede, políticas de acesso e potencialmente credenciais de integração com outros sistemas. Com esse blueprint em mãos, os atacantes mapearam toda a arquitetura defensiva da Marquis e identificaram os caminhos de menor resistência para a infraestrutura interna onde os dados sensíveis estavam armazenados.</p>
+<p>O dano para as 672.075 pessoas afetadas é direto e imediato. A combinação de SSN + conta bancária + número de cartão é o máximo de sensibilidade possível em dados financeiros, criando condições ideais para fraude de identidade, acesso não autorizado a contas bancárias e abertura de crédito fraudulento. Para o setor financeiro, este incidente reforça a necessidade de avaliar não apenas a própria postura de segurança, mas também a de cada vendor na cadeia de confiança. Backups de configuração de firewall não deveriam estar acessíveis em cloud storage sem criptografia forte e controle de acesso rigoroso.</p>
+    <div class="callout"><strong>Ação:</strong> Auditar backups cloud de configurações de segurança; implementar criptografia em repouso para todas as configurações de firewall; revisar acesso de vendors a dados sensíveis</div>
+  </div>
+</section><section class="art" id="a7" data-sev="medium">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Tática</span></div>
+    <h2>Ransomware: LockBit domina com 24 vítimas em um dia, Everest ataca Nissan e Anubis mira aviação</h2>
+    <p>Three grupos de ransomware distintos demonstraram a amplitude e resiliência do ecossistema criminoso nesta semana. O LockBit registrou 24 novas vítimas em um único dia (4 de abril), mantendo sua liderança como o grupo de ransomware mais produtivo do ano apesar de ações policiais anteriores da FBI e NCSC que supostamente haviam desarticulado suas operações. A resiliência do LockBit é impressionante e preocupante — o grupo continua operando com força total, reconstituindo infraestrutura e recrutando novos afiliados após cada intervención policial. Enquanto isso, o grupo Everest reivindicou o ataque à montadora global Nissan, e o Anubis mirou especificamente a Shine Aviation no setor de aviação.</p>
+<p>A diversidade de setores atacados simultaneamente é significativa. Um grupo atacando montadora automotiva (Everest/Nissan), outro atacando aviação (Anubis/Shine Aviation), e um terceiro vitimando 24 organizações em um único dia (LockBit) mostra que o ransomware não é mais uma ameaça setorial — é horizontal e onipresente. A tática do LockBit de publicar um volume massivo de vítimas em 24 horas é também uma demonstração de força, destinada a assustar futuros alvos e demonstrar que as ações policiais tiveram impacto mínimo em suas operações. Para os afiliados do LockBit, o volume é uma estratégia de negócio: quanto mais vítimas publicadas, maior a credibilidade da ameaça nas negociações de resgate.</p>
+<p>O ataque do Everest à Nissan merece atenção especial pela natureza da vítima. Montadoras globais operam cadeias de suprimentos complexas com milhares de fornecedores interconectados. Um comprometimento significativo da Nissan pode ter efeitos cascata em toda a indústria automotiva. Já o ataque do Anubis à Shine Aviation segue o padrão de grupos de ransomware mirando infraestrutura crítica onde a interrupção de operações causa pressão máxima para pagamento de resgate. Aviação é um alvo particularmente atraente porque paralisação de voos gera perdas financeiras imediatas e visibilidade pública que aumenta a pressão sobre a vítima.</p>
+    <div class="callout"><strong>Ação:</strong> Participar de iniciativas de compartilhamento de inteligência de ameaças; manter backups offline testados; revisar planos de resposta a incidentes de ransomware</div>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-cyan">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Se essa edição te ajudou, compartilhe com alguém que opera segurança, infraestrutura ou desenvolvimento.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  function onScroll(){ var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; bar.style.width=(max?((h.scrollTop/max)*100):0)+'%'; }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>

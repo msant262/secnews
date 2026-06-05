@@ -12,8 +12,11 @@
     '</svg>';
   window.CSN_MARK = MARK;
 
+  var BASE = '';
+  function local(path) { return BASE + path; }
+
   function brand() {
-    return '<a class="nav-brand" href="index.html" title="CyberSec News">' + MARK +
+    return '<a class="nav-brand" href="' + local('index.html') + '" title="CyberSec News">' + MARK +
       '<span class="brand-word">CYBERSEC<b>NEWS</b></span></a>';
   }
 
@@ -82,14 +85,14 @@
     var items = NAV.map(function (n, i) {
       var idx = String(i + 1).padStart(2, '0');
       var on = n[0] === active ? ' active' : '';
-      return '<li><a class="nav-link' + on + '" href="' + n[2] + '"><span class="idx">' + idx + '</span>' + n[1] + '</a></li>';
+      return '<li><a class="nav-link' + on + '" href="' + local(n[2]) + '"><span class="idx">' + idx + '</span>' + n[1] + '</a></li>';
     }).join('');
     return '<header class="nav"><div class="container nav-inner">' +
       brand() +
       '<button class="nav-toggle" aria-label="Menu" id="navToggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>' +
       '<ul class="nav-menu" id="navMenu">' + items + '</ul>' +
       '<div class="nav-right"><div class="nav-social">' + socialHtml() + '</div>' +
-        '<a class="btn btn-primary btn-sm lead-magenta" href="apoie.html" style="margin-left:4px">Apoie</a></div>' +
+        '<a class="btn btn-primary btn-sm lead-magenta" href="' + local('apoie.html') + '" style="margin-left:4px">Apoie</a></div>' +
       '</div></header>';
   }
 
@@ -102,14 +105,14 @@
           '<p class="footer-blurb">Newsletter semanal de cibersegurança com análise técnica profunda e recomendações práticas para quem opera na linha de frente.</p>' +
           '<div class="nav-social" style="margin-top:20px;display:flex">' + socialHtml() + '</div></div>' +
         '<div><h5>Navegação</h5><ul>' +
-          NAV.map(function (n) { return '<li><a href="' + n[2] + '">' + n[1] + '</a></li>'; }).join('') +
-          '<li><a href="apoie.html">Apoie o projeto</a></li></ul></div>' +
+          NAV.map(function (n) { return '<li><a href="' + local(n[2]) + '">' + n[1] + '</a></li>'; }).join('') +
+          '<li><a href="' + local('apoie.html') + '">Apoie o projeto</a></li></ul></div>' +
         '<div><h5>Plataformas</h5><ul>' +
           '<li><a href="https://open.spotify.com/show/4E8K5cTNWYnU6XiihlzNPV" target="_blank" rel="noopener">Spotify</a></li>' +
           '<li><a href="https://podcasts.apple.com/de/podcast/cybersec-news/id1740119597" target="_blank" rel="noopener">Apple Podcasts</a></li>' +
           '<li><a href="https://www.deezer.com/en/show/1000843631" target="_blank" rel="noopener">Deezer</a></li>' +
           '<li><a href="https://www.youtube.com/@CyberSecNews" target="_blank" rel="noopener">YouTube</a></li>' +
-          '<li><a href="logos.html">Sistema de marca</a></li></ul></div>' +
+          '<li><a href="' + local('logos.html') + '">Sistema de marca</a></li></ul></div>' +
       '</div>' +
       '<div class="footer-bottom"><span>© ' + year + ' CYBERSEC NEWS · São Bernardo do Campo · SP</span>' +
         '<span>VISUAL_SYSTEM = OKAMI · v0.2.0</span></div>' +
@@ -118,6 +121,7 @@
 
   function init() {
     var body = document.body;
+    BASE = body.getAttribute('data-base') || '';
     var active = body.getAttribute('data-page') || '';
     var headSlot = document.getElementById('site-header');
     var footSlot = document.getElementById('site-footer');

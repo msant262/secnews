@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #13 — 30 de Março 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ataques de Suprimento em Massa, Vulnerabilidades Críticas e Ameaças Emergentes">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; }
+  .toc-dot.crit { background: var(--ok-danger); } .toc-dot.high { background: var(--ok-warning); } .toc-dot.med { background: var(--ok-cyan); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#13 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#13</span><span class="mono-tag">30 de Março 2026</span><span class="mono-tag">8 min de leitura</span></div>
+      <h1>Ataques de Suprimento em Massa, Vulnerabilidades Críticas e Ameaças Emergentes</h1>
+      <div class="tags"><span class="badge">Supply Chain</span><span class="badge">Zero-Day</span><span class="badge">Linux</span><span class="badge">Chrome</span><span class="badge">Ransomware</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">5</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">0</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">3</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc"><div class="toc-head">Nesta edição</div><ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>Kit de Exploração DarkSword Usa 6 Vulnerabilidades, 3 </a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Trivy Vulnerability Scanner Comprometido em Ataque Sof</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>Campanha GlassWorm/ForceMemo Usa Tokens GitHub Roubado</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot med"></span>Vulnerabilidade Crítica RCE em PTC Windchill &amp; FlexPLM</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot med"></span>Vulnerabilidade Crítica RCE não Autenticada em Oracle </a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot med"></span>Ataque Iran-Linked ao Stryker Arma Microsoft Intune pa</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot critical"></span>Google Corrige Duas Vulnerabilidades Zero-Days em Chro</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot critical"></span>Nove Vulnerabilidades CrackArmor em Linux AppArmor Per</a></li></ul><div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div></aside>
+        <article class="article-col">
+          <div class="read-intro"><p>Olá, leitores! Bem-vindos a mais uma edição da nossa newsletter semanal sobre segurança da informação. Esta semana, testemunhamos uma série de incidentes graves, incluindo ataques sofisticados de suprimento de software, múltiplas vulnerabilidades zero-day ativamente exploradas e campanhas APT com ampla escala. Desde scanners de vulnerabilidades comprometidos a kits de exploração móvel, o cenário de ameaças continua se expandindo. Vamos aos detalhes.</p></div>
+          <section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Kit de Exploração DarkSword Usa 6 Vulnerabilidades, 3 Zero-Days para Comprometimento Total do Dispositivo iOS</h2>
+    <p>Um novo kit de exploração para dispositivos Apple iOS está sendo usado por múltiplos atores ameaças desde novembro de 2025. Segundo relatórios do Google Threat Intelligence Group, iVerify e Lookout, o DarkSword é uma cadeia completa de exploração projetada para roubar dados sensíveis de iPhones executando iOS 18.4 a 18.7. O kit usa 6 vulnerabilidades distintas, incluindo 3 zero-days (CVE-2026-20700, CVE-2025-43529, CVE-2025-14174), permitindo acesso privilegiado e exfiltração de dados através de ataques waterhole via Safari.</p>
+    <div class="callout"><strong>Ação:</strong> Atualize imediatamente para iOS 18.7.3 ou versões mais recentes</div>
+  </div>
+</section><section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Trivy Vulnerability Scanner Comprometido em Ataque Sofisticado de Suprimento</h2>
+    <p>Aqua Security's Trivy, um scanner de vulnerabilidades open-source amplamente adotado, foi comprometido em um ataque sofisticado de suprimento focado em CI/CD. O ator ameaça TeamPCP usou acesso de um incidente anterior não totalmente remedido para injetar malware de roubo de credenciais em binários oficiais, GitHub Actions (trivy-action, setup-trivy) e distribuições de containers. O ataque afetou 76 de 77 tags de versão nas Actions do GitHub.</p>
+    <div class="callout"><strong>Ação:</strong> Atualize para Trivy v0.69.2+, trivy-action v0.35.0, setup-trivy v0.2.6</div>
+  </div>
+</section><section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Campanha GlassWorm/ForceMemo Usa Tokens GitHub Roubados para Force-Push Malware em Repositórios</h2>
+    <p>A campanha GlassWorm está sendo usada para atacar projetos Python — incluindo apps Django, código de ML, dashboards Streamlit e pacotes PyPI — através de tokens GitHub roubados. O ator compromete sistemas de desenvolvedores com malware GlassWorm (através de extensões VS Code e Cursor maliciosas), usa as credenciais roubadas para forçar mudanças maliciosas em cada repositório. Mais de 433 projetos foram afetados.</p>
+    <div class="callout"><strong>Ação:</strong> Revogue tokens GitHub comprometidos e use MFA forte</div>
+  </div>
+</section><section class="art" id="a4" data-sev="medium">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">CVSS 10.0</span></div>
+    <h2>Vulnerabilidade Crítica RCE em PTC Windchill &amp; FlexPLM (CVE-2026-4681)</h2>
+    <p>PTC reportou uma vulnerabilidade de Execução Remota de Código (RCE) através de desserialização de dados não confiáveis em produtos Windchill PDMLink e FlexPLM. CVE-2026-4681 recebeu CVSS v3.1 score de 10.0 (Crítico) - a pontuação máxima possível, afetando múltiplas versões desde Windchill 11.0 M030 até FlexPLM 13.0.3.0.</p>
+    <div class="callout"><strong>Ação:</strong> Proteja sistemas Windchill/FlexPLM e aplique workarounds Apache/IIS</div>
+  </div>
+</section><section class="art" id="a5" data-sev="medium">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">CVSS 10.0</span></div>
+    <h2>Vulnerabilidade Crítica RCE não Autenticada em Oracle WebLogic Server</h2>
+    <p>Uma vulnerabilidade de Execução Remota de Código não autenticada (CVE-2026-21962, CVSS 10.0) no Oracle WebLogic Server Console está sob exploração imediata e ampla. O ataque permite execução de comandos de sistema operacional arbitrários através de simples requisições HTTP sem autenticação, permitindo acesso total ao servidor.</p>
+    <div class="callout"><strong>Ação:</strong> Atualize Oracle WebLogic imediatamente ou bloqueie acesso externo</div>
+  </div>
+</section><section class="art" id="a6" data-sev="medium">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Ataque</span></div>
+    <h2>Ataque Iran-Linked ao Stryker Arma Microsoft Intune para Deletar Dados em Milhares de Dispositivos</h2>
+    <p>A gigante de dispositivos médicos Stryker (receita de $25B) sofreu um ataque cibernético global por grupo ameaça iraniano Handala/APT34. O ator armou Microsoft Intune para deletar massivamente dados de 56.000 dispositivos dos funcionários em 61 países, causando interrupção global a operações de pedidos, fabricação e envio.</p>
+    <div class="callout"><strong>Ação:</strong> Habilite MFA e aprovação multi-admin para operações destrutivas no Intune</div>
+  </div>
+</section><section class="art" id="a7" data-sev="critical">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Google Corrige Duas Vulnerabilidades Zero-Days em Chrome Ativamente Exploradas</h2>
+    <p>Google lançou atualizações de segurança para Chrome abordando duas vulnerabilidades de alta severidade ativamente exploradas: CVE-2026-3909 (CVSS 8.8) - write out-of-bounds na biblioteca gráfica Skia 2D; CVE-2026-3910 (CVSS 8.8) - implementação inapropriada no mecanismo V8. Google já corrigiu três zero-days ativamente explorados em Chrome desde início do ano.</p>
+    <div class="callout"><strong>Ação:</strong> Atualize Chrome para versão 146.0.7680.75 ou superior</div>
+  </div>
+</section><section class="art" id="a8" data-sev="critical">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Nove Vulnerabilidades CrackArmor em Linux AppArmor Permitem Escalação para Root</h2>
+    <p>Qualys TRU descobriu nove vulnerabilidades em AppArmor (nomeadas "CrackArmor") que permitem a usuários sem privilégios contornar proteções de kernel, escalar para root e quebrar isolamento de containers. A falha existe desde 2017 (versão v4.11) e afetou mais de 12,6 milhões de sistemas globalmente.</p>
+    <div class="callout"><strong>Ação:</strong> Aplique patches de kernel imediatamente em sistemas Linux afetados</div>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-cyan">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Se essa edição te ajudou, compartilhe com alguém que opera segurança, infraestrutura ou desenvolvimento.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  function onScroll(){ var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; bar.style.width=(max?((h.scrollTop/max)*100):0)+'%'; }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>

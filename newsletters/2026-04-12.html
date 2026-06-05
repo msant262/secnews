@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #20 — 12 de Abril 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Zero-day no Adobe Acrobat, Ransomware na ChipSoft paralisando hospitais, CPU-Z trojanizado e breach massivo na Adobe">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; }
+  .toc-dot.crit { background: var(--ok-danger); } .toc-dot.high { background: var(--ok-warning); } .toc-dot.med { background: var(--ok-cyan); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#20 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#20</span><span class="mono-tag">12 de Abril 2026</span><span class="mono-tag">9 min de leitura</span></div>
+      <h1>Zero-day no Adobe Acrobat, Ransomware na ChipSoft paralisando hospitais, CPU-Z trojanizado e breach massivo na Adobe</h1>
+      <div class="tags"><span class="badge">Zero-Day</span><span class="badge">Ransomware</span><span class="badge">Adobe</span><span class="badge">Supply Chain</span><span class="badge">Fintech</span><span class="badge">DeFi</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">2</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">3</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">3</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc"><div class="toc-head">Nesta edição</div><ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>Zero-Day do Adobe Acrobat Reader ativamente explorado </a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Ransomware paralisa ChipSoft — 80% dos hospitais holan</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot high"></span>CPUID comprometido — CPU-Z e HWMonitor trojanizados di</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot high"></span>Fortinet EMS sob exploração ativa — CVE-2026-35616 per</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot high"></span>Adobe confirma breach — 13 milhões de tickets de supor</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot med"></span>FBI recupera mensagens &quot;deletadas&quot; do Signal via banco</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot med"></span>Operação Atlantic prende fraudadores — $45 milhões em </a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot med"></span>Drift Protocol sofre hack de $280 milhões — ataque pla</a></li></ul><div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div></aside>
+        <article class="article-col">
+          <div class="read-intro"><p>Olá, leitores! Bem-vindos à edição #20 da CyberSecNews. Esta semana foi marcada por ataques de alto impacto em fornecedores críticos e softwares amplamente utilizados. Desde uma vulnerabilidade zero-day no Adobe Acrobat explorada silenciosamente por meses até um ataque de ransomware que paralisou a infraestrutura de saúde da Holanda. Também cobrimos o comprometimento de ferramentas populares de hardware e um vazamento massivo de dados de suporte da Adobe. Vamos aos detalhes.</p></div>
+          <section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Zero-Day do Adobe Acrobat Reader ativamente explorado há meses (CVE-2026-34621)</h2>
+    <p>A Adobe lançou patches de emergência no dia 11 de abril para uma vulnerabilidade zero-day crítica no Acrobat e Reader, rastreada como CVE-2026-34621. A falha é uma vulnerabilidade de prototype pollution em JavaScript que permite execução arbitrária de código quando um usuário abre um PDF especialmente elaborado. O mais alarmante: evidências indicam que a exploração ativa começou em dezembro de 2025 — quatro meses antes da correção. A vulnerabilidade afeta Acrobat DC e Reader DC tanto no Windows quanto no macOS, com um CVSS score de 8.6/10.</p>
+<p>A técnica de prototype pollution é uma classe de vulnerabilidade JavaScript que permite a um atacante manipular objetos e propriedades fundamentais da aplicação, alterando o comportamento do programa em tempo de execução. No caso do Acrobat Reader, isso se traduz na capacidade de executar código arbitrário no contexto do aplicativo, dando ao atacante controle total sobre o sistema comprometido. O vetor de ataque é particularmente perigoso porque PDFs são o formato de documento mais utilizado em ambientes corporativos, circulando livremente sem qualquer suspeita.</p>
+<p>O impacto para organizações é massivo. PDFs maliciosos continuam sendo um dos vetores de ataque mais confiáveis porque são percebidos como documentos "seguros" por usuários finais. A janela de exploração de quatro meses significa que atacantes tiveram tempo abundante para operar sem detecção. Em ambientes corporativos onde o Adobe Reader é o padrão, um único documento malicioso pode comprometer a estação de trabalho do funcionário, dando ao atacante acesso a credenciais e um ponto de pivot para a rede interna.</p>
+    <div class="callout"><strong>Ação:</strong> Atualizar imediatamente para Acrobat/Reader DC 26.001.21411 ou versões mais recentes; desabilitar JavaScript no Adobe Reader se possível.</div>
+  </div>
+</section><section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Ransomware paralisa ChipSoft — 80% dos hospitais holandeses desconectam sistemas</h2>
+    <p>Na segunda-feira, 7 de abril, o site da ChipSoft saiu do ar. A ChipSoft é a fornecedora da plataforma HiX de prontuários eletrônicos utilizada por aproximadamente 70-80% de todos os hospitais dos Países Baixos. O Z-CERT confirmou que a empresa foi vítima de um ataque de ransomware. Pelo menos 11 hospitais desconectaram imediatamente seus sistemas como precaução. A ChipSoft desabilitou seu portal Zorgportaal para pacientes, o HiX Mobile e todas as conexões Zorgplatform enquanto investigava o escopo do ataque.</p>
+<p>A magnitude do impacto é diretamente proporcional à concentração de mercado da ChipSoft. Quando um único vendor atende 80% dos hospitais de um país inteiro, qualquer comprometimento da sua infraestrutura se torna automaticamente um incidente de saúde pública em escala nacional. Os hospitais que dependem do HiX para acessar prontuários de pacientes foram forçados a reverter para processos manuais em papel — demonstrando a fragilidade de uma dependência tão concentrada.</p>
+<p>Este incidente levanta questões fundamentais sobre resiliência digital na saúde. A alta concentração em um único vendor cria um ponto único de falha que vai além da segurança cibernética — é uma questão de continuidade assistencial. Para organizações de saúde, o aprendizado é claro: planos de contingência offline devem ser testados regularmente, e a arquitetura de conectividade com vendors deve incluir kill switches rápidos e capacidades de operação standalone.</p>
+    <div class="callout"><strong>Ação:</strong> Auditar dependências críticas de vendors únicos; implementar planos de contingência offline testados; garantir que kill switches estejam documentados.</div>
+  </div>
+</section><section class="art" id="a3" data-sev="high">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span></div>
+    <h2>CPUID comprometido — CPU-Z e HWMonitor trojanizados distribuem STX RAT</h2>
+    <p>Atacantes comprometeram o site CPUID (cpuid.com) entre 9 e 10 de abril. Durante esse período, links de download legítimos de ferramentas como CPU-Z e HWMonitor foram substituídos por links maliciosos. Os instaladores trojanizados continham o executável legítimo assinado, empacotado com uma DLL maliciosa chamada CRYPTBASE.dll que utilizava DLL side-loading para executar o STX RAT, um trojan de acesso remoto com capacidades de HVNC e infostealer.</p>
+<p>O STX RAT possui um conjunto abrangente de comandos que inclui controle remoto, execução de payloads adicionais em memória e interação com desktop. A Kaspersky reportou mais de 150 vítimas, principalmente no Brasil, Rússia e China. Pesquisadores identificaram que o endereço do servidor C2 e a configuração de conexão foram reutilizados de uma campanha anterior que usava instaladores trojanizados do FileZilla, facilitando a detecção e correlação das campanhas.</p>
+<p>A CPUID confirmou que a violação ocorreu através de uma funcionalidade secundária e que a integridade dos arquivos originais assinados não foi comprometida. No entanto, o ataque do tipo watering hole demonstra como sites de utilitários técnicos confiáveis são alvos valiosos, pois atraem usuários com permissões administrativas que estão realizando tarefas de manutenção ou diagnóstico de hardware.</p>
+    <div class="callout"><strong>Ação:</strong> Se baixou CPU-Z ou HWMonitor entre 9-10 de abril, verificar a presença de CRYPTBASE.dll suspeita; escanear com antimalware atualizado.</div>
+  </div>
+</section><section class="art" id="a4" data-sev="high">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span></div>
+    <h2>Fortinet EMS sob exploração ativa — CVE-2026-35616 permite execução remota de comandos</h2>
+    <p>A vulnerabilidade CVE-2026-35616 no Fortinet Endpoint Management Server (EMS) está sob exploração ativa. A falha permite acesso não autenticado à API do EMS, possibilitando execução de comandos e escalação de privilégios. O Fortinet já liberou um hotfix e recomenda aplicação imediata, além de restrição de acesso à rede para servidores EMS. O EMS é um componente central de gestão de endpoints, e sua exposição pode servir como ponto de entrada para movimentação lateral.</p>
+<p>A natureza da vulnerabilidade significa que atacantes não precisam de credenciais válidas. Basta que o servidor EMS esteja acessível a partir da rede do atacante. Uma vez com acesso à API, o atacante pode executar comandos com privilégios elevados, potencialmente comprometendo todos os endpoints gerenciados. Interfaces de gestão de segurança (firewalls, EMS, SIEM) são alvos prioritários porque representam pontos de controle centralizados.</p>
+<p>Este padrão reforça que interfaces de gestão nunca devem estar acessíveis diretamente pela internet. O acesso deve ser restrito a VLANs de gestão dedicadas com MFA obrigatório. A rapidez na aplicação de hotfixes em ferramentas de gerenciamento de segurança é crítica, pois o comprometimento dessas ferramentas anula as defesas que elas deveriam orquestrar.</p>
+    <div class="callout"><strong>Ação:</strong> Aplicar hotfix do Fortinet imediatamente; restringir acesso à rede dos servidores EMS; implementar MFA para acesso administrativo.</div>
+  </div>
+</section><section class="art" id="a5" data-sev="high">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span></div>
+    <h2>Adobe confirma breach — 13 milhões de tickets de suporte e dados de funcionários vazados</h2>
+    <p>Um threat actor identificado como "Mr. Racoon" reivindicou a responsabilidade por um vazamento massivo de dados da Adobe. O breach expôs 13 milhões de tickets de suporte ao cliente, 15.000 registros de funcionários e submissões do programa de bug bounty. Tickets de suporte frequentemente contêm informações sensíveis como IDs de clientes, detalhes de configuração de sistemas, e em alguns casos, credenciais ou tokens compartilhados durante sessões de troubleshooting.</p>
+<p>Os registros de funcionários podem incluir dados pessoais como nomes, e-mails corporativos e números de telefone. As submissões do bug bounty são particularmente sensíveis porque podem conter detalhes de vulnerabilidades ainda não corrigidas, o que dá a outros atacantes um mapa para exploração. Documentos internos expostos podem revelar arquiteturas de sistemas e procedimentos operacionais que facilitam ataques futuros.</p>
+<p>Este incidente demonstra que mesmo gigantes da tecnologia não estão imunes a breaches. Dados de suporte ao cliente devem ser tratados como ativos sensíveis, com retenção mínima e sanitização automática de informações como tokens. Programas de bug bounty devem operar com canais isolados e criptografados para evitar que as reportagens de vulnerabilidades se tornem vetores de ataque em caso de vazamento.</p>
+    <div class="callout"><strong>Ação:</strong> Se você abriu tickets de suporte na Adobe, monitore para phishing direcionado; pesquisadores devem verificar se suas submissões de bug bounty foram corrigidas.</div>
+  </div>
+</section><section class="art" id="a6" data-sev="medium">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span></div>
+    <h2>FBI recupera mensagens &quot;deletadas&quot; do Signal via banco de notificações do iOS</h2>
+    <p>Em um caso judicial no Texas, o FBI revelou que conseguiu recuperar mensagens privadas do Signal a partir de um iPhone utilizando forensic tools para extrair previews armazenadas no banco de dados de push notifications do iOS. O método permitiu recuperar mensagens recebidas mesmo após o aplicativo ter sido deletado do dispositivo, confirmando que os dados vieram do armazenamento de notificações do sistema e não do histórico criptografado do app.</p>
+<p>A implicação é que qualquer app de mensagens que exibe previews em notificações no iOS está sujeito a essa persistência de dados. Mesmo criptografia end-to-end robusta pode ser contornada por mecanismos de persistência no nível do sistema operacional. A proteção requer ação manual nas configurações de notificação do iPhone para impedir o armazenamento de conteúdo de mensagens no log de notificações.</p>
+    <div class="callout"><strong>Ação:</strong> Configurar &quot;Show Previews&quot; como &quot;Never&quot; nas notificações do iOS; no Signal, definir Notification Content como &quot;No Name or Content&quot;.</div>
+  </div>
+</section><section class="art" id="a7" data-sev="medium">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Operação</span></div>
+    <h2>Operação Atlantic prende fraudadores — $45 milhões em criptomoedas identificadas</h2>
+    <p>Uma operação internacional liderada pela NCA identificou mais de 20.000 vítimas de fraude em criptomoedas. A "Operação Atlantic" congelou mais de $12 milhões e identificou $45 milhões roubados. Os fraudadores utilizavam "approval phishing", manipulando vítimas a conceder acesso às suas carteiras via esquemas de investimento fraudulentos em redes sociais.</p>
+<p>O FBI Internet Crime Report 2025 documentou um aumento de 48% nas queixas de fraude em investimento com criptomoedas comparado ao ano anterior. Estes números confirmam que a fraude em criptomoedas é um dos principais vetores de perdas financeiras globais. A sofisticação social dos ataques exige educação contínua de usuários e mecanismos de verificação rigorosos em plataformas de investimento.</p>
+    <div class="callout"><strong>Ação:</strong> Nunca aprovar transações ou conceder acesso à carteira sem verificação independente; desconfiar de oportunidades de investimento via redes sociais.</div>
+  </div>
+</section><section class="art" id="a8" data-sev="medium">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span></div>
+    <h2>Drift Protocol sofre hack de $280 milhões — ataque planejado por 6 meses</h2>
+    <p>O Drift Protocol detectou um ataque que resultou na perda de mais de $280 milhões em ativos de usuários. A investigação revelou que o ataque foi planejado por pelo menos seis meses, indicando reconhecimento extensivo da arquitetura do protocolo e identificação de vulnerabilidades em smart contracts. É um dos maiores hacks de DeFi do ano.</p>
+<p>A imutabilidade dos smart contracts, combinada com a complexidade dos protocolos de trading, cria uma superfície de ataque difícil de auditar completamente. Este incidente reforça os riscos estruturais do ecossistema DeFi. A lição para usuários é a diversificação de exposição e a preferência por plataformas com auditorias de segurança publicadas e programas de bug bounty ativos.</p>
+    <div class="callout"><strong>Ação:</strong> Diversificar exposição entre múltiplos protocolos; privilegiar plataformas com auditorias de segurança publicadas.</div>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-cyan">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Se essa edição te ajudou, compartilhe com alguém que opera segurança, infraestrutura ou desenvolvimento.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  function onScroll(){ var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; bar.style.width=(max?((h.scrollTop/max)*100):0)+'%'; }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>

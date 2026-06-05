@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #12 — 16 de Março 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Zero-days ativos no Chrome e vulnerabilidades críticas em soluções de backup">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; }
+  .toc-dot.crit { background: var(--ok-danger); } .toc-dot.high { background: var(--ok-warning); } .toc-dot.med { background: var(--ok-cyan); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#12 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#12</span><span class="mono-tag">16 de Março 2026</span><span class="mono-tag">5 min de leitura</span></div>
+      <h1>Zero-days ativos no Chrome e vulnerabilidades críticas em soluções de backup</h1>
+      <div class="tags"><span class="badge">Zero-Day</span><span class="badge">Chrome</span><span class="badge">Veeam</span><span class="badge">Microsoft</span><span class="badge">APT</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">1</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">0</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">4</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc"><div class="toc-head">Nesta edição</div><ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>Google corrige dois zero-days do Chrome em exploração </a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot med"></span>Veeam corrige múltiplas vulnerabilidades RCE críticas</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot med"></span>Vulnerabilidade crítica no Microsoft Office permite RC</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot med"></span>Grupo vinculado ao Irã ataca empresa médica dos EUA</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot med"></span>Atacantes usam floods de phishing para sobrecarregar S</a></li></ul><div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div></aside>
+        <article class="article-col">
+          <div class="read-intro"><p>Olá, leitores do CyberSec News! Bem-vindos a mais uma edição da nossa newsletter semanal. Esta semana foi particularmente intensa, com a descoberta de zero-days sendo explorados ativamente, vulnerabilidades críticas em softwares corporativos essenciais e novas táticas de ataque que exploram a sobrecarga de equipes de segurança.</p></div>
+          <section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Google corrige dois zero-days do Chrome em exploração ativa</h2>
+    <p>O Google liberou uma atualização de emergência para o Chrome, corrigindo duas vulnerabilidades de alta severidade (CVE-2026-3909 e CVE-2026-3910) que já estão sendo exploradas em ataques reais. CVE-2026-3909 é uma falha de escrita fora dos limites no motor gráfico Skia, enquanto CVE-2026-3910 envolve uma implementação inadequada no motor JavaScript V8. Ambas permitem execução de código arbitrário.</p>
+    <div class="callout"><strong>Ação:</strong> Atualize para a versão 146.0.7680.75 ou superior</div>
+  </div>
+</section><section class="art" id="a2" data-sev="medium">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">CVSS 9.9</span></div>
+    <h2>Veeam corrige múltiplas vulnerabilidades RCE críticas</h2>
+    <p>A Veeam corrigiu cinco vulnerabilidades graves em seu software Backup & Replication versão 12.3.2.4165 e anteriores. Três delas (CVE-2026-21666, CVE-2026-21667 e CVE-2026-21708) são RCEs com pontuação CVSS de 9.9, permitindo que usuários de domínio autenticados executem código remoto no servidor de backup.</p>
+    <div class="callout"><strong>Ação:</strong> Atualize para a versão 12.3.2.4465</div>
+  </div>
+</section><section class="art" id="a3" data-sev="medium">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">CVSS 8.4</span></div>
+    <h2>Vulnerabilidade crítica no Microsoft Office permite RCE</h2>
+    <p>Uma vulnerabilidade de confusão de tipos (CVE-2026-26110, CVSS 8.4) afeta o Microsoft Office 2016, 2019, 365, LTSC 2021/2024 e Android. O ponto mais preocupante é que o ataque pode ser disparado pelo Painel de Visualização do Windows sem nenhuma interação do usuário — basta destacar o arquivo. A complexidade de ataque é baixa e não requer privilégios elevados.</p>
+    <div class="callout"><strong>Ação:</strong> Aplique os patches mais recentes do Microsoft Office</div>
+  </div>
+</section><section class="art" id="a4" data-sev="medium">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Ataque</span></div>
+    <h2>Grupo vinculado ao Irã ataca empresa médica dos EUA</h2>
+    <p>O grupo hacktivista Handala, vinculado ao Irã, reivindicou um ataque à Stryker Corporation, fabricante de dispositivos médicos, causando "disrupção global" em seus sistemas Microsoft. O ataque afetou milhares de funcionários e está impactando procedimentos cirúrgicos. O grupo afirmou ter apagado milhares de sistemas e exfiltrado 50 terabytes de dados.</p>
+								</div>
+							</div>
+    
+  </div>
+</section><section class="art" id="a5" data-sev="medium">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Tática</span></div>
+    <h2>Atacantes usam floods de phishing para sobrecarregar SOCs</h2>
+    <p>Uma nova tática de ataque utiliza alto volume de e-mails de phishing para sobrecarregar analistas de SOC, criando um Informational Denial-of-Service (IDoS). Floods de phishing commodity escondem spear-phishing direcionados nas filas de alertas. Pesquisas mostram que 66% dos SOCs não conseguem acompanhar o volume, causando atrasos de investigação de 5 minutos para até 12 horas.</p>
+								</div>
+							</div>
+    
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-cyan">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Se essa edição te ajudou, compartilhe com alguém que opera segurança, infraestrutura ou desenvolvimento.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  function onScroll(){ var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; bar.style.width=(max?((h.scrollTop/max)*100):0)+'%'; }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>
