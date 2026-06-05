@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #22 — 05 JUN 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Semana pesada: ransomware explorando cPanel, Android e PAN-OS com exploração ativa, Oracle WebLogic e Mirasvit no KEV, TrapDoor mirando npm/PyPI/Crates.io e assistentes de IA, Kali365 abusando de OAuth no Microsoft 365, além de grandes vazamentos envolvendo Carnival e Instructure.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; }
+  .toc-dot.crit { background: var(--ok-danger); } .toc-dot.high { background: var(--ok-warning); } .toc-dot.med { background: var(--ok-cyan); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#22 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#22</span><span class="mono-tag">05 JUN 2026</span><span class="mono-tag">14 min de leitura</span></div>
+      <h1>cPanel vira ransomware em massa, Android e PAN-OS entram no KEV, supply chain mira IA e ShinyHunters volta forte</h1>
+      <div class="tags"><span class="badge">Ransomware</span><span class="badge">CISA KEV</span><span class="badge">Supply Chain</span><span class="badge">AI Security</span><span class="badge">Data Breach</span><span class="badge">AppSec</span><span class="badge">M365</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">4</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">4</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">2</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#22 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>cPanel/WHM CVE-2026-41940 já está sendo usado para espalha</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Android corrige 124 falhas; CVE-2025-48595 tem exploração </a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>Palo Alto PAN-OS CVE-2026-0257: bypass no GlobalProtect ex</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>TrapDoor mira npm, PyPI e Crates.io — e envenena assistent</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot high"></span>Mirasvit Full Page Cache Warmer entra no KEV com RCE por d</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>Oracle WebLogic CVE-2024-21182 volta como urgência operaci</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>Kali365 usa device-code phishing para roubar tokens OAuth </a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>ChatGPhish transforma assistentes de IA em superfície de p</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot med"></span>Carnival confirma vazamento de quase 6 milhões de pessoas </a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot med"></span>Instructure/Canvas confirma roubo de dados; ShinyHunters f</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#22 · Leitura">
+          <div class="read-intro"><p>Semana de borda e identidade pegando fogo: exploração ativa em cPanel, Android, PAN-OS e WebLogic; supply chain cruzando npm/PyPI/Crates.io com envenenamento de assistentes de IA; e vazamentos grandes mostrando que engenharia social continua sendo o velho canivete suíço dos atacantes. Vamos ao que importa para patch, detecção e operação.</p></div>
+          <section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>cPanel/WHM CVE-2026-41940 já está sendo usado para espalhar o ransomware “Sorry”</h2>
+    <p>A falha de autenticação bypass no cPanel, WHM e WP Squared saiu do modo “patch urgente” para o modo “incidente em massa”. A vulnerabilidade CVE-2026-41940 permite acesso aos painéis de controle sem autenticação e, segundo a cobertura da BleepingComputer, já vinha sendo explorada desde o fim de fevereiro antes de virar exploração ampla.</p>
+    <p>O impacto operacional é feio: Shadowserver reportou dezenas de milhares de IPs com cPanel comprometidos e operadores passaram a implantar um encryptor Linux em Go associado ao ransomware “Sorry”. O malware adiciona a extensão .sorry aos arquivos e usa ChaCha20 com chave protegida por RSA-2048 — ou seja, sem a chave privada do operador, recuperação por descriptografia não é uma aposta séria.</p>
+    <p>Para provedores de hospedagem e times que mantêm WHM/cPanel, esse item merece prioridade máxima: não é só exposição teórica de painel; já existe cadeia de ataque completa terminando em criptografia de dados.</p>
+    <div class="callout"><strong>Ação:</strong> Atualizar cPanel/WHM imediatamente, validar se versões vulneráveis ficaram expostas desde fevereiro, revisar logs de autenticação/painel, procurar arquivos .sorry/README.md e isolar servidores com sinais de comprometimento.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/critrical-cpanel-flaw-mass-exploited-in-sorry-ransomware-attacks/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section><section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Android corrige 124 falhas; CVE-2025-48595 tem exploração limitada e entrou no KEV</h2>
+    <p>O boletim de junho do Android corrigiu 124 vulnerabilidades e uma delas merece atenção especial: CVE-2025-48595, integer overflow no Framework com possibilidade de execução de código e escalação local de privilégio sem interação do usuário.</p>
+    <p>Google reconheceu indícios de exploração limitada e direcionada. CISA adicionou a falha ao Known Exploited Vulnerabilities Catalog em 2 de junho, com prazo curto para correção em ambientes federais. Esse padrão — Android Framework, exploração limitada, poucos detalhes públicos — costuma ser compatível com uso direcionado contra alvos de alto valor, inclusive por cadeias de spyware comercial.</p>
+    <p>Mesmo sem detalhes de TTPs, o recado é simples: dispositivo móvel corporativo sem patch vira superfície de persistência, coleta e movimento lateral via identidade.</p>
+    <div class="callout"><strong>Ação:</strong> Aplicar patch level 2026-06-05 nos dispositivos Android gerenciados, priorizar aparelhos de executivos/admins, conferir cobertura MDM e bloquear versões que não recebam atualização.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/google-june-2026-android-update-patches.html" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section><section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>Palo Alto PAN-OS CVE-2026-0257: bypass no GlobalProtect explorado dias após disclosure</h2>
+    <p>A CVE-2026-0257 afeta PAN-OS com GlobalProtect portal/gateway habilitado e permite bypass de autenticação para estabelecer conexão VPN não autorizada em appliances vulneráveis. A Palo Alto lançou correções em maio, mas Rapid7 observou exploração começando quatro dias depois da divulgação pública.</p>
+    <p>O detalhe que importa para defesa: a atividade incluiu cookies forjados aceitos por ambientes de clientes e, em alguns casos, atribuição de IP VPN após a autenticação indevida. Isso muda o risco de “alguém testou o endpoint” para “alguém pode ter ganho caminho para a rede interna”.</p>
+    <p>CISA colocou a falha no KEV em 29 de maio. Firewalls e VPNs continuam sendo alvo preferido porque concentram borda, identidade e confiança de rede. Patch atrasado aqui é convite com tapete vermelho.</p>
+    <div class="callout"><strong>Ação:</strong> Atualizar PAN-OS/Prisma Access para versões corrigidas, rodar o PoC/checagem defensiva da Rapid7 se aplicável, revisar logs de GlobalProtect para cookies suspeitos e sessões VPN anômalas desde 17 de maio.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/recent-palo-alto-networks-vulnerability-exploited-for-weeks/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section><section class="art" id="a4" data-sev="critical">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
+    <h2>TrapDoor mira npm, PyPI e Crates.io — e envenena assistentes de IA via CLAUDE.md e .cursorrules</h2>
+    <p>A campanha TrapDoor distribuiu malware de roubo de credenciais em 34 pacotes e 384 versões nos ecossistemas npm, PyPI e Crates.io. O alvo não é só carteira cripto: o payload procura SSH keys, credenciais AWS, tokens GitHub, perfis de navegador, variáveis de ambiente e keystores.</p>
+    <p>A parte nova — e especialmente relevante para DevSecOps/AppSec — é o envenenamento de assistentes de IA. O payload planta arquivos como CLAUDE.md e .cursorrules com instruções escondidas por caracteres Unicode invisíveis. Ferramentas como Claude Code e Cursor podem ler esses arquivos como contexto de projeto e executar uma falsa “varredura de segurança” que exfiltra segredos.</p>
+    <p>Isso quebra a fronteira mental entre “dependência maliciosa” e “prompt injection operacional”. O pacote instala malware, mas também tenta converter o assistente de desenvolvimento em executor confiável do atacante.</p>
+    <div class="callout"><strong>Ação:</strong> Auditar lockfiles contra a lista de IOCs, procurar CLAUDE.md/.cursorrules com caracteres zero-width, bloquear execução de scripts de instalação sem revisão, rotacionar credenciais em máquinas que instalaram pacotes suspeitos e tratar agentes de IA como superfície de execução.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://phoenix.security/trapdoor-supply-chain-ai-poisoning-npm-pypi-crates/" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section><section class="art" id="a5" data-sev="high">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span></div>
+    <h2>Mirasvit Full Page Cache Warmer entra no KEV com RCE por desserialização</h2>
+    <p>CISA adicionou CVE-2026-45247 ao KEV em 3 de junho. A falha afeta o Mirasvit Full Page Cache Warmer e envolve desserialização de dados não confiáveis, permitindo execução remota de código por meio de um objeto PHP serializado enviado no cookie CacheWarmer.</p>
+    <p>Esse tipo de bug é particularmente ruim em ambientes web/e-commerce porque fica perto da camada pública, tende a ser explorável por requisição HTTP e muitas vezes passa despercebido quando plugin/extensão não está no inventário central de ativos.</p>
+    <p>Mesmo que o produto pareça “só cache”, o risco real é RCE em aplicação web com acesso a credenciais, banco, arquivos e integrações.</p>
+    <div class="callout"><strong>Ação:</strong> Inventariar uso de Mirasvit/Magento, aplicar mitigação do fornecedor ou remover o componente, revisar WAF/logs por cookies CacheWarmer anômalos e tratar servidores expostos como candidatos a forense.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section><section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span></div>
+    <h2>Oracle WebLogic CVE-2024-21182 volta como urgência operacional após entrada no KEV</h2>
+    <p>CISA adicionou CVE-2024-21182 ao KEV em 1º de junho. A vulnerabilidade afeta Oracle WebLogic Server e permite que um atacante não autenticado com acesso via T3/IIOP comprometa o servidor, podendo obter acesso crítico ou completo aos dados acessíveis pela instância.</p>
+    <p>O ponto aqui não é a idade do CVE, é a exploração ativa. Muitas organizações tratam patch antigo como dívida técnica eterna; atacantes tratam como backlog de oportunidade. WebLogic exposto continua sendo alvo clássico pela combinação de Java enterprise, superfície legada e dados sensíveis.</p>
+    <p>Se T3/IIOP está aberto além do necessário, o patch é só uma parte da correção. A outra é reduzir superfície.</p>
+    <div class="callout"><strong>Ação:</strong> Aplicar CPU/patch Oracle correspondente, restringir T3/IIOP por rede, revisar exposição pública, procurar web shells e validar logs de acesso/admin em WebLogic.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section><section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span></div>
+    <h2>Kali365 usa device-code phishing para roubar tokens OAuth e furar MFA no Microsoft 365</h2>
+    <p>O FBI alertou sobre a plataforma de phishing-as-a-service Kali365, usada para obter tokens OAuth e refresh tokens de ambientes Microsoft 365 sem precisar roubar senha diretamente. A técnica abusa do fluxo de device code: a vítima é induzida a inserir um código em uma página legítima da Microsoft, entregando autorização ao atacante.</p>
+    <p>O modelo é perigoso porque parece menos suspeito para o usuário e pode escapar de controles focados em senha. Com token válido, o invasor ganha acesso persistente a Outlook, Teams, OneDrive e outros serviços. Arctic Wolf observou campanhas desde abril, mirando manufatura, educação, seguros, finanças, saúde e governo.</p>
+    <p>Esse tipo de ataque mostra que MFA não é “fim de jogo” quando o atacante mira autorização e sessão em vez de credencial.</p>
+    <div class="callout"><strong>Ação:</strong> Restringir ou monitorar device code flow, revisar consentimentos OAuth, aplicar Conditional Access, exigir phishing-resistant MFA onde possível e caçar logins/device-code grants fora do padrão.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cybersecuritydive.com/news/fbi-warns-phishing-platform-microsoft-365/821105/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.ic3.gov/PSA/2026/PSA260521" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section><section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span></div>
+    <h2>ChatGPhish transforma assistentes de IA em superfície de phishing dentro da interface confiável</h2>
+    <p>A Cloud Security Alliance publicou análise sobre ChatGPhish, técnica em que prompt injection indireto faz um assistente renderizar links, alertas falsos, QR codes e imagens remotas dentro da própria interface confiável do chat. O usuário acha que está lendo uma resposta do assistente; o atacante controla parte do conteúdo renderizado.</p>
+    <p>A tese é simples e feia: se um colaborador pede para a IA resumir uma página, issue, documento ou email controlado pelo atacante, o conteúdo pode carregar instruções para manipular a saída do assistente. Isso contorna muita defesa tradicional, porque não é necessariamente email malicioso chegando no inbox; é conteúdo sendo processado por um agente.</p>
+    <p>A CSA conecta essa família de ataques a técnicas recentes como EchoLeak, HashJack, CometJacking, Reprompt e CamoLeak. O problema deixou de ser demo acadêmica e virou arquitetura de risco para empresas usando agentes conectados a dados internos.</p>
+    <div class="callout"><strong>Ação:</strong> Separar conteúdo externo de instruções confiáveis, limitar renderização de Markdown/links/imagens, aplicar allowlist de ferramentas, registrar ações de agentes e manter revisão humana para fluxos com credenciais, envio externo ou dados sensíveis.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-chatgphish-ai-prompt-injection-phishing-20/" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section><section class="art" id="a9" data-sev="medium">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span></div>
+    <h2>Carnival confirma vazamento de quase 6 milhões de pessoas após ataque de engenharia social</h2>
+    <p>A Carnival Corporation confirmou notificação a 5.995.277 clientes após uma invasão ligada a engenharia social contra conta de funcionário. A empresa identificou atividade não autorizada em abril e determinou posteriormente que informações pessoais foram copiadas.</p>
+    <p>Have I Been Pwned analisou dados vazados e indicou exposição de nomes, datas de nascimento, emails, gênero, localização geográfica e informações de programa de fidelidade. O grupo ShinyHunters reivindicou o ataque e alegou volume ainda maior de registros e dados internos.</p>
+    <p>O caso reforça um padrão chato e recorrente: uma conta enganada vira acesso a sistemas internos, e dados de fidelidade/cliente viram munição para fraude, spear phishing e extorsão.</p>
+    <div class="callout"><strong>Ação:</strong> Para empresas com programas de fidelidade, revisar controles contra social engineering, segmentar acesso a bases de cliente, monitorar exportações anômalas e preparar comunicação/rotação de credenciais para usuários afetados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/carnival-cruise-confirms-data-breach-affecting-nearly-6-million-people/" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section><section class="art" id="a10" data-sev="medium">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span></div>
+    <h2>Instructure/Canvas confirma roubo de dados; ShinyHunters fala em centenas de milhões de registros</h2>
+    <p>A Instructure, dona do Canvas, confirmou incidente com exposição de dados de usuários em instituições afetadas. Segundo a empresa, os dados inicialmente identificados incluem nomes, emails, IDs de estudantes e mensagens entre usuários; ela afirma não ter encontrado evidência de senhas, documentos governamentais ou dados financeiros até o momento.</p>
+    <p>O ShinyHunters reivindicou o ataque e alegou impacto em milhares de escolas e centenas de milhões de registros, incluindo mensagens privadas. BleepingComputer ressalta que nem todas as alegações foram independentemente confirmadas, então o número deve ser tratado com cautela.</p>
+    <p>Mesmo assim, o risco é claro: ambientes educacionais concentram PII, comunicação privada e integrações via API. A resposta da Instructure incluiu patches, aumento de monitoramento e rotação de application keys.</p>
+    <div class="callout"><strong>Ação:</strong> Instituições que usam Canvas devem revisar comunicados do fornecedor, reautorizar/rotacionar chaves de API, monitorar abuso de contas e preparar comunicação para alunos/professores se forem listadas como afetadas.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/instructure-confirms-data-breach-shinyhunters-claims-attack/" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-cyan">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Prioridade prática da semana: patch de borda primeiro, auditoria de supply chain em seguida, e revisão de fluxos OAuth/IA antes que “assistente produtivo” vire “estagiário possuído”.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  function onScroll(){ var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; bar.style.width=(max?((h.scrollTop/max)*100):0)+'%'; }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>
