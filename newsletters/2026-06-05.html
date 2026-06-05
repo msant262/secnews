@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #22 — 05 JUN 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Semana pesada em segurança: cPanel com ransomware, Red Hat npm/Miasma, PAN-OS, Android explorado, Windows Netlogon, Kali365, ShinyHunters e falhas em agentes de IA.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; }
+  .toc-dot.crit { background: var(--ok-danger); } .toc-dot.high { background: var(--ok-warning); } .toc-dot.med { background: var(--ok-cyan); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#22 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#22</span><span class="mono-tag">05 JUN 2026</span><span class="mono-tag">18 min de leitura</span></div>
+      <h1>15 alertas da semana: borda explorada, supply chain com marca grande, vazamentos em massa e IA virando superfície real</h1>
+      <div class="tags"><span class="badge">Ransomware</span><span class="badge">Supply Chain</span><span class="badge">CISA KEV</span><span class="badge">Identity</span><span class="badge">Data Breach</span><span class="badge">AI Security</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">5</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">8</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">2</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#22 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>cPanel/WHM vira porta de entrada para ransomware em massa</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Miasma compromete pacotes npm da Red Hat e mira o coração </a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>PAN-OS GlobalProtect explorado: quando a VPN vira atalho p</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>Android corrige 124 falhas, incluindo uma explorada de for</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot critical"></span>Windows Netlogon em alerta: Domain Controller vulnerável n</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>Kali365 rouba tokens OAuth e lembra que MFA não é escudo m</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>Mirasvit Full Page Cache Warmer entra no KEV com RCE por d</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>Oracle WebLogic no KEV: dívida técnica antiga ainda cobra </a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot med"></span>Carnival confirma vazamento de quase 6 milhões de pessoas</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot med"></span>Charter aparece em vazamento atribuído ao ShinyHunters</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot critical"></span>Claude Code GitHub Action mostra o risco real de agente co</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>Gemini Voice Assistant e o problema das notificações como </a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>ChatGPhish leva phishing para dentro da resposta “confiáve</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Instagram: quando suporte automatizado com IA vira parte d</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot med"></span>100 agentes de IA testados e uma conclusão chata: poder de</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#22 · Leitura">
+          <div class="read-intro">
+            <p>Semana daquelas em que a segurança parece uma reunião de condomínio em chamas: borda sendo explorada, pacote npm com sobrenome famoso roubando token, identidade cloud sendo pescada por OAuth e IA mostrando, de novo, que “assistente com permissão” não é brinquedo.</p>
+            <p>Vamos direto ao que importa — o que aconteceu, por que isso mexe com risco real e onde vale prestar atenção antes que vire post-mortem com café frio.</p>
+          </div>
+          <h2 class="split-title">Segurança geral</h2>
+          <section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Ransomware / Borda</span></div>
+    <h2>cPanel/WHM vira porta de entrada para ransomware em massa</h2>
+    <p>A semana já começa naquele modo “por favor, não me diga que esse servidor ainda está sem patch”. A falha CVE-2026-41940 no cPanel/WHM, que é aquele painel de hospedagem usado em meio mundo, virou exploração em massa e já está sendo usada para espalhar o ransomware “Sorry”.</p>
+    <p>O ruim aqui não é só existir uma falha crítica. Isso acontece toda semana, porque aparentemente a internet é um condomínio construído em cima de fita isolante. O ruim é a combinação: painel exposto, exploração ativa, muito servidor vulnerável e ransomware criptografando arquivo de verdade. Segundo a BleepingComputer, o encryptor Linux adiciona extensão .sorry e usa criptografia que não deixa uma saída bonitinha sem chave privada.</p>
+    <p>Para provedor, agência, e-commerce pequeno ou qualquer time que mantém hosting próprio, esse é o tipo de alerta que merece furar fila. Se cPanel ficou exposto, não basta atualizar e fingir que nada aconteceu. Tem que olhar log, procurar artefato e assumir que alguém pode ter passado por ali.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar cPanel/WHM, revisar exposição desde fevereiro, procurar arquivos .sorry/README.md, checar logs do painel e isolar hosts suspeitos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/critrical-cpanel-flaw-mass-exploited-in-sorry-ransomware-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a></p>
+  </div>
+</section>
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Supply Chain / DevSecOps</span></div>
+    <h2>Miasma compromete pacotes npm da Red Hat e mira o coração do CI/CD</h2>
+    <p>Esse aqui é daqueles casos que deixam DevSecOps com gastrite. A Microsoft detalhou a campanha Miasma, envolvendo pacotes do escopo @redhat-cloud-services no npm. A Red Hat também publicou bulletin próprio confirmando o comprometimento de pacotes ligados a bibliotecas frontend do Hybrid Cloud Console.</p>
+    <p>O ataque é interessante — e nojento — porque não fica só no “publiquei um pacote malicioso e roubei um token”. Ele abusa de preinstall hook, baixa Bun, caça credenciais de GitHub, npm, AWS, Azure, GCP, Vault e Kubernetes, tenta raspar memória de runners do GitHub Actions e ainda brinca com proveniência/SLSA para parecer legítimo. É supply chain usando a própria linguagem de confiança da supply chain. Fofo. Psicopata, mas fofo.</p>
+    <p>A lição é bem direta: assinatura, namespace conhecido e pipeline bonito não significam segurança automática. Quando o atacante entra no fluxo de publicação, a embalagem vem com selo de confiança e veneno dentro.</p>
+    <div class="callout"><strong>O que fazer:</strong> Auditar dependências @redhat-cloud-services, bloquear versões afetadas, rotacionar tokens em ambientes expostos e revisar runners CI/CD.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/06/02/preinstall-persistence-inside-red-hat-npm-miasma-credential-stealing-campaign/" target="_blank" rel="noopener">Microsoft Threat Intelligence</a> · <a href="https://access.redhat.com/security/vulnerabilities/RHSB-2026-006" target="_blank" rel="noopener">Red Hat Security Bulletin</a></p>
+  </div>
+</section>
+<section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">VPN / Borda</span></div>
+    <h2>PAN-OS GlobalProtect explorado: quando a VPN vira atalho para dentro</h2>
+    <p>A CVE-2026-0257 no PAN-OS afeta ambientes com GlobalProtect portal/gateway habilitado. A Palo Alto reconheceu tentativas de exploração em dispositivos sem patch, a CISA colocou no KEV e a Rapid7 observou atividade poucos dias após a divulgação pública.</p>
+    <p>O detalhe que incomoda é que o ataque envolve bypass de autenticação com cookies forjados e, em alguns casos, atribuição de IP VPN. Traduzindo sem perfume: não é só alguém batendo na porta. Em certos cenários, pode ser alguém recebendo crachá temporário para entrar no prédio.</p>
+    <p>VPN e firewall continuam sendo prêmio de atacante porque vivem na borda e carregam confiança demais. Patch atrasado nessa classe de produto é sempre uma aposta ruim. E o cassino, surpresa nenhuma, é administrado pelo adversário.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar PAN-OS/Prisma Access, revisar logs GlobalProtect desde 17 de maio e caçar cookies/sessões VPN anômalas.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/recent-palo-alto-networks-vulnerability-exploited-for-weeks/" target="_blank" rel="noopener">SecurityWeek</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a></p>
+  </div>
+</section>
+<section class="art" id="a4" data-sev="critical">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Mobile / CVE</span></div>
+    <h2>Android corrige 124 falhas, incluindo uma explorada de forma limitada</h2>
+    <p>O boletim de junho do Android corrigiu 124 falhas. Uma delas, CVE-2025-48595, chamou atenção porque o Google indicou exploração limitada e direcionada, e a CISA adicionou a vulnerabilidade ao catálogo de exploradas.</p>
+    <p>Esse tipo de notícia às vezes parece distante: “ah, é só celular”. Só que celular corporativo hoje carrega e-mail, MFA, VPN, chat interno, sessão de cloud, documento, localização e metade da vida digital de alguém. Em alguns casos, é mais sensível que o notebook.</p>
+    <p>Então sim, patch de Android entra na newsletter com peso. Principalmente para aparelhos de executivos, admins e pessoas que viram alvo não por serem famosas, mas por terem acesso. O atacante não quer o celular; quer a identidade que mora nele.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar patch level mais recente, priorizar admins/executivos, verificar cobertura MDM e bloquear dispositivos sem atualização em acessos sensíveis.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/google-june-2026-android-update-patches.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a></p>
+  </div>
+</section>
+<section class="art" id="a5" data-sev="critical">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Windows / Infra</span></div>
+    <h2>Windows Netlogon em alerta: Domain Controller vulnerável nunca é “só mais um servidor”</h2>
+    <p>A BleepingComputer reportou alerta do Centre for Cybersecurity Belgium sobre exploração ativa da CVE-2026-41089, uma RCE crítica no Windows Netlogon corrigida no Patch Tuesday de maio. A falha afeta Domain Controllers em versões suportadas do Windows Server.</p>
+    <p>Aqui vale uma nuance honesta: a Microsoft disse que não tinha evidência própria confirmando a exploração reportada, mas recomendou seguir a orientação do CVE e aplicar os updates. Ou seja, temos alerta de autoridade nacional e cautela do vendor. Ainda assim, quando o assunto é Domain Controller, eu prefiro parecer paranoica do que explicar depois por que o domínio inteiro virou piñata.</p>
+    <p>Domain Controller é uma daquelas peças que, quando cai, não cai sozinha. Leva autenticação, política, identidade e confiança junto. Não é servidor; é coluna vertebral.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar patches em DCs, reduzir exposição RPC onde possível, revisar telemetria de Netlogon e tratar o alerta como prioridade até haver clareza melhor.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/microsoft/critical-windows-netlogon-remote-code-execution-flaw-now-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41089" target="_blank" rel="noopener">Microsoft MSRC</a></p>
+  </div>
+</section>
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Identity / M365</span></div>
+    <h2>Kali365 rouba tokens OAuth e lembra que MFA não é escudo mágico</h2>
+    <p>O FBI alertou sobre a plataforma Kali365, um phishing-as-a-service focado em Microsoft 365. A técnica abusa do fluxo de device code: a vítima cola um código em uma página legítima da Microsoft e, sem perceber, entrega autorização ao atacante.</p>
+    <p>Esse é o tipo de golpe que fica feio justamente porque parece normal. Não precisa roubar senha se você consegue roubar autorização. Com tokens OAuth e refresh tokens, o invasor pode manter acesso a Outlook, Teams, OneDrive e outros serviços. MFA ajuda, claro. Mas MFA tradicional não resolve tudo quando o ataque mira sessão e consentimento.</p>
+    <p>É uma boa notícia para lembrar times de identidade de uma coisa básica: token é credencial. Consentimento OAuth é superfície de ataque. E “o usuário clicou numa página legítima” não significa que o fluxo era legítimo.</p>
+    <div class="callout"><strong>O que fazer:</strong> Restringir device-code flow, revisar OAuth consent, aplicar Conditional Access, detectar grants anômalos e priorizar MFA resistente a phishing para contas críticas.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cybersecuritydive.com/news/fbi-warns-phishing-platform-microsoft-365/821105/" target="_blank" rel="noopener">Cybersecurity Dive</a> · <a href="https://www.ic3.gov/PSA/2026/PSA260521" target="_blank" rel="noopener">FBI IC3</a></p>
+  </div>
+</section>
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AppSec / KEV</span></div>
+    <h2>Mirasvit Full Page Cache Warmer entra no KEV com RCE por desserialização</h2>
+    <p>CISA colocou a CVE-2026-45247 no KEV. A falha afeta o Mirasvit Full Page Cache Warmer e envolve desserialização de dados não confiáveis, permitindo execução remota de código por objeto PHP serializado no cookie CacheWarmer.</p>
+    <p>Essa notícia é menos sexy que “ransomware em massa” e justamente por isso é perigosa. Plugin de cache, extensão de e-commerce, componente auxiliar… tudo aquilo que ninguém lembra na reunião vira a porta que alguém lembra do lado de fora.</p>
+    <p>Se a aplicação está pública e o componente aceita dado não confiável de um cookie, a conversa já começa mal. E quando CISA KEV entra no assunto, para de ser bug bonitinho de inventário e vira correção prioritária.</p>
+    <div class="callout"><strong>O que fazer:</strong> Inventariar Mirasvit/Magento, aplicar mitigação ou remover o componente, revisar WAF/logs por cookies CacheWarmer suspeitos e checar persistência web.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/news-events/alerts/2026/06/03/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA</a></p>
+  </div>
+</section>
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Enterprise / KEV</span></div>
+    <h2>Oracle WebLogic no KEV: dívida técnica antiga ainda cobra juros</h2>
+    <p>CISA adicionou a CVE-2024-21182 ao KEV. A vulnerabilidade afeta Oracle WebLogic Server e envolve comprometimento por atacante não autenticado com acesso via T3/IIOP, segundo a descrição do catálogo.</p>
+    <p>O CVE ser de 2024 não deixa a notícia velha; deixa a organização atrasada. Atacante ama falha antiga porque ela costuma morar em servidor esquecido, aplicação crítica e ambiente onde ninguém quer mexer “porque pode quebrar”. Spoiler: já está quebrado, só que do jeito conveniente para o invasor.</p>
+    <p>WebLogic é clássico de enterprise. E clássico, em segurança, normalmente significa duas coisas: muito legado e muita superfície.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar patch Oracle, restringir T3/IIOP, revisar exposição pública e procurar web shells/artefatos anômalos em servidores WebLogic.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/news-events/alerts/2026/06/01/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA</a></p>
+  </div>
+</section>
+<section class="art" id="a9" data-sev="medium">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Data Breach / Vishing</span></div>
+    <h2>Carnival confirma vazamento de quase 6 milhões de pessoas</h2>
+    <p>A Carnival confirmou notificação a 5.995.277 clientes após uma invasão ligada a engenharia social contra conta de funcionário. Segundo a empresa, houve acesso não autorizado em abril e depois foi determinado que informações pessoais foram copiadas.</p>
+    <p>Have I Been Pwned analisou dados vazados e indicou nomes, datas de nascimento, e-mails, gênero, localização e detalhes de programa de fidelidade. ShinyHunters reivindicou o ataque e alegou volume maior.</p>
+    <p>Esse tipo de breach não é só “vazou dado”. É matéria-prima para phishing melhor, golpe mais convincente e engenharia social personalizada. Programa de fidelidade parece inofensivo até virar contexto perfeito para enganar alguém.</p>
+    <div class="callout"><strong>O que fazer:</strong> Reforçar defesa contra social engineering, segmentar bases de clientes, monitorar exportações incomuns e preparar resposta a fraude/spear phishing pós-vazamento.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/carnival-cruise-confirms-data-breach-affecting-nearly-6-million-people/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+<section class="art" id="a10" data-sev="medium">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Data Breach / Telecom</span></div>
+    <h2>Charter aparece em vazamento atribuído ao ShinyHunters</h2>
+    <p>SecurityWeek reportou que o ShinyHunters publicou dados alegadamente roubados da Charter Communications. O grupo falou em mais de 42 milhões de registros e CPNI; Have I Been Pwned identificou 4,9 milhões de e-mails únicos com nomes, endereços e telefones.</p>
+    <p>A Charter contestou parte do escopo, dizendo que apenas ferramentas de vendas para clientes business atuais, passados e prospectivos foram impactadas, e negou liberação de CPNI ou informação pessoal sensível pelo ator. Então aqui cabe cuidado: há alegação do grupo, análise independente do HIBP e resposta da empresa.</p>
+    <p>Mesmo assim, telecom é setor sensível. Dados de contato e contexto comercial alimentam golpe, vishing e ataque direcionado com uma facilidade irritante.</p>
+    <div class="callout"><strong>O que fazer:</strong> Monitorar exposição de clientes/funcionários, revisar acessos a ferramentas de vendas/CRM e preparar detecção de campanhas usando dados de contato vazados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/charter-communications-data-breach-could-impact-nearly-5-million/" target="_blank" rel="noopener">SecurityWeek</a> · <a href="https://haveibeenpwned.com/Breach/Charter" target="_blank" rel="noopener">Have I Been Pwned</a></p>
+  </div>
+</section>
+          <h2 class="split-title">Segurança em IA</h2>
+          <section class="art" id="a11" data-sev="critical">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">AI / CI-CD</span></div>
+    <h2>Claude Code GitHub Action mostra o risco real de agente com permissão de escrita</h2>
+    <p>Uma pesquisa da Flatt Security, coberta pelo The Hacker News, mostrou uma falha no Claude Code GitHub Action que permitiria sequestrar repositórios vulneráveis a partir de uma issue maliciosa. É o tipo de coisa que parece ficção até você lembrar que agente de código hoje pode ler issue, rodar comando, acessar token e escrever no repo.</p>
+    <p>O problema envolvia confiança indevida em atores terminados com [bot] e workflows com permissões amplas. A exploração usava prompt injection indireto para fazer o agente vazar segredos e obter acesso de escrita. Anthropic corrigiu na versão v1.0.94.</p>
+    <p>A opinião impopular, mas necessária: agente de IA em CI/CD não é “copiloto”. É um operador automatizado dentro da fábrica. Se ele lê conteúdo não confiável e tem token poderoso, você não implantou produtividade; implantou uma superfície de ataque com bom marketing.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar claude-code-action, remover gatilhos para usuários sem write access, reduzir permissões do GITHUB_TOKEN e não expor segredos a conteúdo não confiável.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/claude-code-github-action-flaw-let-one.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://flatt.tech/research/posts/poisoning-claude-code-one-github-issue-to-break-the-supply-chain/" target="_blank" rel="noopener">Flatt Security</a></p>
+  </div>
+</section>
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Assistants</span></div>
+    <h2>Gemini Voice Assistant e o problema das notificações como prompt malicioso</h2>
+    <p>SafeBreach divulgou uma classe de ataque chamada Fake Context Alignment contra o Gemini voice assistant. A ideia é simples e desconfortável: notificações comuns de WhatsApp, Slack ou SMS podem carregar instruções que o assistente processa como contexto, sem o usuário perceber.</p>
+    <p>O ataque já foi reportado ao Google e corrigido, mas a discussão continua importante. Assistente de voz em modo mãos livres é especialmente sensível: o usuário pede para ler notificações, o assistente mistura contexto e comando, e de repente uma mensagem recebida tenta influenciar ação em Zoom, Google Home ou memória.</p>
+    <p>A fronteira certa é: notificação é dado não confiável. Não é instrução. Parece óbvio, mas muita arquitetura de IA ainda age como se todo texto no contexto tivesse o mesmo cheiro. Não tem. Alguns textos fedem a atacante.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar notificações como entrada adversarial, limitar ações sensíveis por voz, exigir confirmação forte e separar leitura de mensagens de execução de comandos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/gemini-voice-assistant-hijacked-via-messaging-notifications/" target="_blank" rel="noopener">SecurityWeek</a> · <a href="https://www.safebreach.com/blog/gemini-voice-assistant-prompt-injection-exploit" target="_blank" rel="noopener">SafeBreach</a></p>
+  </div>
+</section>
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Phishing</span></div>
+    <h2>ChatGPhish leva phishing para dentro da resposta “confiável” do assistente</h2>
+    <p>A Cloud Security Alliance analisou o ChatGPhish, uma técnica de prompt injection indireto que faz assistentes renderizarem links, alertas falsos, QR codes e imagens remotas dentro da interface de chat. O usuário acha que recebeu uma resposta neutra do assistente; na prática, parte da resposta foi moldada por conteúdo externo malicioso.</p>
+    <p>Isso é phishing 2.0 porque muda o palco. Em vez de tentar vencer filtro de e-mail, o atacante coloca instruções em uma página, documento, issue ou mensagem que a vítima pede para a IA resumir. A IA vira a embalagem confiável do golpe.</p>
+    <p>A regra mental precisa mudar: “foi o assistente que mostrou” não significa “é seguro”. Assistente pode ser mensageiro de conteúdo hostil. E mensageiro com voz calma ainda entrega bomba.</p>
+    <div class="callout"><strong>O que fazer:</strong> Sanitizar Markdown/links/imagens, separar instruções de dados externos, restringir renderização ativa e exigir revisão humana em fluxos com credenciais ou envio externo.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-chatgphish-ai-prompt-injection-phishing-20/" target="_blank" rel="noopener">Cloud Security Alliance</a> · <a href="https://thehackernews.com/2026/05/chatgphish-vulnerability-turns-chatgpt.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Account Recovery</span></div>
+    <h2>Instagram: quando suporte automatizado com IA vira parte do takeover</h2>
+    <p>BleepingComputer reportou casos de contas raras e valiosas do Instagram tomadas após atacantes convencerem ferramentas de suporte com IA da Meta de que eram os donos legítimos. Vítimas relataram loops de atendimento automatizado e dificuldade para chegar a suporte humano.</p>
+    <p>Relatos indicam uso de fotos públicas transformadas em vídeo por IA para passar por verificação de selfie, trocar e-mail e resetar senha. A reportagem ressalta que algumas alegações específicas não foram verificadas de forma independente; a Meta disse socialmente que o problema foi resolvido e contas estavam sendo protegidas.</p>
+    <p>Esse caso é importante porque não é “modelo falou bobagem”. É processo de recuperação de conta, verificação sintética e ausência de escalonamento humano. IA não erra sozinha; ela erra dentro de um fluxo desenhado por alguém. E fluxo ruim escala erro com eficiência industrial.</p>
+    <div class="callout"><strong>O que fazer:</strong> Exigir sinais múltiplos em recuperação de conta, antifraude contra deepfake, revisão humana para contas de alto valor e trilhas reais de contestação.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/instagram-users-locked-out-after-meta-ai-abused-to-steal-accounts/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+<section class="art" id="a15" data-sev="medium">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / Agent Security</span></div>
+    <h2>100 agentes de IA testados e uma conclusão chata: poder demais, controle de menos</h2>
+    <p>SecurityWeek cobriu análise da Adversa AI com 100 agentes classificados em um AI Risk Quadrant. Só 11 foram considerados ao mesmo tempo capazes e bem defendidos. A tese central é a “tríade letal”: acesso a dados privados, exposição a conteúdo não confiável e capacidade de executar ações externas.</p>
+    <p>Isso resume muito do problema atual. Para o agente ser útil, damos dados, ferramentas e autonomia. Para ele ser seguro, gostaríamos que ele não misturasse contexto hostil com instrução, não vazasse segredo e não fizesse besteira irreversível. A indústria está tentando vender as duas coisas como se a tensão não existisse. Existe. E está gritando.</p>
+    <p>Coding agents aparecem como classe especialmente sensível porque tocam shell, dependências, tokens e pipeline antes de qualquer revisão de diff. Revisar output é bom, mas não mostra tudo que aconteceu no caminho.</p>
+    <div class="callout"><strong>O que fazer:</strong> Controlar egress, identidade e ações irreversíveis; registrar trilha de ferramentas; limitar tokens por tarefa; e tratar agentes como workloads privilegiados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/security-of-100-ai-agents-tested-and-ranked-what-you-need-to-know/" target="_blank" rel="noopener">SecurityWeek</a></p>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-orange">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Se eu tivesse que resumir a semana em uma frase: atualize a borda, trate token como senha, olhe para CI/CD como produção crítica e pare de dar ferramenta poderosa para agente de IA sem coleira curta. O futuro chegou, sim. Veio bonito, caro e com superfície de ataque pra caralho.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById('progress');function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+'%';}addEventListener('scroll',onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
