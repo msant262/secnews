@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News — Sistema de marca</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Direções de logotipo para a CyberSec News no estilo Okami.">
+<link rel="stylesheet" href="css/okami.css">
+<link rel="stylesheet" href="css/components.css">
+<style>
+  .logo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-5); }
+  @media (max-width: 760px) { .logo-grid { grid-template-columns: 1fr; } }
+  .logo-card { padding: 0; overflow: hidden; }
+  .logo-stage { background: var(--ok-bg-0); border-bottom: 1px solid var(--ok-border); aspect-ratio: 16/9; display: grid; place-items: center; position: relative; }
+  .logo-stage::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 28px 28px; mask-image: radial-gradient(circle at center, #000, transparent 78%); }
+  .logo-sym { width: 96px; height: 96px; position: relative; }
+  .logo-info { padding: var(--s-6); display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-4); }
+  .logo-name { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; }
+  .logo-desc { color: var(--ok-fg-mute); font-size: 0.86rem; max-width: 34ch; margin-top: 6px; }
+  /* lockup */
+  .lock { display: inline-flex; align-items: center; gap: 14px; }
+  .lock svg { width: 44px; height: 44px; flex-shrink: 0; }
+  .lock .wm { font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--ok-fg); line-height: 1; }
+  .lock .wm b { color: var(--accent); }
+  .lock .sub { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ok-fg-mute); margin-top: 5px; }
+  .primary-stage { background: var(--ok-bg-1); border: 1px solid var(--ok-border); padding: var(--s-10); display: flex; flex-direction: column; align-items: center; gap: var(--s-6); position: relative; overflow: hidden; }
+  .primary-stage::before { content: ""; position: absolute; width: 360px; height: 360px; border-radius: 50%; background: var(--ok-orange); filter: blur(150px); opacity: 0.12; top: -120px; }
+  .lock-lg svg { width: 64px; height: 64px; }
+  .lock-lg .wm { font-size: 2.4rem; }
+  .lock-lg .sub { font-size: 0.7rem; }
+  .dont-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+  @media (max-width: 720px) { .dont-grid { grid-template-columns: 1fr; } }
+  .swatch-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sw { display: flex; flex-direction: column; gap: 8px; }
+  .sw-chip { width: 100%; height: 56px; border: 1px solid var(--ok-border); border-radius: var(--r-1); }
+</style>
+</head>
+<body class="dark-v" data-page="">
+
+<div id="site-header"></div>
+
+<main>
+  <section class="page-head" data-screen-label="Marca · Cabeçalho">
+    <div class="container">
+      <div class="crumb"><a href="index.html">Home</a><span class="sep">/</span><span>Sistema de marca</span></div>
+      <span class="eyebrow">Logotipo</span>
+      <h1>A marca, no idioma da Okami</h1>
+      <p class="lede mt-4" style="max-width:62ch">Quatro direções de logotipo para a CyberSec News, todas construídas sobre o DNA visual da Okami: anel de circuito, traço geométrico, cantos retos e glow contido. A direção 01 é a recomendada e já está em uso neste protótipo.</p>
+    </div>
+  </section>
+
+  <!-- PRIMARY -->
+  <section class="section-tight" data-screen-label="Marca · Recomendada">
+    <div class="container">
+      <span class="sec-id" style="display:inline-flex;margin-bottom:var(--s-6)">recomendada / lockup horizontal</span>
+      <div class="primary-stage mt-4">
+        <div class="lock lock-lg">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Símbolo CyberSec News">
+            <path d="M32 5.2 L54.6 18 V44 L32 58.8 L9.4 44 V18 Z" style="stroke:var(--ok-orange)" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M15.2 32 H22.8 L27.4 21.6 L34.4 42.8 L38.6 32 H45" style="stroke:var(--ok-bone)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="48.6" cy="32" r="3.3" style="fill:var(--ok-cyan)"/>
+          </svg>
+          <span class="wm">CYBERSEC<b>NEWS</b></span>
+        </div>
+        <p class="mono" style="position:relative">01 · shield pulse</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIRECTIONS -->
+  <section class="section-tight" data-screen-label="Marca · Direções">
+    <div class="container">
+      <span class="sec-id" style="display:inline-flex;margin-bottom:var(--s-6)">direções</span>
+      <div class="logo-grid mt-4">
+
+        <!-- 01 Shield Pulse -->
+        <div class="card logo-card reveal">
+          <div class="logo-stage">
+            <svg class="logo-sym" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M32 5.2 L54.6 18 V44 L32 58.8 L9.4 44 V18 Z" style="stroke:var(--ok-orange)" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M15.2 32 H22.8 L27.4 21.6 L34.4 42.8 L38.6 32 H45" style="stroke:var(--ok-bone)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="48.6" cy="32" r="3.3" style="fill:var(--ok-cyan)"/>
+            </svg>
+          </div>
+          <div class="logo-info">
+            <div><span class="badge badge-orange">01 · recomendada</span><div class="logo-name mt-4">Shield Pulse</div>
+              <p class="logo-desc">Hexágono-escudo cortado por um pulso de ameaça; o blip de sinal sai em ciano. Lê “segurança” na hora e fica limpo em tamanhos pequenos.</p></div>
+          </div>
+        </div>
+
+        <!-- 02 Chip Monogram -->
+        <div class="card logo-card reveal">
+          <div class="logo-stage">
+            <svg class="logo-sym" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12 H44 L52 20 V52 H12 Z" style="stroke:var(--ok-orange);fill:var(--ok-bg-2)" stroke-width="2.4" stroke-linejoin="round"/>
+              <text x="31" y="38" text-anchor="middle" style="font-family:var(--font-display);font-weight:700;fill:var(--ok-fg)" font-size="15" letter-spacing="-0.5">CSN</text>
+              <path d="M52 27 H59" style="stroke:var(--ok-cyan)" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="61" cy="27" r="2.2" style="fill:var(--ok-cyan)"/>
+              <path d="M52 41 H59" style="stroke:var(--ok-magenta)" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="61" cy="41" r="2.2" style="fill:var(--ok-magenta)"/>
+            </svg>
+          </div>
+          <div class="logo-info">
+            <div><span class="badge">02</span><div class="logo-name mt-4">Chip Monogram</div>
+              <p class="logo-desc">Monograma CSN num chip de canto cortado, com traças de circuito. Ótimo como favicon e avatar.</p></div>
+          </div>
+        </div>
+
+        <!-- 03 Shield Signal -->
+        <div class="card logo-card reveal">
+          <div class="logo-stage">
+            <svg class="logo-sym" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M32 7 L53 14 V31 C53 44 44 52 32 57 C20 52 11 44 11 31 V14 Z" style="stroke:var(--ok-orange)" stroke-width="2.6" stroke-linejoin="round"/>
+              <path d="M17 33 H26 L29 25 L34 41 L37 33 H47" style="stroke:var(--ok-bone)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="29" cy="25" r="2.3" style="fill:var(--ok-magenta)"/>
+              <circle cx="47" cy="33" r="2.3" style="fill:var(--ok-cyan)"/>
+            </svg>
+          </div>
+          <div class="logo-info">
+            <div><span class="badge">03</span><div class="logo-name mt-4">Shield Signal</div>
+              <p class="logo-desc">Escudo geométrico com o pulso dentro. Lê “segurança” na hora — mais institucional.</p></div>
+          </div>
+        </div>
+
+        <!-- 04 Signal Brackets -->
+        <div class="card logo-card reveal">
+          <div class="logo-stage">
+            <svg class="logo-sym" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 15 H14 V49 H22" style="stroke:var(--ok-fg-soft)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M42 15 H50 V49 H42" style="stroke:var(--ok-fg-soft)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="25" y="30" width="4.4" height="16" style="fill:var(--ok-orange)"/>
+              <rect x="31.5" y="20" width="4.4" height="26" style="fill:var(--ok-cyan)"/>
+              <rect x="38" y="26" width="4.4" height="20" style="fill:var(--ok-magenta)"/>
+            </svg>
+          </div>
+          <div class="logo-info">
+            <div><span class="badge">04</span><div class="logo-name mt-4">Signal Brackets</div>
+              <p class="logo-desc">Colchetes de terminal envolvendo um equalizador de sinal. Puro código, mais ousado.</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COLOR + DON'T -->
+  <section class="section" data-screen-label="Marca · Regras">
+    <div class="container">
+      <div class="grid-2" style="gap:var(--s-8);align-items:start">
+        <div class="reveal">
+          <span class="sec-id">paleta da marca</span>
+          <div class="swatch-row mt-6">
+            <div class="sw" style="flex:1"><div class="sw-chip" style="background:var(--ok-orange)"></div><span class="mono-tag">Heat Orange</span></div>
+            <div class="sw" style="flex:1"><div class="sw-chip" style="background:var(--ok-cyan)"></div><span class="mono-tag">Volt Cyan</span></div>
+            <div class="sw" style="flex:1"><div class="sw-chip" style="background:var(--ok-magenta)"></div><span class="mono-tag">Neon Magenta</span></div>
+            <div class="sw" style="flex:1"><div class="sw-chip" style="background:var(--ok-bg-0)"></div><span class="mono-tag">Onyx</span></div>
+          </div>
+          <p class="mt-6" style="color:var(--ok-fg-mute);max-width:52ch">Laranja é o acento principal. Ciano e magenta entram só nos detalhes de circuito — nunca dominam. Fundo sempre Onyx.</p>
+        </div>
+        <div class="reveal">
+          <span class="sec-id">não faça</span>
+          <div class="dont-grid mt-6">
+            <div class="card card-pad"><span class="mono-tag" style="color:var(--ok-danger)">✕ rotacionar</span><p class="small mt-4">O símbolo nunca gira.</p></div>
+            <div class="card card-pad"><span class="mono-tag" style="color:var(--ok-danger)">✕ recolorir</span><p class="small mt-4">Não troque as cores do circuito.</p></div>
+            <div class="card card-pad"><span class="mono-tag" style="color:var(--ok-danger)">✕ baixo contraste</span><p class="small mt-4">Não use sobre fundo claro ou imagem fraca.</p></div>
+          </div>
+          <p class="mt-6" style="color:var(--ok-fg-mute)">Tamanho mínimo do símbolo isolado: <strong>32px</strong>. Lockup completo: <strong>140px</strong> de largura.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/site.js"></script>
+</body>
+</html>

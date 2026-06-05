@@ -1,171 +1,80 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-	<meta charset="UTF-8">
-	<title>CyberSecNews | Newsletter Semanal</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Newsletter semanal do CyberSec News - Fique por dentro das principais notícias de cibersegurança" />
-	<meta name="author" content="CyberSecNews">
-	<meta name="keywords" content="cybersecurity, newsletter, segurança, tecnologia" />
-	<link rel="icon" href="images/fav.png">
-	<link rel="stylesheet" type="text/css" href="css/animate.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="css/slick.css">
-	<link rel="stylesheet" type="text/css" href="css/slick-theme.css">
-	<link rel="stylesheet" type="text/css" href="css/flaticon.css">
-	<link rel="stylesheet" type="text/css" href="css/maudio.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/color.css">
-    <link rel="stylesheet" type="text/css" href="css/rtl.css">
-	<link rel="stylesheet" type="text/css" href="css/responsive.css">
-	<link rel="stylesheet" type="text/css" href="css/newsletter.css">
-	
+<meta charset="UTF-8">
+<title>CyberSec News — Arquivo de edições</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Todas as edições da newsletter semanal CyberSec News.">
+<link rel="stylesheet" href="css/okami.css">
+<link rel="stylesheet" href="css/components.css">
 </head>
+<body class="dark-v" data-page="newsletter">
 
+<div id="site-header"></div>
 
-<body class="dark-v">
+<main>
+  <section class="page-head lead-cyan" data-screen-label="Newsletter · Cabeçalho">
+    <div class="container">
+      <div class="crumb"><a href="index.html">Home</a><span class="sep">/</span><span>Newsletter</span></div>
+      <div class="sec-head" style="margin-bottom:0">
+        <div>
+          <span class="eyebrow">Arquivo</span>
+          <h1>Todas as edições</h1>
+          <p class="lede mt-4" style="max-width:54ch">Análise técnica semanal das ameaças que importam. Comece pela edição mais recente.</p>
+        </div>
+        <form class="subscribe" onsubmit="return false">
+          <input class="input" type="email" placeholder="seu@email.corporativo" aria-label="Email">
+          <button class="btn btn-primary" type="submit">Assinar <span class="arr">→</span></button>
+        </form>
+      </div>
+    </div>
+  </section>
 
-	
-	
-	<div id="jquery_jplayer_1" class="cp-jplayer"></div>
+  <!-- FEATURED -->
+  <section class="section-tight lead-orange" data-screen-label="Newsletter · Destaque">
+    <div class="container">
+      <span class="sec-id" style="margin-bottom:var(--s-6);display:inline-flex">edição mais recente</span>
+      <div class="feature reveal mt-4">
+        <div class="feature-main">
+          <div class="flex aic gap-4 wrap">
+            <span class="nl-ed">#21</span><span class="mono-tag">30 ABR 2026</span>
+            <span class="sev sev-critical">3 críticas</span><span class="mono-tag">8 itens · 10 min</span>
+          </div>
+          <h2 class="feature-title">Zero-day no cPanel explorado há meses, supply chain no PyTorch Lightning e SAP, e a falha “Copy Fail” que dá root em todo Linux.</h2>
+          <p style="color:var(--ok-fg-mute);max-width:60ch">Ataques à cadeia de suprimentos em ecossistemas críticos de desenvolvimento, um zero-day silencioso no cPanel desde fevereiro, e a Coreia do Norte usando IA para gerar malware em pacotes npm.</p>
+          <div class="tags"><span class="badge">Zero-Day</span><span class="badge">Supply Chain</span><span class="badge">CVE</span><span class="badge">Linux</span><span class="badge">APT</span></div>
+          <div class="mt-4"><a class="btn btn-primary" href="edicao.html">Ler edição completa <span class="arr">→</span></a></div>
+        </div>
+        <div class="feature-side">
+          <span class="sec-id">stack desta semana</span>
+          <div style="display:grid;gap:13px">
+            <div class="flex aic gap-3"><span class="sev sev-critical">crít</span><span class="small" style="color:var(--ok-fg-soft)">cPanel/WHM auth bypass</span></div>
+            <div class="flex aic gap-3"><span class="sev sev-critical">crít</span><span class="small" style="color:var(--ok-fg-soft)">PyTorch Lightning · PyPI</span></div>
+            <div class="flex aic gap-3"><span class="sev sev-critical">crít</span><span class="small" style="color:var(--ok-fg-soft)">SAP npm · Mini Shai-Hulud</span></div>
+            <div class="flex aic gap-3"><span class="sev sev-high">alto</span><span class="small" style="color:var(--ok-fg-soft)">Linux “Copy Fail” → root</span></div>
+            <div class="flex aic gap-3"><span class="sev sev-high">alto</span><span class="small" style="color:var(--ok-fg-soft)">DPRK · IA gera malware</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	<div class="wrapper">
-		
-		<header>
-			<div class="top-header">
-				<div class="container">
-					<div class="row align-items-center">
-						<div class="col-md-4 ml-auto">
-							<ul class="social-links">
-								<li><a href="https://www.youtube.com/@CyberSecNews" target="_blank" title=""><i class="fab fa-youtube"></i></a></li>
-								<li><a href="https://open.spotify.com/show/4E8K5cTNWYnU6XiihlzNPV?si=af8f7db11b234c52" target="_blank" title=""><i class="fab fa-spotify"></i></a></li>
-								<li><a href="#" title=""><i class="fab fa-instagram"></i></a></li>
-								<li><a href="https://www.linkedin.com/in/marcosvssantos/" target="_blank" title=""><i class="fab fa-linkedin"></i></a></li>
-							</ul>
-							<div class="clearfix"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="bottom-header">
-				<div class="container">
-					<div class="header-content">
-						<div class="logo">
-							<a href="index.html" title=""><img src="images/logo3.png" alt=""></a>
-						</div>
-						<nav>
-							<ul>
-								<li><a href="index.html" title="">Home.</a></li>
-								<li><a class="active" href="newsletter.html" title="">Newsletter.</a></li>
-								<li><a href="authors.html" title="">Equipe.</a></li>
-								<li><a href="sponsors.html" title="">Patrocínios.</a></li>
-								<li><a href="contact.html" title="">Contato.</a></li>
-							</ul>
-						</nav>
-						<a href="#" title="" class="menu-btn"><img src="images/bars2.png" alt=""></a>
-						<a href="donate.html" title="" class="btn-default"><i class="flaticon-heart"></i>Doações <span></span></a>
-					</div>
-				</div>
-			</div>
-		</header>
+  <!-- ARCHIVE TIMELINE -->
+  <section class="section lead-magenta" data-screen-label="Newsletter · Arquivo">
+    <div class="container">
+      <div class="sec-head">
+        <div><span class="sec-id">arquivo</span><h2 class="mt-4">Edições anteriores</h2></div>
+        <span class="mono-tag">6 edições</span>
+      </div>
+      <div id="archive" class="archive"></div>
+    </div>
+  </section>
+</main>
 
-		<div class="responsive-mobile-menu d-flex flex-wrap align-items-end">
-			<a href="#" title="" class="close-menu">
-				<i class="fa fa-times"></i>
-			</a>
-			<ul class="mb-menu">
-				<li><a href="index.html" title="">Home.</a></li>
-				<li><a href="newsletter.html" title="">Newsletter.</a></li>
-				<li><a href="authors.html" title="">Equipe.</a></li>
-				<li><a href="sponsors.html" title="">Patrocínios.</a></li>
-				<li><a href="contact.html" title="">Contato.</a></li>
-			</ul>
-			<ul class="social-links">
-				<li><a href="https://www.youtube.com/@CyberSecNews" target="_blank" title=""><i class="fab fa-youtube"></i></a></li>
-				<li><a href="https://open.spotify.com/show/4E8K5cTNWYnU6XiihlzNPV?si=af8f7db11b234c52" target="_blank" title=""><i class="fab fa-spotify"></i></a></li>
-				<li><a href="https://www.linkedin.com/in/marcosvssantos/" target="_blank" title=""><i class="fab fa-linkedin"></i></a></li>
-				<li><a href="#" title=""><i class="fab fa-instagram"></i></a></li>
-			</ul>
-			<div class="rep-copyright">
-				<p>Copyright © 2025 <a href="https://marcosvss.com.br" title="">CyberSecNews</a> All Rights Reserved.</p>
-			</div>
-		</div>
+<div id="site-footer"></div>
 
-		<section class="pager-section">
-			<div class="fixed-bg pager-bg"></div>
-			<div class="container">
-				<div class="pager-details text-center">
-					<h2 class="page-title">Newsletter</h2>
-					<ul class="breadcrumb">
-						<li><a href="index.html" title="">Home</a></li>
-						<li><span>Newsletter</span></li>
-					</ul>
-				</div>
-			</div>
-		</section>
-
-		<section class="block">
-			<div class="container">
-				<div class="newsletter-archive-header">
-					<div class="section-title text-center">
-						<h2><span>NEWSLETTER</span> SEMANAL</h2>
-						<i class="fa fa-envelope-open-text" style="color: #FF731D; font-size: 24px; margin-top: 15px;"></i>
-					</div>
-					<p>Toda semana, reunimos as notícias mais importantes de cibersegurança em um resumo direto e objetivo. Confira todas as edições abaixo.</p>
-				</div>
-
-				<div class="nl-subscribe-box">
-					<h3><i class="fa fa-bell" style="color: #FF731D; margin-right: 10px;"></i> Receba no seu e-mail</h3>
-					<p>Cadastre-se para receber as principais notícias de cibersegurança diretamente na sua caixa de entrada, toda semana.</p>
-					<form class="nl-subscribe-form" action="#" method="POST">
-						<input type="email" name="email" placeholder="Seu melhor e-mail" required>
-						<button type="submit" class="btn-default"><i class="fa fa-paper-plane"></i> Inscrever <span></span></button>
-					</form>
-				</div>
-
-				<div id="newsletter-page"></div>
-			</div>
-		</section>
-
-		<footer>
-			<div class="container">	
-				<div class="bottom-footer">
-					<div class="row">
-						<div class="col-md-3">
-							<div class="btm-logo">
-								<img src="images/logo3.png" alt="">
-							</div>
-						</div>
-						<div class="col-md-9">
-							<ul class="btm-links">
-								<li><a href="index.html" title="">Home.</a></li>
-								<li><a href="newsletter.html" title="">Newsletter.</a></li>
-								<li><a href="authors.html" title="">Equipe.</a></li>
-								<li><a href="sponsors.html" title="">Patrocínios.</a></li>
-								<li><a href="contact.html" title="">Contato.</a></li>
-							</ul>
-							<p class="copyright-txt"><strong>CyberSecNews</strong> - Copyright 2025. Website by <a href="https://marcosvss.com.br" title="">Marcos Santos</a></p>
-						</div>
-					</div>
-				</div>
-			</div>			
-		</footer>
-
-	</div>
-
-<script src="js/jquery.min.js"></script>
-<script src="js/popper.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/slick.min.js"></script>
-<script src="js/maudio.js"></script>
-<script src="js/script.js"></script>
+<script src="js/site.js"></script>
 <script src="js/newsletters.js"></script>
-<script>
-	renderNewsletterPage('newsletter-page');
-</script>
-
+<script>renderArchive('archive');</script>
 </body>
-
 </html>

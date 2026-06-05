@@ -1,329 +1,140 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-	<meta charset="UTF-8">
-	<title>CyberSecNews | Seu podcast de segurança e tecnologia</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="BeatX - Multipurpose Audio Podcast and Music HTML Template" />
-	<meta name="author" content="Softcircles">
-	<meta name="keywords" content="" />
-	<link rel="icon" href="images/fav.png">
-	<link rel="stylesheet" type="text/css" href="css/animate.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="css/slick.css">
-	<link rel="stylesheet" type="text/css" href="css/slick-theme.css">
-	<link rel="stylesheet" type="text/css" href="css/flaticon.css">
-	<link rel="stylesheet" type="text/css" href="css/maudio.css">
-	<link rel="stylesheet" type="text/css" href="css/jplayer.blue.monday.min.css"/>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/color.css">
-    <link rel="stylesheet" type="text/css" href="css/rtl.css">
-	<link rel="stylesheet" type="text/css" href="css/responsive.css">
-	<link rel="stylesheet" type="text/css" href="css/newsletter.css">
-	
+<meta charset="UTF-8">
+<title>CyberSec News — Inteligência de ameaças, sem ruído</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Newsletter semanal de cibersegurança: zero-days, supply chain, APTs e ações práticas. Identidade visual Okami.">
+<link rel="stylesheet" href="css/okami.css">
+<link rel="stylesheet" href="css/components.css">
+<style>
+  .hero { padding: var(--s-11) 0 var(--s-10); position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; width: 460px; height: 460px; border-radius: 50%;
+    background: var(--ok-orange); filter: blur(160px); opacity: 0.14; top: -160px; left: -120px; pointer-events: none; }
+  .hero::after { content: ""; position: absolute; width: 380px; height: 380px; border-radius: 50%;
+    background: var(--ok-cyan); filter: blur(170px); opacity: 0.08; bottom: -200px; right: -100px; pointer-events: none; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--s-9); align-items: center; }
+  .hero h1 { margin-bottom: var(--s-5); }
+  .hero-lede { max-width: 46ch; margin-bottom: var(--s-7); }
+  @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; gap: var(--s-8); } }
+  .latest-wrap { padding-top: 0; }
+</style>
 </head>
+<body class="dark-v" data-page="home">
 
+<div id="site-header"></div>
 
-<body class="dark-v">
+<main>
+  <!-- HERO -->
+  <section class="hero" data-screen-label="Home A · Hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow lead-cyan">Newsletter semanal · toda segunda</span>
+        <h1 class="display">Inteligência de<br>ameaças. <span class="accent">Sem ruído.</span></h1>
+        <p class="lede hero-lede">As vulnerabilidades, ataques de supply chain e movimentos de APT que importam na semana — com análise técnica profunda e o que fazer a respeito.</p>
+        <form class="subscribe" onsubmit="this.querySelector('.sub-ok').hidden=false;return false;">
+          <input class="input" type="email" placeholder="seu@email.corporativo" aria-label="Email" required>
+          <button class="btn btn-primary lead-magenta" type="submit">Assinar <span class="arr">→</span></button>
+        </form>
+        <p class="small sub-ok" hidden style="color:var(--ok-success);margin-top:10px">✓ Pronto — você entrou na lista. (demo)</p>
+        <div class="stats mt-8">
+          <div class="stat"><span class="stat-num">21<span class="u">+</span></span><span class="stat-lbl">Edições</span></div>
+          <div class="stat"><span class="stat-num">Seg</span><span class="stat-lbl">Toda semana</span></div>
+          <div class="stat"><span class="stat-num">100%</span><span class="stat-lbl">Análise própria</span></div>
+        </div>
+      </div>
 
-	
-	
-	<div id="jquery_jplayer_1" class="cp-jplayer"></div>
+      <div class="term reveal" aria-hidden="true">
+        <div class="term-bar"><span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-title">~/csn/feed · zsh · 80×24</span><span class="term-status">live</span></div>
+        <div class="term-body">
+          <div><span class="dim">csn@intel</span> ~% <span class="pr">csn latest --week 18</span></div>
+          <div class="dim">→ fetching threat feed…</div>
+          <div><span class="ok">✓</span> cPanel/WHM <span class="warn">CVE-2026-41940</span> · exploited since FEB</div>
+          <div><span class="ok">✓</span> pytorch-lightning <span class="cy">supply-chain</span> · PyPI quarantine</div>
+          <div><span class="ok">✓</span> linux "copy fail" · root since 2017</div>
+          <div><span class="ok">✓</span> dprk · <span class="cy">AI-authored</span> npm malware</div>
+          <div class="dim">→ 8 stories · 3 critical · 10 min read</div>
+          <div>csn@intel ~% <span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	<div class="wrapper">
-		
-		<header>
-			<div class="top-header">
-				<div class="container">
-					<div class="row align-items-center">
-						<div class="col-md-4 ml-auto">
-							<ul class="social-links">
-								<li><a href="https://www.youtube.com/@CyberSecNews" target="_blank" title=""><i class="fab fa-youtube"></i></a></li>
-								<li><a href="https://open.spotify.com/show/4E8K5cTNWYnU6XiihlzNPV?si=af8f7db11b234c52" target="_blank" title=""><i class="fab fa-spotify"></i></a></li>
-								<li><a href="#" title=""><i class="fab fa-instagram"></i></a></li>
-								<li><a href="https://www.linkedin.com/in/marcosvssantos/" target="_blank" title=""><i class="fab fa-linkedin"></i></a></li>
-							</ul><!--social-links end-->
-							<div class="clearfix"></div>
-						</div>
-					</div>
-				</div>
-			</div><!--top-header end-->
-			<div class="bottom-header">
-				<div class="container">
-					<div class="header-content">
-						<div class="logo">
-							<a href="index.html" title=""><img src="images/logo3.png" alt=""></a>
-						</div><!--logo end-->
-						<nav>
-							<ul>
-								<li><a class="active" href="index.html" title="">Home.</a>
-								</li>
-								<li><a href="newsletter.html" title="">Newsletter.</a></li>
-								<li><a href="authors.html" title="">Equipe.</a></li>
-								<li><a href="sponsors.html" title="">Patrocínios.</a></li>
-								<li><a href="contact.html" title="">Contato.</a></li>
-							</ul>
-						</nav><!--nav end-->
-						<a href="#" title="" class="menu-btn"><img src="images/bars2.png" alt=""></a>
-						<a href="donate.html" title="" class="btn-default"><i class="flaticon-heart"></i>Doações <span></span></a>
-					</div><!--header-content end-->
-				</div>
-			</div><!--bottom-header end-->
-		</header><!--header end-->
+  <!-- LATEST FEATURE -->
+  <section class="section-tight latest-wrap lead-orange" data-screen-label="Home A · Edição em destaque">
+    <div class="container">
+      <div class="sec-head">
+        <div><span class="sec-id">01 / edição em destaque</span></div>
+        <a class="nl-read" href="newsletter.html">Arquivo completo
+          <svg class="arr" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-main">
+          <div class="flex aic gap-4 wrap">
+            <span class="nl-ed">#21</span>
+            <span class="mono-tag">30 ABR 2026</span>
+            <span class="sev sev-critical">3 críticas</span>
+            <span class="mono-tag">10 min</span>
+          </div>
+          <h2 class="feature-title">Zero-day no cPanel explorado há meses, supply chain no PyTorch Lightning e SAP, e a falha “Copy Fail” que dá root em todo Linux desde 2017.</h2>
+          <p style="color:var(--ok-fg-mute);max-width:60ch">Ataques à cadeia de suprimentos atingindo ecossistemas críticos de desenvolvimento, um zero-day silencioso no cPanel desde fevereiro, e a Coreia do Norte usando IA para gerar malware em pacotes npm.</p>
+          <div class="tags">
+            <span class="badge">Zero-Day</span><span class="badge">Supply Chain</span><span class="badge">CVE</span>
+            <span class="badge">Linux</span><span class="badge">APT</span>
+          </div>
+          <div class="mt-4"><a class="btn btn-primary" href="edicao.html">Ler edição completa <span class="arr">→</span></a></div>
+        </div>
+        <div class="feature-side">
+          <span class="sec-id">nesta edição</span>
+          <div style="display:grid;gap:14px">
+            <div class="flex aic gap-3"><span class="sev sev-critical">crít</span><span class="small" style="color:var(--ok-fg-soft)">cPanel/WHM auth bypass</span></div>
+            <div class="flex aic gap-3"><span class="sev sev-critical">crít</span><span class="small" style="color:var(--ok-fg-soft)">PyTorch Lightning · PyPI</span></div>
+            <div class="flex aic gap-3"><span class="sev sev-critical">crít</span><span class="small" style="color:var(--ok-fg-soft)">SAP npm · Mini Shai-Hulud</span></div>
+            <div class="flex aic gap-3"><span class="sev sev-high">alto</span><span class="small" style="color:var(--ok-fg-soft)">Linux “Copy Fail” → root</span></div>
+            <div class="flex aic gap-3"><span class="sev sev-high">alto</span><span class="small" style="color:var(--ok-fg-soft)">DPRK · IA gera malware npm</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-		<div class="responsive-mobile-menu d-flex flex-wrap align-items-end">
-			<a href="#" title="" class="close-menu">
-				<i class="fa fa-times"></i>
-			</a>
-			<ul class="mb-menu">
-				<li><a href="index.html" title="">Home.</a>
-				</li>
-				<li><a href="newsletter.html" title="">Newsletter.</a></li>
-				<li><a href="authors.html" title="">Equipe.</a></li>
-				<li><a href="sponsors.html" title="">Patrocínios.</a></li>
-				<li><a href="contact.html" title="">Contato.</a></li>
-			</ul>
-			<ul class="social-links">
-				<li><a href="https://www.youtube.com/@CyberSecNews" target="_blank" title=""><i class="fab fa-youtube"></i></a></li>
-				<li><a href="https://open.spotify.com/show/4E8K5cTNWYnU6XiihlzNPV?si=af8f7db11b234c52" target="_blank" title=""><i class="fab fa-spotify"></i></a></li>
-				<li><a href="https://www.linkedin.com/in/marcosvssantos/" target="_blank" title=""><i class="fab fa-linkedin"></i></a></li>
-				<li><a href="#" title=""><i class="fab fa-instagram"></i></a></li>
-			</ul>
-			<div class="rep-copyright">
-				<p>Copyright © 2025 <a href="https://marcosvss.com.br" title="">CyberSecNews</a> All Rights Reserved.</p>
-			</div><!--rep-copyright end-->
-		</div><!--responsive-mobile-menu end-->
+  <!-- FEED -->
+  <section class="section lead-magenta" data-screen-label="Home A · Últimas edições">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <span class="sec-id">02 / arquivo</span>
+          <h2 class="mt-4">Últimas edições</h2>
+        </div>
+        <a class="btn btn-outline btn-sm" href="newsletter.html">Ver todas</a>
+      </div>
+      <div id="home-feed" class="grid-3"></div>
+    </div>
+  </section>
 
-		<section class="main-banner overlay">
-			<div class="container">
-				<div class="banner-text text-center">
-					<h2><strong>CyberSec News</strong> Sua fonte diária de notícias</h2>
-					<ul>
-						<li><a href="donate.html" title="" class="btn-default">Patrocine <span></span></a></li>
-						<li><a href="about.html" title="" class="btn-default open-music-player"><i class="fa fa-play"></i>Ultimo Episódio <span></span></a></li>
-					</ul>
-				</div><!--banner-text end-->
-			</div>
-		</section><!--main-banner end-->
+  <!-- PLATFORMS -->
+  <section class="section-tight lead-cyan" data-screen-label="Home A · Plataformas" style="border-top:1px solid var(--ok-border)">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <span class="sec-id">03 / também em áudio</span>
+          <h2 class="mt-4">Ouça na sua plataforma</h2>
+          <p class="small mt-4" style="max-width:52ch">A leitura da semana também vira episódio. Assine onde você já escuta.</p>
+        </div>
+      </div>
+      <div id="platforms" class="platforms"></div>
+    </div>
+  </section>
+</main>
 
+<div id="site-footer"></div>
 
-		<section class="block pt-0">
-			<div class="fixed-bg bg1-dark"></div>
-			<div class="about-section">
-				<div class="container">
-					<div class="abt-sec">
-						<div class="row m-0">
-							
-							<div class="col-lg-7 p-0">
-								<iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/4E8K5cTNWYnU6XiihlzNPV?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-							</div>
-						</div>
-					</div><!--abt-sec end-->
-				</div>
-			</div>
-			
-			
-			<section class="block pb-0">
-				<div class="container">
-					<div class="section-title text-center">
-						<h2><span>SOBRE O</span> CYBERSEC NEWS</h2>
-						<i class="flaticon-heart"></i>
-					</div><!--section-title end-->
-					<div class="podcast-series">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="pod-series">
-									
-									<div class="pod-info">
-										<ul class="songs-list">
-											<li>
-												<div class="mm-audio">
-													<img src="images/add-guest.png">
-												</div>
-												<h3>Atualização Diária</h3>
-											</li>
-											<li>
-												<div class="mm-audio">
-													<img src="images/add-guest.png">
-												</div>
-												<h3>Conteúdo Relevante e Atualizado</h3>
-											</li>
-											<li>
-												<div class="mm-audio">
-													<img src="images/add-guest.png">
-												</div>
-												<h3>Linguagem Acessível</h3>
-											</li>
-											<li>
-												<div class="mm-audio">
-													<img src="images/add-guest.png">
-												</div>
-												<h3>Dicas Práticas de Proteção</h3>
-											</li>
-										</ul>
-									</div><!--pod-info end-->
-								</div><!--pod-series end-->
-							</div>
-							<div class="col-lg-6">
-								<div class="pod-series">
-									<div class="pod-info">
-										<ul class="songs-list">
-											<li>
-												<div class="mm-audio">
-													<img src="images/add-guest.png">
-												</div>
-												<h3>Cobertura Abrangente de Temas</h3>
-											</li>
-											<li>
-												<div class="mm-audio">
-													<img src="images/add-guest.png">
-												</div>
-												<h3>Disponível nas Melhores Plataformas</h3>
-											</li>
-											<li>
-												<div class="mm-audio">
-													<img src="images/add-guest.png">
-												</div>
-												<h3>Produção de Alta Qualidade</h3>
-											</li>
-											<li>
-												<div class="mm-audio">
-													<img src="images/add-guest.png">
-												</div>
-												<h3>Comunidade Engajada</h3>
-											</li>
-										</ul>
-									</div><!--pod-info end-->
-								</div><!--pod-series end-->
-							</div>
-						</div>
-							<div>
-								<div class="row"> 
-									<ul>
-										<li>
-											 <div>
-												<h3>
-													.
-												</h3>
-											 </div>
-										</li>
-									</ul>
-								
-								</div>
-							</div>
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="pod-series">
-									<div class="pod-info">
-										<div class="section-title text-center">
-											<h2><span>OUÇA NA SUA PLATAFORMA</span> PREFERIDA</h2>
-											<i class="flaticon-playlist"></i>
-										</div><!--section-title end-->
-										<ul class="songs-list2">
-											<li>
-												<div class="mm-audio">
-													<a href="https://open.spotify.com/show/4E8K5cTNWYnU6XiihlzNPV?si=af8f7db11b234c52" target="_blank">
-														<img style="margin-left: 25px; margin-right: 25px;" src="images/podcast-icon-2.png">
-													</a>
-													<a href="https://www.youtube.com/@CyberSecNews" target="_blank">
-														<img style="margin-left: 25px; margin-right: 25px;" src="images/podcast-icon-3.png">
-													</a>
-													<a href="https://podcasts.apple.com/de/podcast/cybersec-news/id1740119597" target="_blank">
-														<img style="margin-left: 25px; margin-right: 25px;" src="images/podcast-icon-5.png">
-													</a>
-													<a href="https://www.deezer.com/en/show/1000843631" target="_blank">
-														<img style="margin-left: 25px; margin-right: 25px;" src="images/podcast-icon-1.png">
-													</a>
-													<a href="https://music.amazon.com.br/podcasts/e95fb2ce-9840-49a5-a337-442be147d668/cybersec-news" target="_blank">
-														<img style="margin-left: 25px; margin-right: 25px;" src="images/podcast-icon-4 copy.png">
-													</a>
-												</div>
-											</li>
-										</ul>
-									</div><!--pod-info end-->
-								</div><!--pod-series end-->
-							</div>
-						</div>
-
-
-					</div><!--podcast-series end-->
-				</div>
-			</section>
-		</section>
-	
-			<section class="block">
-			<div class="container">
-				<div class="section-title text-center">
-					<span>Fique Informado</span>
-					<h2>ÚLTIMAS <span>Newsletters</span></h2>
-					<i class="fa fa-envelope-open-text" style="color: #FF731D; font-size: 24px; margin-top: 15px;"></i>
-				</div>
-				<div id="home-newsletters"></div>
-				<div class="nl-home-cta">
-					<a href="newsletter.html" title="" class="btn-default"><i class="fa fa-envelope"></i> Ver Todas as Newsletters <span></span></a>
-				</div>
-			</div>
-		</section>
-
-		<section class="block">
-			<div class="container">
-				<div class="section-title text-center">
-					<span>Aproveite</span>
-					<h2>ULTIMOS <span>Episódios</span></h2>
-					<i class="flaticon-spotify"></i>
-				</div><!--section-title end-->
-				<div class="podcast-episodes">
-					<div class='sk-ww-spotify-podcast' data-embed-id='25521074'></div><script src='https://widgets.sociablekit.com/spotify-podcast/widget.js' defer></script>
-				</div><!--podcast-episodes end-->
-			</div>
-		</section>
-
-		<footer>
-			<div class="container">	
-				<div class="bottom-footer">
-					<div class="row">
-						<div class="col-md-3">
-							<div class="btm-logo">
-								<img src="images/logo3.png" alt="">
-							</div><!--btm-logo end-->
-						</div>
-						<div class="col-md-9">
-							<ul class="btm-links">
-								<li><a href="index.html" title="">Home.</a></li>
-								<li><a href="newsletter.html" title="">Newsletter.</a></li>
-								<li><a href="authors.html" title="">Equipe.</a></li>
-								<li><a href="sponsors.html" title="">Patrocínios.</a></li>
-								<li><a href="contact.html" title="">Contato.</a></li>
-							</ul><!--btm-links end-->
-							<p class="copyright-txt"><strong>CyberSecNews</strong> - Copyright 2025. Website by <a href="https://marcosvss.com.br" title="">Marcos Santos</a></p>
-						</div>
-					</div>
-				</div>
-			</div>			
-		</footer><!--footer end-->
-
-	</div><!--wrapper end-->
-
-	
-
-
-
-<script src="js/jquery.min.js"></script>
-<script src="js/popper.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/slick.min.js"></script>
-<script src="js/maudio.js"></script>
-<script src="js/jquery.jplayer.min.js"></script>
-<script src="js/playlist.js"></script>
-<script src="js/script.js"></script>
+<script src="js/site.js"></script>
 <script src="js/newsletters.js"></script>
 <script>
-	renderNewsletterCards('home-newsletters', 3);
+  renderFeed('home-feed', 6);
+  document.getElementById('platforms').innerHTML = window.platformsHtml();
 </script>
-
-
 </body>
-
 </html>
