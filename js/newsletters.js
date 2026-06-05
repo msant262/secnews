@@ -1,8 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
-  { id:"2026-06-05", edition:"#22", date:"05 JUN 2026", title:"cPanel vira ransomware em massa, Android e PAN-OS entram no KEV, supply chain mira IA e ShinyHunters volta forte",
-    summary:"Semana pesada: ransomware explorando cPanel, Android e PAN-OS com exploração ativa, Oracle WebLogic e Mirasvit no KEV, TrapDoor mirando npm/PyPI/Crates.io e assistentes de IA, Kali365 abusando de OAuth no Microsoft 365, além de grandes vazamentos envolvendo Carnival e Instructure.",
-    tags:["Ransomware","CISA KEV","Supply Chain","AI Security","Data Breach"], stories:10, crit:4, file:"newsletters/2026-06-05.html" },
+  { id:"2026-06-05", edition:"#22", date:"05 JUN 2026", title:"15 alertas da semana: borda explorada, supply chain com marca grande, vazamentos em massa e IA virando superfície real",
+    summary:"Edição refeita com corte rígido de 7 dias, ranking 0–100 e seleção editorial: 10 notícias de segurança geral e 5 focadas em IA. Destaques: cPanel com ransomware, Red Hat npm/Miasma, PAN-OS, Android explorado, Windows Netlogon, Kali365, ShinyHunters e falhas em agentes de IA.",
+    tags:["Últimos 7 dias","AI Security","Supply Chain","CISA KEV","Data Breach"], stories:15, crit:5, file:"newsletters/2026-06-05.html" },
   { id:"2026-04-30", edition:"#21", date:"30 ABR 2026", title:"Zero-day no cPanel explorado há meses, supply chain massivo no PyTorch Lightning e SAP npm, e falha \u201cCopy Fail\u201d dá root em todos os Linux",
     summary:"Zero-day crítico no cPanel/WHM explorado desde fevereiro, PyTorch Lightning e SAP npm comprometidos em ataques supply chain, escalação de privilégio no Linux desde 2017, e Coreia do Norte usando IA para gerar malware em pacotes npm.",
     tags:["Zero-Day","Supply Chain","CVE","Linux","APT"], stories:8, crit:3, file:"newsletters/2026-04-30.html" },

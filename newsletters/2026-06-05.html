@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>CyberSec News #22 — 05 JUN 2026</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Semana pesada: ransomware explorando cPanel, Android e PAN-OS com exploração ativa, Oracle WebLogic e Mirasvit no KEV, TrapDoor mirando npm/PyPI/Crates.io e assistentes de IA, Kali365 abusando de OAuth no Microsoft 365, além de grandes vazamentos envolvendo Carnival e Instructure.">
+<meta name="description" content="Edição refeita com corte rígido de 7 dias, ranking 0–100 e seleção editorial: 10 notícias de segurança geral e 5 focadas em IA. Destaques: cPanel com ransomware, Red Hat npm/Miasma, PAN-OS, Android explorado, Windows Netlogon, Kali365, ShinyHunters e falhas em agentes de IA.">
 <link rel="stylesheet" href="../css/okami.css">
 <link rel="stylesheet" href="../css/components.css">
 <style>
@@ -73,6 +73,11 @@
   .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
   .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
   .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.score-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:.88rem}
+.score-table th,.score-table td{border-bottom:1px solid rgba(255,255,255,.09);padding:10px 8px;text-align:left;vertical-align:top}
+.score-table th{color:var(--muted);font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em}
+.split-title{margin:48px 0 18px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
 </style>
 </head>
 <body class="dark-v" data-page="newsletter" data-base="../">
@@ -82,12 +87,12 @@
   <section class="section read-hero lead-orange" data-screen-label="#22 · Hero">
     <div class="container">
       <a class="read-back" href="../newsletter.html">← Todas as edições</a>
-      <div class="read-meta"><span class="nl-ed">#22</span><span class="mono-tag">05 JUN 2026</span><span class="mono-tag">14 min de leitura</span></div>
-      <h1>cPanel vira ransomware em massa, Android e PAN-OS entram no KEV, supply chain mira IA e ShinyHunters volta forte</h1>
-      <div class="tags"><span class="badge">Ransomware</span><span class="badge">CISA KEV</span><span class="badge">Supply Chain</span><span class="badge">AI Security</span><span class="badge">Data Breach</span><span class="badge">AppSec</span><span class="badge">M365</span></div>
+      <div class="read-meta"><span class="nl-ed">#22</span><span class="mono-tag">05 JUN 2026</span><span class="mono-tag">18 min de leitura</span></div>
+      <h1>15 alertas da semana: borda explorada, supply chain com marca grande, vazamentos em massa e IA virando superfície real</h1>
+      <div class="tags"><span class="badge">Últimos 7 dias</span><span class="badge">Ranking 0–100</span><span class="badge">CISA KEV</span><span class="badge">Supply Chain</span><span class="badge">AI Security</span><span class="badge">Data Breach</span><span class="badge">Identity</span></div>
       <div class="threat">
-        <div class="threat-cell t-crit"><span class="threat-n">4</span><span class="threat-l">críticas</span></div>
-        <div class="threat-cell t-high"><span class="threat-n">4</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-crit"><span class="threat-n">5</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">8</span><span class="threat-l">altas</span></div>
         <div class="threat-cell t-med"><span class="threat-n">2</span><span class="threat-l">médias</span></div>
       </div>
     </div>
@@ -98,134 +103,255 @@
       <div class="read-layout">
         <aside class="toc" data-screen-label="#22 · Índice">
           <div class="toc-head">Nesta edição</div>
-          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>cPanel/WHM CVE-2026-41940 já está sendo usado para espalha</a></li>
-<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Android corrige 124 falhas; CVE-2025-48595 tem exploração </a></li>
-<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>Palo Alto PAN-OS CVE-2026-0257: bypass no GlobalProtect ex</a></li>
-<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>TrapDoor mira npm, PyPI e Crates.io — e envenena assistent</a></li>
-<li><a class="toc-link" href="#a5"><span class="toc-dot high"></span>Mirasvit Full Page Cache Warmer entra no KEV com RCE por d</a></li>
-<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>Oracle WebLogic CVE-2024-21182 volta como urgência operaci</a></li>
-<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>Kali365 usa device-code phishing para roubar tokens OAuth </a></li>
-<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>ChatGPhish transforma assistentes de IA em superfície de p</a></li>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>cPanel/WHM CVE-2026-41940 vira exploração em massa com ran</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Miasma compromete pacotes npm da Red Hat e mira CI/CD, clo</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>PAN-OS CVE-2026-0257: bypass no GlobalProtect explorado po</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>Android corrige 124 falhas; uma vulnerabilidade explorada </a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot critical"></span>Windows Netlogon CVE-2026-41089: alerta de exploração cont</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>Kali365 usa device-code phishing para roubar tokens OAuth </a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>Mirasvit Full Page Cache Warmer CVE-2026-45247 entra no KE</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>Oracle WebLogic CVE-2024-21182 entra no KEV: exploração at</a></li>
 <li><a class="toc-link" href="#a9"><span class="toc-dot med"></span>Carnival confirma vazamento de quase 6 milhões de pessoas </a></li>
-<li><a class="toc-link" href="#a10"><span class="toc-dot med"></span>Instructure/Canvas confirma roubo de dados; ShinyHunters f</a></li></ul>
+<li><a class="toc-link" href="#a10"><span class="toc-dot med"></span>Charter Communications aparece em vazamento atribuído ao S</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot critical"></span>Falha no Claude Code GitHub Action permitiria hijack de re</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>Gemini Voice Assistant foi vulnerável a prompt injection v</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>ChatGPhish transforma resumos do ChatGPT em superfície par</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Usuários do Instagram relatam takeover após abuso de supor</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot med"></span>Teste com 100 agentes de IA mostra “tríade letal”: dados p</a></li></ul>
           <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
         </aside>
         <article class="article-col" data-screen-label="#22 · Leitura">
-          <div class="read-intro"><p>Semana de borda e identidade pegando fogo: exploração ativa em cPanel, Android, PAN-OS e WebLogic; supply chain cruzando npm/PyPI/Crates.io com envenenamento de assistentes de IA; e vazamentos grandes mostrando que engenharia social continua sendo o velho canivete suíço dos atacantes. Vamos ao que importa para patch, detecção e operação.</p></div>
+          <div class="read-intro">
+            <p><strong>Critério desta edição:</strong> corte dos últimos 7 dias, seleção em duas filas — 10 notícias de segurança geral e 5 notícias focadas em IA. Antes de entrar no texto, cada candidata recebeu score de 0 a 100 por marca/empresa afetada, impacto provável, relevância para o público, urgência/exploração e qualidade da fonte.</p>
+            <p>Resultado: menos “lista de CVE por CVE” e mais curadoria para quem precisa entender o que muda risco, operação e conversa executiva.</p>
+          </div>
+
+          <section class="card card-pad lead-cyan" id="ranking">
+            <span class="sec-id">ranking editorial</span>
+            <h2 class="mt-3">Pontuação antes da seleção</h2>
+            <p class="small">Pesos usados: marca/empresa 20 pts, impacto 30 pts, relevância 20 pts, urgência/exploração 20 pts, qualidade da fonte 10 pts.</p>
+            <table class="score-table"><thead><tr><th>#</th><th>Score</th><th>Fila</th><th>Notícia</th><th>Status</th></tr></thead><tbody><tr><td>01</td><td>96</td><td>Geral</td><td>cPanel/WHM CVE-2026-41940 vira exploração em massa com ransomware “Sorry”</td><td>Selecionada</td></tr>
+<tr><td>02</td><td>95</td><td>Geral</td><td>Miasma compromete pacotes npm da Red Hat e mira CI/CD, cloud e tokens de dev</td><td>Selecionada</td></tr>
+<tr><td>03</td><td>94</td><td>IA</td><td>Falha no Claude Code GitHub Action permitiria hijack de repositório via uma issue maliciosa</td><td>Selecionada</td></tr>
+<tr><td>04</td><td>92</td><td>Geral</td><td>PAN-OS CVE-2026-0257: bypass no GlobalProtect explorado poucos dias após disclosure</td><td>Selecionada</td></tr>
+<tr><td>05</td><td>91</td><td>Geral</td><td>Android corrige 124 falhas; uma vulnerabilidade explorada entra no radar da CISA</td><td>Selecionada</td></tr>
+<tr><td>06</td><td>90</td><td>Geral</td><td>Windows Netlogon CVE-2026-41089: alerta de exploração contra Domain Controllers</td><td>Selecionada</td></tr>
+<tr><td>07</td><td>89</td><td>IA</td><td>Gemini Voice Assistant foi vulnerável a prompt injection via notificações de WhatsApp, Slack e SMS</td><td>Selecionada</td></tr>
+<tr><td>08</td><td>87</td><td>Geral</td><td>Kali365 usa device-code phishing para roubar tokens OAuth e contornar MFA no Microsoft 365</td><td>Selecionada</td></tr>
+<tr><td>09</td><td>87</td><td>IA</td><td>ChatGPhish transforma resumos do ChatGPT em superfície para phishing 2.0</td><td>Selecionada</td></tr>
+<tr><td>10</td><td>86</td><td>IA</td><td>Usuários do Instagram relatam takeover após abuso de suporte com Meta AI e verificação por vídeo gerado</td><td>Selecionada</td></tr>
+<tr><td>11</td><td>83</td><td>Geral</td><td>Mirasvit Full Page Cache Warmer CVE-2026-45247 entra no KEV com RCE por desserialização</td><td>Selecionada</td></tr>
+<tr><td>12</td><td>82</td><td>Geral</td><td>Oracle WebLogic CVE-2024-21182 entra no KEV: exploração ativa em servidor enterprise</td><td>Selecionada</td></tr>
+<tr><td>13</td><td>82</td><td>IA</td><td>Teste com 100 agentes de IA mostra “tríade letal”: dados privados, conteúdo não confiável e ações externas</td><td>Selecionada</td></tr>
+<tr><td>14</td><td>80</td><td>Geral</td><td>Carnival confirma vazamento de quase 6 milhões de pessoas após engenharia social</td><td>Selecionada</td></tr>
+<tr><td>15</td><td>79</td><td>Geral</td><td>Instructure/Canvas confirma incidente com dados; ShinyHunters alega impacto muito maior</td><td>Candidata</td></tr>
+<tr><td>16</td><td>78</td><td>Geral</td><td>Charter Communications aparece em vazamento atribuído ao ShinyHunters; HIBP aponta 4,9 milhões de emails únicos</td><td>Selecionada</td></tr>
+<tr><td>17</td><td>78</td><td>IA</td><td>Paper sobre skill injection em agentes terminal-based propõe guardian defenses</td><td>Candidata</td></tr>
+<tr><td>18</td><td>76</td><td>IA</td><td>Paper sobre cross-session stored prompt injection em sistemas agentic</td><td>Candidata</td></tr></tbody></table>
+          </section>
+
+          <h2 class="split-title">10 notícias — Segurança geral</h2>
           <section class="art" id="a1" data-sev="critical">
   <div class="art-num">01</div>
   <div>
-    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
-    <h2>cPanel/WHM CVE-2026-41940 já está sendo usado para espalhar o ransomware “Sorry”</h2>
-    <p>A falha de autenticação bypass no cPanel, WHM e WP Squared saiu do modo “patch urgente” para o modo “incidente em massa”. A vulnerabilidade CVE-2026-41940 permite acesso aos painéis de controle sem autenticação e, segundo a cobertura da BleepingComputer, já vinha sendo explorada desde o fim de fevereiro antes de virar exploração ampla.</p>
-    <p>O impacto operacional é feio: Shadowserver reportou dezenas de milhares de IPs com cPanel comprometidos e operadores passaram a implantar um encryptor Linux em Go associado ao ransomware “Sorry”. O malware adiciona a extensão .sorry aos arquivos e usa ChaCha20 com chave protegida por RSA-2048 — ou seja, sem a chave privada do operador, recuperação por descriptografia não é uma aposta séria.</p>
-    <p>Para provedores de hospedagem e times que mantêm WHM/cPanel, esse item merece prioridade máxima: não é só exposição teórica de painel; já existe cadeia de ataque completa terminando em criptografia de dados.</p>
-    <div class="callout"><strong>Ação:</strong> Atualizar cPanel/WHM imediatamente, validar se versões vulneráveis ficaram expostas desde fevereiro, revisar logs de autenticação/painel, procurar arquivos .sorry/README.md e isolar servidores com sinais de comprometimento.</div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Score 96/100</span><span class="mono-tag">Ransomware / Borda</span></div>
+    <h2>cPanel/WHM CVE-2026-41940 vira exploração em massa com ransomware “Sorry”</h2>
+    <p class="small"><strong>Por que entrou:</strong> Marca/alcance alto em hosting, exploração ativa, impacto direto em disponibilidade e dados.</p>
+    <p>A falha de autenticação bypass no cPanel/WHM deixou de ser “patch urgente” e virou incidente operacional: a BleepingComputer relata exploração em massa para comprometer servidores e implantar o ransomware Linux “Sorry”.</p>
+    <p>O caso é especialmente forte para abrir a edição porque junta três elementos que o leitor entende rápido: painel de hospedagem muito usado, exploração ativa e criptografia real de dados. Shadowserver reportou dezenas de milhares de IPs com cPanel comprometidos; o encryptor adiciona extensão .sorry e usa ChaCha20 com chave protegida por RSA-2048.</p>
+    <p>Não dá para tratar como CVE abstrato. Para provedor, agência, e-commerce pequeno ou time que mantém hosting próprio, isso é risco de paralisação agora.</p>
+    <div class="callout"><strong>Ação:</strong> Atualizar cPanel/WHM, revisar exposição desde fevereiro, procurar arquivos .sorry/README.md, checar logs do painel e isolar hosts suspeitos.</div>
     <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/critrical-cpanel-flaw-mass-exploited-in-sorry-ransomware-attacks/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 2</a></p>
   </div>
-</section><section class="art" id="a2" data-sev="critical">
+</section>
+<section class="art" id="a2" data-sev="critical">
   <div class="art-num">02</div>
   <div>
-    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
-    <h2>Android corrige 124 falhas; CVE-2025-48595 tem exploração limitada e entrou no KEV</h2>
-    <p>O boletim de junho do Android corrigiu 124 vulnerabilidades e uma delas merece atenção especial: CVE-2025-48595, integer overflow no Framework com possibilidade de execução de código e escalação local de privilégio sem interação do usuário.</p>
-    <p>Google reconheceu indícios de exploração limitada e direcionada. CISA adicionou a falha ao Known Exploited Vulnerabilities Catalog em 2 de junho, com prazo curto para correção em ambientes federais. Esse padrão — Android Framework, exploração limitada, poucos detalhes públicos — costuma ser compatível com uso direcionado contra alvos de alto valor, inclusive por cadeias de spyware comercial.</p>
-    <p>Mesmo sem detalhes de TTPs, o recado é simples: dispositivo móvel corporativo sem patch vira superfície de persistência, coleta e movimento lateral via identidade.</p>
-    <div class="callout"><strong>Ação:</strong> Aplicar patch level 2026-06-05 nos dispositivos Android gerenciados, priorizar aparelhos de executivos/admins, conferir cobertura MDM e bloquear versões que não recebam atualização.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/google-june-2026-android-update-patches.html" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 2</a></p>
-  </div>
-</section><section class="art" id="a3" data-sev="critical">
-  <div class="art-num">03</div>
-  <div>
-    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
-    <h2>Palo Alto PAN-OS CVE-2026-0257: bypass no GlobalProtect explorado dias após disclosure</h2>
-    <p>A CVE-2026-0257 afeta PAN-OS com GlobalProtect portal/gateway habilitado e permite bypass de autenticação para estabelecer conexão VPN não autorizada em appliances vulneráveis. A Palo Alto lançou correções em maio, mas Rapid7 observou exploração começando quatro dias depois da divulgação pública.</p>
-    <p>O detalhe que importa para defesa: a atividade incluiu cookies forjados aceitos por ambientes de clientes e, em alguns casos, atribuição de IP VPN após a autenticação indevida. Isso muda o risco de “alguém testou o endpoint” para “alguém pode ter ganho caminho para a rede interna”.</p>
-    <p>CISA colocou a falha no KEV em 29 de maio. Firewalls e VPNs continuam sendo alvo preferido porque concentram borda, identidade e confiança de rede. Patch atrasado aqui é convite com tapete vermelho.</p>
-    <div class="callout"><strong>Ação:</strong> Atualizar PAN-OS/Prisma Access para versões corrigidas, rodar o PoC/checagem defensiva da Rapid7 se aplicável, revisar logs de GlobalProtect para cookies suspeitos e sessões VPN anômalas desde 17 de maio.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/recent-palo-alto-networks-vulnerability-exploited-for-weeks/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 2</a></p>
-  </div>
-</section><section class="art" id="a4" data-sev="critical">
-  <div class="art-num">04</div>
-  <div>
-    <div class="art-head"><span class="sev sev-critical">Crítico</span></div>
-    <h2>TrapDoor mira npm, PyPI e Crates.io — e envenena assistentes de IA via CLAUDE.md e .cursorrules</h2>
-    <p>A campanha TrapDoor distribuiu malware de roubo de credenciais em 34 pacotes e 384 versões nos ecossistemas npm, PyPI e Crates.io. O alvo não é só carteira cripto: o payload procura SSH keys, credenciais AWS, tokens GitHub, perfis de navegador, variáveis de ambiente e keystores.</p>
-    <p>A parte nova — e especialmente relevante para DevSecOps/AppSec — é o envenenamento de assistentes de IA. O payload planta arquivos como CLAUDE.md e .cursorrules com instruções escondidas por caracteres Unicode invisíveis. Ferramentas como Claude Code e Cursor podem ler esses arquivos como contexto de projeto e executar uma falsa “varredura de segurança” que exfiltra segredos.</p>
-    <p>Isso quebra a fronteira mental entre “dependência maliciosa” e “prompt injection operacional”. O pacote instala malware, mas também tenta converter o assistente de desenvolvimento em executor confiável do atacante.</p>
-    <div class="callout"><strong>Ação:</strong> Auditar lockfiles contra a lista de IOCs, procurar CLAUDE.md/.cursorrules com caracteres zero-width, bloquear execução de scripts de instalação sem revisão, rotacionar credenciais em máquinas que instalaram pacotes suspeitos e tratar agentes de IA como superfície de execução.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://phoenix.security/trapdoor-supply-chain-ai-poisoning-npm-pypi-crates/" target="_blank" rel="noopener">Fonte 1</a></p>
-  </div>
-</section><section class="art" id="a5" data-sev="high">
-  <div class="art-num">05</div>
-  <div>
-    <div class="art-head"><span class="sev sev-high">Alto</span></div>
-    <h2>Mirasvit Full Page Cache Warmer entra no KEV com RCE por desserialização</h2>
-    <p>CISA adicionou CVE-2026-45247 ao KEV em 3 de junho. A falha afeta o Mirasvit Full Page Cache Warmer e envolve desserialização de dados não confiáveis, permitindo execução remota de código por meio de um objeto PHP serializado enviado no cookie CacheWarmer.</p>
-    <p>Esse tipo de bug é particularmente ruim em ambientes web/e-commerce porque fica perto da camada pública, tende a ser explorável por requisição HTTP e muitas vezes passa despercebido quando plugin/extensão não está no inventário central de ativos.</p>
-    <p>Mesmo que o produto pareça “só cache”, o risco real é RCE em aplicação web com acesso a credenciais, banco, arquivos e integrações.</p>
-    <div class="callout"><strong>Ação:</strong> Inventariar uso de Mirasvit/Magento, aplicar mitigação do fornecedor ou remover o componente, revisar WAF/logs por cookies CacheWarmer anômalos e tratar servidores expostos como candidatos a forense.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 1</a></p>
-  </div>
-</section><section class="art" id="a6" data-sev="high">
-  <div class="art-num">06</div>
-  <div>
-    <div class="art-head"><span class="sev sev-high">Alto</span></div>
-    <h2>Oracle WebLogic CVE-2024-21182 volta como urgência operacional após entrada no KEV</h2>
-    <p>CISA adicionou CVE-2024-21182 ao KEV em 1º de junho. A vulnerabilidade afeta Oracle WebLogic Server e permite que um atacante não autenticado com acesso via T3/IIOP comprometa o servidor, podendo obter acesso crítico ou completo aos dados acessíveis pela instância.</p>
-    <p>O ponto aqui não é a idade do CVE, é a exploração ativa. Muitas organizações tratam patch antigo como dívida técnica eterna; atacantes tratam como backlog de oportunidade. WebLogic exposto continua sendo alvo clássico pela combinação de Java enterprise, superfície legada e dados sensíveis.</p>
-    <p>Se T3/IIOP está aberto além do necessário, o patch é só uma parte da correção. A outra é reduzir superfície.</p>
-    <div class="callout"><strong>Ação:</strong> Aplicar CPU/patch Oracle correspondente, restringir T3/IIOP por rede, revisar exposição pública, procurar web shells e validar logs de acesso/admin em WebLogic.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 1</a></p>
-  </div>
-</section><section class="art" id="a7" data-sev="high">
-  <div class="art-num">07</div>
-  <div>
-    <div class="art-head"><span class="sev sev-high">Alto</span></div>
-    <h2>Kali365 usa device-code phishing para roubar tokens OAuth e furar MFA no Microsoft 365</h2>
-    <p>O FBI alertou sobre a plataforma de phishing-as-a-service Kali365, usada para obter tokens OAuth e refresh tokens de ambientes Microsoft 365 sem precisar roubar senha diretamente. A técnica abusa do fluxo de device code: a vítima é induzida a inserir um código em uma página legítima da Microsoft, entregando autorização ao atacante.</p>
-    <p>O modelo é perigoso porque parece menos suspeito para o usuário e pode escapar de controles focados em senha. Com token válido, o invasor ganha acesso persistente a Outlook, Teams, OneDrive e outros serviços. Arctic Wolf observou campanhas desde abril, mirando manufatura, educação, seguros, finanças, saúde e governo.</p>
-    <p>Esse tipo de ataque mostra que MFA não é “fim de jogo” quando o atacante mira autorização e sessão em vez de credencial.</p>
-    <div class="callout"><strong>Ação:</strong> Restringir ou monitorar device code flow, revisar consentimentos OAuth, aplicar Conditional Access, exigir phishing-resistant MFA onde possível e caçar logins/device-code grants fora do padrão.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cybersecuritydive.com/news/fbi-warns-phishing-platform-microsoft-365/821105/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.ic3.gov/PSA/2026/PSA260521" target="_blank" rel="noopener">Fonte 2</a></p>
-  </div>
-</section><section class="art" id="a8" data-sev="high">
-  <div class="art-num">08</div>
-  <div>
-    <div class="art-head"><span class="sev sev-high">Alto</span></div>
-    <h2>ChatGPhish transforma assistentes de IA em superfície de phishing dentro da interface confiável</h2>
-    <p>A Cloud Security Alliance publicou análise sobre ChatGPhish, técnica em que prompt injection indireto faz um assistente renderizar links, alertas falsos, QR codes e imagens remotas dentro da própria interface confiável do chat. O usuário acha que está lendo uma resposta do assistente; o atacante controla parte do conteúdo renderizado.</p>
-    <p>A tese é simples e feia: se um colaborador pede para a IA resumir uma página, issue, documento ou email controlado pelo atacante, o conteúdo pode carregar instruções para manipular a saída do assistente. Isso contorna muita defesa tradicional, porque não é necessariamente email malicioso chegando no inbox; é conteúdo sendo processado por um agente.</p>
-    <p>A CSA conecta essa família de ataques a técnicas recentes como EchoLeak, HashJack, CometJacking, Reprompt e CamoLeak. O problema deixou de ser demo acadêmica e virou arquitetura de risco para empresas usando agentes conectados a dados internos.</p>
-    <div class="callout"><strong>Ação:</strong> Separar conteúdo externo de instruções confiáveis, limitar renderização de Markdown/links/imagens, aplicar allowlist de ferramentas, registrar ações de agentes e manter revisão humana para fluxos com credenciais, envio externo ou dados sensíveis.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-chatgphish-ai-prompt-injection-phishing-20/" target="_blank" rel="noopener">Fonte 1</a></p>
-  </div>
-</section><section class="art" id="a9" data-sev="medium">
-  <div class="art-num">09</div>
-  <div>
-    <div class="art-head"><span class="sev sev-medium">Médio</span></div>
-    <h2>Carnival confirma vazamento de quase 6 milhões de pessoas após ataque de engenharia social</h2>
-    <p>A Carnival Corporation confirmou notificação a 5.995.277 clientes após uma invasão ligada a engenharia social contra conta de funcionário. A empresa identificou atividade não autorizada em abril e determinou posteriormente que informações pessoais foram copiadas.</p>
-    <p>Have I Been Pwned analisou dados vazados e indicou exposição de nomes, datas de nascimento, emails, gênero, localização geográfica e informações de programa de fidelidade. O grupo ShinyHunters reivindicou o ataque e alegou volume ainda maior de registros e dados internos.</p>
-    <p>O caso reforça um padrão chato e recorrente: uma conta enganada vira acesso a sistemas internos, e dados de fidelidade/cliente viram munição para fraude, spear phishing e extorsão.</p>
-    <div class="callout"><strong>Ação:</strong> Para empresas com programas de fidelidade, revisar controles contra social engineering, segmentar acesso a bases de cliente, monitorar exportações anômalas e preparar comunicação/rotação de credenciais para usuários afetados.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/carnival-cruise-confirms-data-breach-affecting-nearly-6-million-people/" target="_blank" rel="noopener">Fonte 1</a></p>
-  </div>
-</section><section class="art" id="a10" data-sev="medium">
-  <div class="art-num">10</div>
-  <div>
-    <div class="art-head"><span class="sev sev-medium">Médio</span></div>
-    <h2>Instructure/Canvas confirma roubo de dados; ShinyHunters fala em centenas de milhões de registros</h2>
-    <p>A Instructure, dona do Canvas, confirmou incidente com exposição de dados de usuários em instituições afetadas. Segundo a empresa, os dados inicialmente identificados incluem nomes, emails, IDs de estudantes e mensagens entre usuários; ela afirma não ter encontrado evidência de senhas, documentos governamentais ou dados financeiros até o momento.</p>
-    <p>O ShinyHunters reivindicou o ataque e alegou impacto em milhares de escolas e centenas de milhões de registros, incluindo mensagens privadas. BleepingComputer ressalta que nem todas as alegações foram independentemente confirmadas, então o número deve ser tratado com cautela.</p>
-    <p>Mesmo assim, o risco é claro: ambientes educacionais concentram PII, comunicação privada e integrações via API. A resposta da Instructure incluiu patches, aumento de monitoramento e rotação de application keys.</p>
-    <div class="callout"><strong>Ação:</strong> Instituições que usam Canvas devem revisar comunicados do fornecedor, reautorizar/rotacionar chaves de API, monitorar abuso de contas e preparar comunicação para alunos/professores se forem listadas como afetadas.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/instructure-confirms-data-breach-shinyhunters-claims-attack/" target="_blank" rel="noopener">Fonte 1</a></p>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Score 95/100</span><span class="mono-tag">Supply Chain / DevSecOps</span></div>
+    <h2>Miasma compromete pacotes npm da Red Hat e mira CI/CD, cloud e tokens de dev</h2>
+    <p class="small"><strong>Por que entrou:</strong> Marca fortíssima, supply chain real, OIDC/proveniência abusada e alto impacto em DevSecOps.</p>
+    <p>Microsoft Threat Intelligence detalhou a campanha Miasma: 32 pacotes maliciosamente modificados sob o escopo @redhat-cloud-services, em mais de 90 versões. A Red Hat publicou bulletin próprio informando comprometimento de pacotes npm ligados a bibliotecas frontend do Hybrid Cloud Console.</p>
+    <p>O ataque saiu da cadeia “pacote npm rouba token” básica. O malware usava preinstall hook, baixava Bun, roubava credenciais de GitHub, npm, AWS, Azure, GCP, Vault e Kubernetes, raspava memória de runners do GitHub Actions e tentava autopropagação com metadados de proveniência falsificados.</p>
+    <p>Esse item pontua altíssimo porque ataca a confiança de CI/CD: pacote legítimo, namespace de marca conhecida, pipeline confiável e assinatura/proveniência virando parte da camuflagem.</p>
+    <div class="callout"><strong>Ação:</strong> Auditar dependências @redhat-cloud-services, bloquear versões afetadas, rotacionar tokens em ambientes expostos, revisar runners CI/CD e reforçar política de scripts de instalação.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/06/02/preinstall-persistence-inside-red-hat-npm-miasma-credential-stealing-campaign/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://access.redhat.com/security/vulnerabilities/RHSB-2026-006" target="_blank" rel="noopener">Fonte 2</a></p>
   </div>
 </section>
-          <div class="card card-pad mt-8 lead-cyan">
+<section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Score 92/100</span><span class="mono-tag">VPN / Borda</span></div>
+    <h2>PAN-OS CVE-2026-0257: bypass no GlobalProtect explorado poucos dias após disclosure</h2>
+    <p class="small"><strong>Por que entrou:</strong> Produto crítico de borda, exploração confirmada por vendor/CISA e caminho potencial para rede interna.</p>
+    <p>A CVE-2026-0257 afeta PAN-OS com GlobalProtect portal/gateway habilitado. A SecurityWeek reportou que a Palo Alto reconheceu tentativas limitadas de exploração em dispositivos sem patch e que a CISA adicionou a falha ao KEV.</p>
+    <p>Rapid7 observou exploração quatro dias após a divulgação pública, com cookies forjados e, em parte dos casos, atribuição de IP VPN depois da autenticação indevida. Ou seja: o risco não é só “endpoint recebeu scan”, é possível entrada em rede interna.</p>
+    <p>VPN/firewall continua sendo classe prioritária porque fica na borda e herda confiança operacional demais. Bonito para o atacante, péssimo para quem deixou patch para sexta-feira à tarde.</p>
+    <div class="callout"><strong>Ação:</strong> Atualizar PAN-OS/Prisma Access, revisar logs GlobalProtect desde 17 de maio, caçar cookies/sessões anômalas e usar IOCs/checagens da Rapid7 se aplicável.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/recent-palo-alto-networks-vulnerability-exploited-for-weeks/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section>
+<section class="art" id="a4" data-sev="critical">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Score 91/100</span><span class="mono-tag">Mobile / CVE</span></div>
+    <h2>Android corrige 124 falhas; uma vulnerabilidade explorada entra no radar da CISA</h2>
+    <p class="small"><strong>Por que entrou:</strong> Ecossistema enorme, exploração limitada reconhecida e relevância para usuários corporativos móveis.</p>
+    <p>O patch de junho do Android corrigiu 124 vulnerabilidades. Entre elas, CVE-2025-48595 recebeu atenção porque o Google indicou exploração limitada e direcionada; a CISA também adicionou a falha ao KEV no começo da semana.</p>
+    <p>A falha fica no Framework e permite escalação local/execução de código sem interação do usuário, segundo a cobertura técnica. Mesmo sem detalhes públicos de campanha, esse padrão merece prioridade para dispositivos de alto valor.</p>
+    <p>Mobile corporativo costuma ser tratado como “problema do MDM”. Só que quando o aparelho carrega e-mail, VPN, MFA, chat interno e sessão de cloud, ele é infraestrutura crítica no bolso.</p>
+    <div class="callout"><strong>Ação:</strong> Aplicar patch level mais recente, priorizar admins/executivos, verificar cobertura MDM e bloquear dispositivos sem atualização em acessos sensíveis.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/google-june-2026-android-update-patches.html" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section>
+<section class="art" id="a5" data-sev="critical">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Score 90/100</span><span class="mono-tag">Windows / Infra</span></div>
+    <h2>Windows Netlogon CVE-2026-41089: alerta de exploração contra Domain Controllers</h2>
+    <p class="small"><strong>Por que entrou:</strong> Impacto potencial enorme em AD/DC, CVSS crítico e urgência operacional, com ressalva de confirmação.</p>
+    <p>A BleepingComputer reportou alerta do Centre for Cybersecurity Belgium sobre exploração ativa da CVE-2026-41089, falha crítica de RCE no Windows Netlogon corrigida no Patch Tuesday de maio. A vulnerabilidade afeta Domain Controllers em versões suportadas do Windows Server.</p>
+    <p>O ponto editorial importante: há uma nuance. A autoridade belga cita informação de parceiros confiáveis; a Microsoft disse à BleepingComputer que não tinha evidência própria confirmando a exploração, mas recomendou seguir a orientação do CVE e aplicar updates.</p>
+    <p>Mesmo com essa ressalva, Domain Controller vulnerável é o tipo de risco que não espera consenso perfeito de press release. Se der ruim, o estrago é domínio inteiro.</p>
+    <div class="callout"><strong>Ação:</strong> Aplicar patches de maio/junho em DCs, reduzir exposição RPC onde possível, revisar telemetria de Netlogon e tratar exploração alegada como prioridade até evidência contrária.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/microsoft/critical-windows-netlogon-remote-code-execution-flaw-now-exploited-in-attacks/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41089" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section>
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Score 87/100</span><span class="mono-tag">Identity / M365</span></div>
+    <h2>Kali365 usa device-code phishing para roubar tokens OAuth e contornar MFA no Microsoft 365</h2>
+    <p class="small"><strong>Por que entrou:</strong> Afeta identidade cloud, baixa barreira para criminosos e bypass prático de MFA tradicional.</p>
+    <p>O FBI alertou sobre a plataforma de phishing-as-a-service Kali365, usada para obter OAuth e refresh tokens em ambientes Microsoft 365 sem precisar capturar senha diretamente. O fluxo abusa de device code: a vítima cola um código em uma página legítima da Microsoft e autoriza o atacante.</p>
+    <p>Cybersecurity Dive e Arctic Wolf apontam campanhas desde abril mirando setores como manufatura, educação, seguros, finanças, saúde e governo. O pacote oferece lures gerados por IA, templates e painéis para operadores menos sofisticados.</p>
+    <p>Esse é o tipo de phishing que pega time que acha que “tem MFA, então acabou”. Não acabou, lindo. Token roubado ri da tua senha forte.</p>
+    <div class="callout"><strong>Ação:</strong> Restringir device-code flow, revisar OAuth consent, aplicar Conditional Access, detectar grants anômalos e migrar contas críticas para MFA resistente a phishing.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cybersecuritydive.com/news/fbi-warns-phishing-platform-microsoft-365/821105/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.ic3.gov/PSA/2026/PSA260521" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section>
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Score 83/100</span><span class="mono-tag">AppSec / KEV</span></div>
+    <h2>Mirasvit Full Page Cache Warmer CVE-2026-45247 entra no KEV com RCE por desserialização</h2>
+    <p class="small"><strong>Por que entrou:</strong> Exploração ativa, aplicação web/e-commerce e classe de falha com histórico de abuso.</p>
+    <p>CISA adicionou CVE-2026-45247 ao KEV em 3 de junho. A falha afeta o Mirasvit Full Page Cache Warmer e envolve desserialização de dados não confiáveis, permitindo execução remota de código por objeto PHP serializado no cookie CacheWarmer.</p>
+    <p>É aquele tipo de componente que muita empresa esquece no inventário porque “é só cache”. Só que plugin esquecido em aplicação pública é exatamente o tipo de porta lateral que vira web shell, roubo de dados ou pivot.</p>
+    <p>A relevância vem menos da marca e mais da combinação: web exposto, exploração ativa e classe AppSec clássica com impacto alto.</p>
+    <div class="callout"><strong>Ação:</strong> Inventariar Mirasvit/Magento, aplicar mitigação ou remover o componente, revisar WAF/logs por cookies CacheWarmer suspeitos e checar persistência web.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/news-events/alerts/2026/06/03/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section>
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Score 82/100</span><span class="mono-tag">Enterprise / KEV</span></div>
+    <h2>Oracle WebLogic CVE-2024-21182 entra no KEV: exploração ativa em servidor enterprise</h2>
+    <p class="small"><strong>Por que entrou:</strong> WebLogic é alvo enterprise clássico; CVE antigo com exploração ativa vira dívida técnica perigosa.</p>
+    <p>CISA adicionou CVE-2024-21182 ao KEV em 1º de junho. A vulnerabilidade afeta Oracle WebLogic Server e permite comprometimento por atacante não autenticado com acesso via T3/IIOP, segundo a descrição do catálogo.</p>
+    <p>O fato de ser CVE de 2024 não diminui a notícia — aumenta o recado. Exploração ativa de falha “antiga” é o lembrete semanal de que backlog de patch não é arquivo morto; é cardápio.</p>
+    <p>WebLogic costuma morar em ambientes com dados e integrações importantes. Quando fica exposto demais, o impacto pode passar de servidor comprometido para aplicação crítica comprometida.</p>
+    <div class="callout"><strong>Ação:</strong> Aplicar patch Oracle, restringir T3/IIOP, revisar exposição pública e procurar web shells/artefatos anômalos em servidores WebLogic.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/news-events/alerts/2026/06/01/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section>
+<section class="art" id="a9" data-sev="medium">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Score 80/100</span><span class="mono-tag">Data Breach / Vishing</span></div>
+    <h2>Carnival confirma vazamento de quase 6 milhões de pessoas após engenharia social</h2>
+    <p class="small"><strong>Por que entrou:</strong> Marca conhecida, volume grande, dados de consumidor e conexão com campanha de extorsão.</p>
+    <p>Carnival Corporation confirmou notificação a 5.995.277 clientes após invasão ligada a engenharia social contra conta de funcionário. A empresa disse ter identificado atividade não autorizada em abril e determinado depois que informações pessoais foram copiadas.</p>
+    <p>Have I Been Pwned analisou dados vazados e indicou exposição de nomes, datas de nascimento, emails, gênero, localização e detalhes de programa de fidelidade. ShinyHunters reivindicou o ataque e alegou volume maior de dados.</p>
+    <p>Para leitores fora de infra técnica, esse item ajuda a mostrar que identidade, suporte e processos humanos continuam sendo vetor de vazamento em marca grande.</p>
+    <div class="callout"><strong>Ação:</strong> Reforçar defesa contra vishing/social engineering, segmentar bases de clientes, monitorar exportações incomuns e preparar resposta a fraude/spear phishing pós-vazamento.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/carnival-cruise-confirms-data-breach-affecting-nearly-6-million-people/" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section>
+<section class="art" id="a10" data-sev="medium">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Score 78/100</span><span class="mono-tag">Data Breach / Telecom</span></div>
+    <h2>Charter Communications aparece em vazamento atribuído ao ShinyHunters; HIBP aponta 4,9 milhões de emails únicos</h2>
+    <p class="small"><strong>Por que entrou:</strong> Telecom grande, dados de contato e CPNI alegado; boa relevância pública, mas com disputa sobre escopo.</p>
+    <p>SecurityWeek reportou que o ShinyHunters publicou dados alegadamente roubados da Charter Communications. O grupo afirmou ter mais de 42 milhões de registros e CPNI; Have I Been Pwned identificou 4,9 milhões de emails únicos, com nomes, endereços e telefones.</p>
+    <p>A Charter respondeu que apenas ferramentas de vendas para clientes business atuais, passados e prospectivos foram impactadas, e negou liberação de CPNI ou PI sensível pelo threat actor. Então o texto precisa carregar a nuance: há alegação do grupo, análise do HIBP e contestação parcial da empresa.</p>
+    <p>Ainda assim, telecom é setor sensível. Dados de contato e contexto comercial alimentam fraude, phishing direcionado e engenharia social.</p>
+    <div class="callout"><strong>Ação:</strong> Monitorar exposição de clientes/funcionários, revisar acessos a ferramentas de vendas/CRM e preparar detecção de campanhas usando dados de contato vazados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/charter-communications-data-breach-could-impact-nearly-5-million/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://haveibeenpwned.com/Breach/Charter" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section>
+
+          <h2 class="split-title">5 notícias — Segurança em IA</h2>
+          <section class="art" id="a11" data-sev="critical">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Score 94/100</span><span class="mono-tag">AI / CI-CD</span></div>
+    <h2>Falha no Claude Code GitHub Action permitiria hijack de repositório via uma issue maliciosa</h2>
+    <p class="small"><strong>Por que entrou:</strong> Anthropic/GitHub, supply chain, agente com permissões reais e prompt injection operacional.</p>
+    <p>The Hacker News cobriu a pesquisa da Flatt Security sobre falha no Claude Code GitHub Action. Um atacante poderia abrir uma issue maliciosa em repositório público vulnerável e explorar indireta prompt injection para fazer o agente executar comandos e vazar segredos.</p>
+    <p>O problema central era confiança indevida em atores terminados com [bot] e permissões amplas do workflow. O impacto potencial era sério: roubo de credenciais/OIDC, obtenção de token de instalação do Claude GitHub App e escrita no repositório. A própria action da Anthropic usava workflow similar, o que criava risco de supply chain se explorado.</p>
+    <p>Anthropic corrigiu em v1.0.94. O caso é perfeito para a newsletter porque mostra o que acontece quando agente de IA deixa de ser chat e passa a ter shell, token e write access.</p>
+    <div class="callout"><strong>Ação:</strong> Atualizar claude-code-action, remover gatilhos para usuários sem write access, reduzir permissões do GITHUB_TOKEN e impedir que conteúdo não confiável tenha acesso a segredos/ferramentas.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/claude-code-github-action-flaw-let-one.html" target="_blank" rel="noopener">Fonte 1</a> <a href="https://flatt.tech/research/posts/poisoning-claude-code-one-github-issue-to-break-the-supply-chain/" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section>
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Score 89/100</span><span class="mono-tag">AI / Assistants</span></div>
+    <h2>Gemini Voice Assistant foi vulnerável a prompt injection via notificações de WhatsApp, Slack e SMS</h2>
+    <p class="small"><strong>Por que entrou:</strong> Google/Gemini, canal cotidiano e ações físicas/digitais via assistente.</p>
+    <p>SafeBreach divulgou uma classe de ataque chamada Fake Context Alignment contra o Gemini voice assistant. A técnica usa notificações comuns — WhatsApp, Slack, SMS — para injetar instruções que o assistente processa como contexto, sem o usuário perceber.</p>
+    <p>Segundo a SecurityWeek, o problema foi reportado ao Google em 2025 e corrigido com melhorias de classifier, mas os detalhes foram divulgados agora para conscientização. As demonstrações incluíam ações como iniciar Zoom, controlar dispositivos Google Home, gerar mensagens enganosas e até manipular memória de longo prazo.</p>
+    <p>A relevância editorial é clara: notificações são conteúdo não confiável, mas assistentes de voz tendem a tratá-las como parte legítima da conversa. A fronteira de confiança fica borrada.</p>
+    <div class="callout"><strong>Ação:</strong> Tratar notificações como entrada adversarial, limitar ações sensíveis por voz, exigir confirmação forte e separar leitura de mensagens de execução de comandos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/gemini-voice-assistant-hijacked-via-messaging-notifications/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://www.safebreach.com/blog/gemini-voice-assistant-prompt-injection-exploit" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section>
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Score 87/100</span><span class="mono-tag">AI / Phishing</span></div>
+    <h2>ChatGPhish transforma resumos do ChatGPT em superfície para phishing 2.0</h2>
+    <p class="small"><strong>Por que entrou:</strong> Tema novo, impacto de conscientização alto e aplicável a qualquer uso corporativo de IA com conteúdo externo.</p>
+    <p>A Cloud Security Alliance analisou o ChatGPhish: prompt injection indireto que faz assistentes renderizarem links, alertas falsos, QR codes e imagens remotas dentro da interface confiável do chat. O usuário acha que está lendo uma resposta do assistente; parte da resposta foi moldada pelo atacante.</p>
+    <p>O ataque importa porque tira phishing do e-mail tradicional e leva para o fluxo em que o usuário pediu à IA para resumir página, documento, issue ou mensagem. Se o conteúdo externo contém instruções maliciosas, o assistente pode virar o entregador “confiável” do golpe.</p>
+    <p>Para empresas, isso puxa uma regra simples: conteúdo externo resumido por IA não vira automaticamente conteúdo seguro. Interface confiável não significa origem confiável.</p>
+    <div class="callout"><strong>Ação:</strong> Sanitizar Markdown/links/imagens, separar instruções de dados externos, restringir renderização ativa e exigir revisão humana em fluxos com credenciais ou envio externo.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-chatgphish-ai-prompt-injection-phishing-20/" target="_blank" rel="noopener">Fonte 1</a> <a href="https://thehackernews.com/2026/05/chatgphish-vulnerability-turns-chatgpt.html" target="_blank" rel="noopener">Fonte 2</a></p>
+  </div>
+</section>
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Score 86/100</span><span class="mono-tag">AI / Account Recovery</span></div>
+    <h2>Usuários do Instagram relatam takeover após abuso de suporte com Meta AI e verificação por vídeo gerado</h2>
+    <p class="small"><strong>Por que entrou:</strong> Meta/Instagram, impacto em usuários reais, IA em suporte e bypass prático de recuperação/2FA.</p>
+    <p>BleepingComputer reportou casos de contas raras e valiosas do Instagram tomadas após atacantes convencerem ferramentas de suporte com IA da Meta de que eram os donos legítimos. Vítimas relataram dificuldade de recuperação por ficarem presas em loops automatizados sem suporte humano.</p>
+    <p>Relatos indicam uso de fotos públicas transformadas em vídeo por IA para passar por verificação de selfie, troca de e-mail e reset de senha. A BleepingComputer deixa claro que algumas alegações específicas não foram verificadas de forma independente, e a Meta disse socialmente que o problema foi resolvido e contas estavam sendo protegidas.</p>
+    <p>É um ótimo item de IA porque mostra risco fora do laboratório: automação de suporte + verificação sintética + ausência de escalação humana cria falha de processo, não só de modelo.</p>
+    <div class="callout"><strong>Ação:</strong> Para plataformas e empresas com recuperação automatizada, exigir sinais múltiplos, antifraude contra deepfake, revisão humana para contas de alto valor e trilhas de contestação reais.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/instagram-users-locked-out-after-meta-ai-abused-to-steal-accounts/" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section>
+<section class="art" id="a15" data-sev="medium">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Score 82/100</span><span class="mono-tag">AI / Agent Security</span></div>
+    <h2>Teste com 100 agentes de IA mostra “tríade letal”: dados privados, conteúdo não confiável e ações externas</h2>
+    <p class="small"><strong>Por que entrou:</strong> Ajuda a educar CISOs/DevSecOps sobre risco estrutural de agentes, não só bug pontual.</p>
+    <p>SecurityWeek cobriu análise da Adversa AI sobre 100 agentes classificados em um AI Risk Quadrant. Apenas 11 foram considerados ao mesmo tempo capazes e bem defendidos. A tese central é a “tríade letal”: acesso a dados privados, exposição a conteúdo não confiável e capacidade de executar ações externas.</p>
+    <p>O ponto mais forte para a newsletter é a inversão poder-proteção: agentes mais capazes tendem a carregar maior superfície e blast radius. Coding agents aparecem entre os piores porque tocam shell, dependências, tokens e pipeline antes de qualquer diff chegar à revisão humana.</p>
+    <p>Isso conversa diretamente com DevSecOps: revisar o output não captura tudo que o agente fez no caminho. O risco mora na trilha de ações, permissões e egress.</p>
+    <div class="callout"><strong>Ação:</strong> Controlar egress, identidade e ações irreversíveis; registrar trilha de ferramentas; limitar tokens por tarefa; e tratar agentes como workloads privilegiados, não como autocomplete gourmet.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.securityweek.com/security-of-100-ai-agents-tested-and-ranked-what-you-need-to-know/" target="_blank" rel="noopener">Fonte 1</a></p>
+  </div>
+</section>
+
+          <div class="card card-pad mt-8 lead-orange">
             <span class="sec-id">fechamento</span>
-            <p class="mt-4">Prioridade prática da semana: patch de borda primeiro, auditoria de supply chain em seguida, e revisão de fluxos OAuth/IA antes que “assistente produtivo” vire “estagiário possuído”.</p>
+            <p class="mt-4">Prioridade prática da semana: borda e identidade primeiro; CI/CD e supply chain logo em seguida; e IA tratada como workload privilegiado. Assistente com token, shell e permissão de escrita não é brinquedo — é produção com sotaque bonito.</p>
             <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
           </div>
         </article>
