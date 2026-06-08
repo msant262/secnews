@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #23 — 08 JUN 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="WordPress explorado, Cisco SD-WAN sem patch, SolarWinds Serv-U no KEV, npm/IronWorm, vazamento DentaQuest e IA acelerando ataque e defesa.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style></head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#23 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#23</span><span class="mono-tag">08 JUN 2026</span><span class="mono-tag">20 min de leitura</span></div>
+      <h1>WordPress sangrando, SD-WAN sem patch, supply chain npm e IA acelerando o ataque</h1>
+      <div class="tags"><span class="badge">Zero-Day</span><span class="badge">Supply Chain</span><span class="badge">WordPress</span><span class="badge">Data Breach</span><span class="badge">AI Security</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">5</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">7</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">3</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#23 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>C0XMO transforma roteadores DD-WRT em exército DDoS com faxina</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Silent Ransom Group mira escritórios de advocacia com falso su</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>Everest Forms Pro explorado para virar dono de site WordPress</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot high"></span>SolarWinds Serv-U entra no KEV com DoS explorado em servidores</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot critical"></span>Cisco Catalyst SD-WAN Manager tem zero-day sem patch explorado</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>Hola Browser para Windows foi comprometido para entregar miner</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>DentaQuest aparece em vazamento com dados de 2,6 milhões de co</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot critical"></span>IronWorm acerta 36 pacotes npm e caça credenciais de cloud, IA</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot high"></span>VS Code/github.dev expôs token GitHub em PoC de um clique</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot high"></span>Kirki expõe reset de senha e permite sequestro de admins em Wo</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot high"></span>Toolkit de ransomware feito com IA acelera evasão de EDR e des</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot med"></span>Apps grátis e smart TVs entram na economia de scraping para IA</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>Agente de IA encontra 21 zero-days no FFmpeg e pressiona triag</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot med"></span>Android passa a alertar chamadas deepfake tentando imitar cont</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot med"></span>Só 10% dos SOCs dizem extrair valor excelente de IA</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#23 · Leitura">
+          <div class="read-intro">
+            <p>Semana curta desde a última edição, mas a internet não respeita calendário editorial, porque claro que não. O cardápio veio com WordPress explorado, SD-WAN da Cisco sem patch, Serv-U no KEV, npm cuspindo infostealer e engenharia social fingindo ser suporte de TI.</p>
+            <p>Na parte de IA, o recado ficou menos “futuro distante” e mais “isso já está no pipeline”: ransomware usando agentes para acelerar evasão, pesquisa autônoma achando bug antigo e scraping para IA usando dispositivo doméstico como infraestrutura.</p>
+          </div>
+          <h2 class="split-title">Segurança geral</h2>
+          <section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Botnet / IoT</span></div>
+    <h2>C0XMO transforma roteadores DD-WRT em exército DDoS com faxina de concorrente</h2>
+    <p>A Fortinet detalhou uma nova variante do botnet Gafgyt chamada C0XMO mirando firmware DD-WRT e outros dispositivos em várias arquiteturas — ARM, MIPS, PowerPC, SuperH, x86 e afins. A entrega passa pela CVE-2021-27137, uma falha de buffer overflow explorável sem autenticação para execução de código.</p>
+    <p>O tempero ruim é que o malware não só infecta: ele baixa scanner em Python, tenta SSH/Telnet com credenciais fracas, detecta arquitetura, cria persistência em cron e ainda mata malware concorrente, ferramentas de red team e serviços que atrapalhem sua operação. É botnet fazendo limpeza de terreno antes de montar barraca. Um encanto, se você odeia a internet.</p>
+    <p>No fim, o objetivo continua clássico: DDoS. Mas a modularidade, os 19 métodos de ataque e a capacidade de lateralizar em IoT mostram que “roteador esquecido” continua sendo infraestrutura gratuita para criminoso.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar DD-WRT e firmware de borda, trocar credenciais padrão, desabilitar acesso remoto desnecessário e procurar persistência em /tmp, /var/tmp, /dev/shm e cron jobs suspeitos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/c0xmo-botnet-spreads-via-dd-wrt-router-flaw-kills-rival-malware/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.fortinet.com/blog/threat-research" target="_blank" rel="noopener">Fortinet</a></p>
+  </div>
+</section>
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Extorsão / Social Engineering</span></div>
+    <h2>Silent Ransom Group mira escritórios de advocacia com falso suporte de TI</h2>
+    <p>Mandiant e FBI acenderam o alerta para a Silent Ransom Group, também rastreada como UNC3753, Luna Moth e Chatty Spider, mirando escritórios de advocacia e serviços profissionais nos EUA. O ataque começa sem malware glamouroso: e-mail com tema de fatura, ligação de “suporte de TI” e convencimento para a vítima entrar em sessão remota.</p>
+    <p>O grupo usa Teams, Zoom, Quick Assist ou Terminal Services para conduzir a vítima, instala ferramentas como AnyDesk, Zoho Assist, Bomgar ou SuperOps e parte para roubo de documentos sensíveis. Segundo a Mandiant, em muitos casos a extorsão chega até 30 minutos depois de os atacantes saírem do ambiente. Rápido, sujo e eficiente — o trio que ninguém quer no incidente.</p>
+    <p>Legal é alvo óbvio porque concentra contrato, M&amp;A, segredo comercial, dados financeiros e informação que causa pânico reputacional. É o tipo de vítima que o criminoso acha que vai pagar para o problema ficar quieto.</p>
+    <div class="callout"><strong>O que fazer:</strong> Criar procedimento rígido para suporte remoto, bloquear RMM não aprovado, treinar vishing/callback phishing, exigir verificação fora de banda e monitorar exfiltração via WinSCP/Rclone.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/silent-ransom-group-targets-law-firms-with-fake-it-support-calls/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://cloud.google.com/blog/topics/threat-intelligence/targeted-campaign-us-law-firms" target="_blank" rel="noopener">Google Cloud / Mandiant</a></p>
+  </div>
+</section>
+<section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">WordPress / RCE</span></div>
+    <h2>Everest Forms Pro explorado para virar dono de site WordPress</h2>
+    <p>Atacantes estão explorando a CVE-2026-3300 no Everest Forms Pro, plugin comercial de formulários para WordPress. A falha afeta versões 1.9.12 e anteriores e permite execução arbitrária de código sem autenticação por causa da função de cálculo complexo usando eval() com entrada de formulário mal escapada.</p>
+    <p>O abuso visto pela Wordfence cria uma conta administradora maliciosa — incluindo o usuário “diksimarina” nos exemplos — e daí o resto é o de sempre: plugin malicioso, webshell, banco privado exposto e site virando propriedade coletiva do submundo. WordPress continua sendo o bairro onde uma extensão “só de formulário” pode virar chave mestra.</p>
+    <p>A correção saiu em março, mas exploração ativa começou em abril e a Wordfence já bloqueou dezenas de milhares de tentativas. Se ainda está vulnerável em junho, não é atraso; é convite com tapete vermelho.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar Everest Forms Pro para versão corrigida, revisar contas administradoras, buscar “diksimarina” e IOCs da Wordfence, checar logs de formulários e remover webshells/backdoors.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/critical-everest-forms-pro-flaw-exploited-to-take-over-wordpress-sites/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.wordfence.com/blog/2026/06/attackers-actively-exploiting-critical-vulnerability-in-everest-forms-pro-plugin/" target="_blank" rel="noopener">Wordfence</a></p>
+  </div>
+</section>
+<section class="art" id="a4" data-sev="high">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">MFT / CISA KEV</span></div>
+    <h2>SolarWinds Serv-U entra no KEV com DoS explorado em servidores expostos</h2>
+    <p>A CISA adicionou a CVE-2026-28318 do SolarWinds Serv-U ao KEV após evidência de exploração ativa. A falha é um DoS por consumo descontrolado de recursos: POST requests especialmente criados com Content-Encoding: deflate conseguem derrubar o serviço sem autenticação.</p>
+    <p>“É só DoS” é uma frase perigosa quando falamos de MFT/FTP exposto. Serv-U costuma carregar troca de arquivo sensível, integração legada e dependência operacional. Derrubar esse serviço pode virar interrupção, janela para outra campanha ou cortina de fumaça para atividade paralela.</p>
+    <p>A SolarWinds lançou o Serv-U 15.5.4 Hotfix 1 e sugeriu limitar acesso a endereços conhecidos ou bloquear POST com content-encoding onde não der para aplicar patch na hora. A CISA deu prazo de 19 de junho para agências federais dos EUA.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar Serv-U 15.5.4 Hotfix 1, restringir acesso por IP, bloquear POST com content-encoding se necessário e revisar disponibilidade/logs de instâncias MFT expostas.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/cisa-hackers-now-exploit-solarwinds-serv-u-flaw-to-crash-servers/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.cisa.gov/news-events/alerts/2026/06/05/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA</a> · <a href="https://www.solarwinds.com/trust-center/security-advisories/cve-2026-28318" target="_blank" rel="noopener">SolarWinds</a></p>
+  </div>
+</section>
+<section class="art" id="a5" data-sev="critical">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Rede / Zero-day</span></div>
+    <h2>Cisco Catalyst SD-WAN Manager tem zero-day sem patch explorado para root</h2>
+    <p>A Cisco alertou que a CVE-2026-20245 no Catalyst SD-WAN Manager está sendo explorada em casos limitados. A falha permite que um atacante local autenticado com privilégio netadmin faça command injection e eleve privilégios para root ao enviar arquivo especialmente criado.</p>
+    <p>O ponto desconfortável: ainda não havia patch para essa CVE no momento do alerta. E a própria Cisco disse que a exploração pode depender de credenciais válidas ou do abuso de falhas anteriores, como CVE-2026-20182 ou CVE-2026-20127. Ou seja: vulnerabilidade nova em cima de cadeia velha. Segurança de rede, aquela lasanha de risco.</p>
+    <p>Como o SD-WAN Manager empurra configuração para dispositivos de borda, comprometimento aqui não é “servidor administrativo isolado”. É controle operacional de malha.</p>
+    <div class="callout"><strong>O que fazer:</strong> Coletar admin-tech, revisar /var/log/scripts.log por uploads suspeitos, aplicar correções de CVEs anteriores, reduzir privilégios netadmin e abrir caso com Cisco TAC se houver sinal de comprometimento.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/new-cisco-sd-wan-flaw-exploited-in-zero-day-attacks-to-gain-root/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sdwan-privesc-4uxFrdzx" target="_blank" rel="noopener">Cisco</a></p>
+  </div>
+</section>
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Supply Chain / Browser</span></div>
+    <h2>Hola Browser para Windows foi comprometido para entregar minerador Monero</h2>
+    <p>A versão Windows do Hola Browser sofreu um comprometimento de supply chain e passou a instalar um executável não declarado identificado por pesquisadores como minerador de criptomoeda. O arquivo me.exe, visto em C:\Program Files\Hola\, não era assinado, não tinha timestamp e carregava comportamento ofuscado.</p>
+    <p>Sophos encontrou sinais de mineração Monero, exclusão no Windows Defender, cópia como HolaMonitorService.exe e serviço persistente hola_monitor_svc rodando quando o computador ficava ocioso. A Hola confirmou o comprometimento e disse que cerca de 0,1% dos usuários foram afetados, sem evidência de acesso ou roubo de dados.</p>
+    <p>Mesmo com escopo pequeno, o recado é grande: canal de distribuição é superfície crítica. Se o pipeline assina e entrega lixo, o endpoint recebe lixo com crachá.</p>
+    <div class="callout"><strong>O que fazer:</strong> Remover/atualizar Hola Browser em endpoints, procurar me.exe, HolaMonitorService.exe e hola_monitor_svc, revisar exclusões do Defender e bloquear instaladores não aprovados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/hola-browser-for-windows-compromised-to-deliver-cryptominer/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.sophos.com/en-us/blog/you-do-surprise-me-exe-an-unexpected-executable-in-hola-browser" target="_blank" rel="noopener">Sophos</a></p>
+  </div>
+</section>
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Data Breach / Saúde</span></div>
+    <h2>DentaQuest aparece em vazamento com dados de 2,6 milhões de contas</h2>
+    <p>A DentaQuest, administradora de benefícios odontológicos da Sun Life, confirmou acesso não autorizado a uma parte limitada da rede. O incidente ganhou corpo depois que o ShinyHunters listou a empresa e alegou ter roubado mais de 234 GB de dados.</p>
+    <p>O Have I Been Pwned analisou o vazamento e apontou 2,6 milhões de contas com e-mails, nomes completos, telefones, IDs governamentais, informações de seguro saúde, gênero e datas de nascimento. A empresa ainda investigava o escopo, então aqui vale separar fato validado por HIBP de alegação de grupo criminoso.</p>
+    <p>Dado de saúde/benefício é material perfeito para golpe convincente: tem contexto pessoal, urgência e aparência burocrática. Exatamente o cheiro que phishing adora.</p>
+    <div class="callout"><strong>O que fazer:</strong> Preparar comunicação antifraude, monitorar phishing direcionado, revisar acessos e exfiltração, rotacionar credenciais expostas e reforçar validação em atendimento ao cliente.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/dentaquest-data-breach-exposed-info-of-26-million-accounts/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://haveibeenpwned.com/Breach/DentaQuest" target="_blank" rel="noopener">Have I Been Pwned</a> · <a href="https://www.dentaquest.com/en/security-update-0526" target="_blank" rel="noopener">DentaQuest</a></p>
+  </div>
+</section>
+<section class="art" id="a8" data-sev="critical">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">npm / DevSecOps</span></div>
+    <h2>IronWorm acerta 36 pacotes npm e caça credenciais de cloud, IA e CI/CD</h2>
+    <p>A JFrog revelou o IronWorm, malware em Rust encontrado em 36 pacotes npm. Ele mira 86 variáveis de ambiente e 20 arquivos de credenciais, incluindo OpenAI, AWS, Anthropic, npm, Vault, SSH e até carteira Exodus. O pacote malicioso roda via preinstall e tenta se propagar usando credenciais roubadas para publicar novas versões.</p>
+    <p>O detalhe venenoso é a mistura de supply chain com pipeline: o IronWorm também explora GitHub Actions como possível canal de exfiltração por artefato de build com nome inocente, evitando C2 externo. É o tipo de coisa que passa por “saída de lint” se ninguém estiver olhando direito.</p>
+    <p>JFrog não cravou ligação com Shai-Hulud, mas notou semelhanças. E outras equipes viram ataques parecidos no mesmo período. O ecossistema npm está vivendo aquela fase gostosa em que cada hook de instalação parece uma roleta russa.</p>
+    <div class="callout"><strong>O que fazer:</strong> Remover versões afetadas, rodar npm audit com foco em pacotes listados pela JFrog/OX, rotacionar tokens npm/cloud/IA, exigir 2FA e restringir permissões de Trusted Publishing.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/new-ironworm-malware-hits-36-packages-in-npm-supply-chain-attack/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/" target="_blank" rel="noopener">JFrog</a> · <a href="https://www.ox.security/blog/ironworm-supply-chain-malware-hits-npm/" target="_blank" rel="noopener">OX Security</a></p>
+  </div>
+</section>
+<section class="art" id="a9" data-sev="high">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Developer Security</span></div>
+    <h2>VS Code/github.dev expôs token GitHub em PoC de um clique</h2>
+    <p>O pesquisador Ammar Askar publicou uma PoC para uma falha zero-day no VS Code/github.dev que permitia roubar tokens OAuth do GitHub se a vítima clicasse em um link. O abuso passava pelo sistema de mensagens de webview, simulava teclas no editor e instalava uma extensão maliciosa para capturar o token.</p>
+    <p>O ponto mais feio: segundo o pesquisador, o token passado ao github.dev não ficava limitado ao repositório visitado, podendo enumerar repositórios privados acessíveis pela vítima. Microsoft disse depois à BleepingComputer que o problema foi mitigado em seus serviços e que nenhuma ação do cliente era necessária.</p>
+    <p>Mesmo mitigado, o caso serve como lembrete cruel: ambiente de desenvolvimento é ambiente privilegiado. Browser, editor, extensão e OAuth juntos formam uma superfície grande o bastante para estacionar um caminhão.</p>
+    <div class="callout"><strong>O que fazer:</strong> Limpar dados/cookies de github.dev se houver suspeita, revisar tokens OAuth e extensões instaladas, preferir escopos mínimos e tratar links para ambientes dev como entrada potencialmente hostil.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/vs-code-zero-day-lets-hackers-steal-github-tokens-in-one-click/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://blog.ammaraskar.com/github-token-stealing/" target="_blank" rel="noopener">Ammar Askar</a> · <a href="https://github.com/ammaraskar/github-dev-token-steal-poc/" target="_blank" rel="noopener">GitHub PoC</a></p>
+  </div>
+</section>
+<section class="art" id="a10" data-sev="high">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">WordPress / Privilege Escalation</span></div>
+    <h2>Kirki expõe reset de senha e permite sequestro de admins em WordPress</h2>
+    <p>A CVE-2026-8206 no plugin Kirki para WordPress está sendo explorada para tomar contas, inclusive administradores. O plugin tem mais de 500 mil instalações e, segundo a Wordfence, versões 6.0.0 a 6.0.6 expuseram um endpoint REST customizado de reset de senha.</p>
+    <p>A falha aceitava e-mail arbitrário em solicitações de reset: o atacante informava um usuário real, mas recebia o link de redefinição no próprio e-mail. Não precisa quebrar senha quando o fluxo de recuperação entrega a chave pela janela. Poesia ruim, engenharia pior.</p>
+    <p>A correção saiu na versão 6.0.7 em 18 de maio, mas a exploração ativa apareceu agora com urgência suficiente para justificar varredura imediata.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar Kirki para 6.0.7 ou desabilitar o plugin, revisar resets de senha recentes, checar criação/alteração de administradores e procurar plugins/temas não autorizados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/critical-kirki-flaw-exploited-to-hijack-wordpress-admin-accounts/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.wordfence.com/blog/2026/06/unauthenticated-privilege-escalation-vulnerability-patched-in-kirki-wordpress-plugin/" target="_blank" rel="noopener">Wordfence</a></p>
+  </div>
+</section>
+          <h2 class="split-title">Segurança em IA</h2>
+          <section class="art" id="a11" data-sev="high">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Ransomware</span></div>
+    <h2>Toolkit de ransomware feito com IA acelera evasão de EDR e descoberta de AD</h2>
+    <p>A Sophos encontrou um toolkit de ransomware cujo desenvolvimento foi acelerado por agentes como Cursor e Claude Opus. O pacote automatiza descoberta de Active Directory, pesquisa técnicas de bypass em posts de segurança, gera payloads em Rust/Go e testa módulos contra Sophos, CrowdStrike e Microsoft Defender.</p>
+    <p>Importante: a Sophos não viu IA embutida no malware nem operando sozinha em vítimas. A IA aparece como acelerador humano de P&amp;D ofensivo — coordenando teste, documentação, OPSEC, laboratório e iteração. Ainda assim, isso já é ruim o bastante. O atacante não precisa de “malware autônomo consciente”; precisa encurtar o ciclo entre paper técnico e payload funcional.</p>
+    <p>A parte que mais incomoda é justamente essa industrialização: quase 80 módulos gerados e testados contra mais de 70 técnicas. EDR não perdeu valor, mas o tempo de adaptação do adversário está ficando indecente.</p>
+    <div class="callout"><strong>O que fazer:</strong> Validar detecções com BAS/purple team, monitorar loaders Rust/Go, caçar abuso de Telegram/Cloudflare Worker como C2, endurecer AD e medir tempo entre pesquisa ofensiva publicada e regra implantada.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/ai-built-ransomware-toolkit-automates-edr-evasion-ad-discovery/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.sophos.com/en-us/blog/pointing-a-cursor-at-evading-detection" target="_blank" rel="noopener">Sophos</a></p>
+  </div>
+</section>
+<section class="art" id="a12" data-sev="medium">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / Proxies</span></div>
+    <h2>Apps grátis e smart TVs entram na economia de scraping para IA</h2>
+    <p>Pesquisadores da Include Security e Buchodi fizeram engenharia reversa do SDK da Bright Data em apps de consumidor e mostraram como dispositivos, incluindo TVs conectadas, podem virar nós de saída para tráfego de web scraping. A Bright Data vende a maior rede residencial de proxies do mundo, e parte dela vem de apps com opt-in.</p>
+    <p>O risco imediato não é “roubaram minha senha”, mas “minha conexão residencial virou infraestrutura de scraping de terceiros”. O estudo aponta lacunas de consentimento, canal de jobs sem autenticação forte e, no iOS, tráfego que pode escapar de VPN configurada. Em TVs, a coisa fica tentadora: sempre ligadas, banda boa, quase invisíveis.</p>
+    <p>O detalhe editorial aqui é a demanda de IA puxando infraestrutura cinza. Datacenter IP apanha de anti-bot, então scraping migra para IP residencial. Quando o incentivo econômico é grande, a definição de “consentimento” começa a virar gelatina.</p>
+    <div class="callout"><strong>O que fazer:</strong> Inventariar apps com Bright SDK, bloquear domínios proxyjs/client sdk da Bright Data em DNS corporativo/doméstico quando fizer sentido e revisar política de apps em dispositivos gerenciados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/free-apps-are-quietly-turning-smart-tvs.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://blog.includesecurity.com/2026/06/the-smart-tv-in-your-livingroom-is-a-node-in-the-aiscraping-economy/" target="_blank" rel="noopener">Include Security</a></p>
+  </div>
+</section>
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Vulnerability Research</span></div>
+    <h2>Agente de IA encontra 21 zero-days no FFmpeg e pressiona triagem humana</h2>
+    <p>A depthfirst disse ter usado um agente autônomo para encontrar 21 vulnerabilidades inéditas no FFmpeg, biblioteca que aparece em praticamente tudo que toca vídeo. Segundo o relato, a varredura custou cerca de US$ 1.000, produziu PoCs reproduzíveis e encontrou bugs antigos em parsers/demuxers, alguns com CVEs CVE-2026-39210 a CVE-2026-39218.</p>
+    <p>Na mesma semana, o Chrome 149 corrigiu 429 bugs, recorde para uma versão. O artigo não atribui esse volume ao uso direto de IA, mas liga o contexto à enxurrada de reports gerados por IA que levou o Google a ajustar seu programa de recompensas. O padrão é claro: encontrar bug está ficando mais barato; corrigir, priorizar e distribuir patch continua caro.</p>
+    <p>A notícia é boa para defesa e péssima para backlog. Quando máquinas aumentam descoberta, humanos viram gargalo. E projeto open source mantido por poucos voluntários não ganha magicamente uma equipe de triagem porque o agente ficou esperto.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar FFmpeg em pacotes de sistema, containers, appliances e bibliotecas embutidas; priorizar ingestão de mídia não confiável; atualizar Chrome para 149.0.7827.53/54 ou confirmar auto-update.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/ai-agent-uncovers-21-zero-days-in.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://depthfirst.com/research/21-zero-days-in-ffmpeg" target="_blank" rel="noopener">depthfirst</a> · <a href="https://chromereleases.googleblog.com/2026/06/stable-channel-update-for-desktop.html" target="_blank" rel="noopener">Chrome Releases</a></p>
+  </div>
+</section>
+<section class="art" id="a14" data-sev="medium">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / Fraud Defense</span></div>
+    <h2>Android passa a alertar chamadas deepfake tentando imitar contatos</h2>
+    <p>O Google anunciou fake call detection no Android para detectar chamadas em que golpistas usam spoofing de número e voz clonada por IA para se passar por contatos da vítima. O recurso começa em Pixel, chega globalmente a Android 12+ e fica habilitado por padrão onde Phone by Google, Contacts e Messages com RCS estão disponíveis.</p>
+    <p>A mecânica é elegante: quando um contato real liga, o aparelho dele envia um sinal silencioso e criptografado. Se o sinal não aparece, o telefone da vítima consulta o dispositivo real do contato; se ele não estiver ligando, surge aviso para encerrar a chamada. Caller ID sozinho já virou piada cara demais.</p>
+    <p>Isso importa para segurança corporativa porque fraude por voz não é só golpe de avó. É reset de senha, aprovação financeira, pedido urgente do “CEO” e engenharia social com áudio cada vez menos tosco.</p>
+    <div class="callout"><strong>O que fazer:</strong> Habilitar recursos antifraude em Android, educar usuários sobre deepfake/vishing, exigir confirmação fora de banda para pagamentos e reset sensível, e não confiar só em caller ID.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/google-adds-android-protection-against-ai-deepfake-scam-calls/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://blog.google/security/android-fake-call-detection/" target="_blank" rel="noopener">Google</a></p>
+  </div>
+</section>
+<section class="art" id="a15" data-sev="medium">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / SOC</span></div>
+    <h2>Só 10% dos SOCs dizem extrair valor excelente de IA</h2>
+    <p>O relatório SOC-CMM 2026, citado pelo The Hacker News, trouxe um banho frio na empolgação: só cerca de 10% dos SOCs pesquisados disseram obter valor excelente da IA. Outros 19% relataram bom valor; os 71% restantes ficaram em “algum valor” ou nenhum.</p>
+    <p>O problema não parece ser falta de compra. Adoção cresceu em LLMs, copilotos, agentes, machine learning supervisionado e modelos customizados. O gargalo é arquitetura e maturidade: muita IA pontual em SIEM, EDR, SOAR e ticketing, mas pouca conexão entre as etapas de threat intel, hunting, detecção, investigação e resposta.</p>
+    <p>Em português claro: trocar analista cansado por cinco chatbots que não conversam entre si só cria uma fila mais moderna. IA no SOC precisa de contexto, governança e trilha de decisão — não só botão brilhante no produto.</p>
+    <div class="callout"><strong>O que fazer:</strong> Mapear onde IA entra no fluxo do SOC, medir valor por tempo de investigação/detecção ajustada/remediação, exigir rastreabilidade e conectar contexto entre SIEM, EDR, identidade, cloud e tickets.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/only-10-of-socs-say-theyre-getting.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://www.soc-cmm.com/img/upload/files/66-soc-maturity-report-2026.pdf" target="_blank" rel="noopener">SOC-CMM</a></p>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-orange">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Resumo honesto: não trate plugin de WordPress como detalhe, não deixe SD-WAN virar caixa-preta, não dê token eterno para pipeline e pare de fingir que IA é só produtividade. Ela também é multiplicador de tentativa, teste e golpe. Bonita, útil e perigosamente eficiente — como toda ferramenta que humano adora usar antes de governar direito.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById('progress');function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+'%';}addEventListener('scroll',onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
