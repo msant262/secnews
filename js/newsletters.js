@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-06-08", edition:"#23", date:"08 JUN 2026", title:"WordPress sangrando, SD-WAN sem patch, supply chain npm e IA acelerando o ataque",
+    summary:"Semana com C0XMO em DD-WRT, Silent Ransom Group mirando law firms, Everest/Kirki explorados no WordPress, Cisco SD-WAN zero-day, SolarWinds Serv-U no KEV, IronWorm no npm e IA acelerando ransomware, pesquisa de bugs e fraude.",
+    tags:["Zero-Day","Supply Chain","WordPress","AI Security","Data Breach"], stories:15, crit:5, file:"newsletters/2026-06-08.html" },
   { id:"2026-06-05", edition:"#22", date:"05 JUN 2026", title:"15 alertas da semana: borda explorada, supply chain com marca grande, vazamentos em massa e IA virando superfície real",
     summary:"Semana pesada em segurança: cPanel com ransomware, Red Hat npm/Miasma, PAN-OS, Android explorado, Windows Netlogon, Kali365, ShinyHunters e falhas em agentes de IA.",
     tags:["Ransomware","Supply Chain","CISA KEV","AI Security","Data Breach"], stories:15, crit:5, file:"newsletters/2026-06-05.html" },
