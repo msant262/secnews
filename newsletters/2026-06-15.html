@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>CyberSec News #24 — 15 JUN 2026</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Patch Tuesday da Microsoft, zero-day de VPN na Check Point, AUR envenenado, PeopleSoft explorado, breaches em ServiceNow/Novo Nordisk/Tchap, e IA já entrando no ciclo de ataque.">
+<meta name="description" content="Patch Tuesday da Microsoft, zero-day de VPN na Check Point, AUR envenenado, PeopleSoft explorado, breaches em ServiceNow/Novo Nordisk/Tchap, e governo dos EUA derrubando acesso a Fable 5/Mythos 5.">
 <link rel="stylesheet" href="../css/okami.css">
 <link rel="stylesheet" href="../css/components.css">
 <style>
@@ -88,12 +88,12 @@
     <div class="container">
       <a class="read-back" href="../newsletter.html">← Todas as edições</a>
       <div class="read-meta"><span class="nl-ed">#24</span><span class="mono-tag">15 JUN 2026</span><span class="mono-tag">22 min de leitura</span></div>
-      <h1>Patch Tuesday monstro, VPN zero-day, AUR envenenado e IA saindo do palco para o ataque</h1>
+      <h1>Patch Tuesday monstro, VPN zero-day, AUR envenenado e governo dos EUA puxando freio em modelo de IA</h1>
       <div class="tags"><span class="badge">Zero-Day</span><span class="badge">Supply Chain</span><span class="badge">Data Breach</span><span class="badge">AI Security</span><span class="badge">RCE</span></div>
       <div class="threat">
         <div class="threat-cell t-crit"><span class="threat-n">5</span><span class="threat-l">críticas</span></div>
-        <div class="threat-cell t-high"><span class="threat-n">7</span><span class="threat-l">altas</span></div>
-        <div class="threat-cell t-med"><span class="threat-n">3</span><span class="threat-l">médias</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">8</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">2</span><span class="threat-l">médias</span></div>
       </div>
     </div>
   </section>
@@ -116,7 +116,7 @@
 <li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>Worm de IA roda em modelos open-weight locais e se espalha sozinho</a></li>
 <li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>Google alerta: zero-day com IA já saiu do laboratório e foi barrado antes do ataque</a></li>
 <li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Langflow sofre exploração ativa de path traversal</a></li>
-<li><a class="toc-link" href="#a15"><span class="toc-dot medium"></span>Anthropic separa modelo público e modelo restrito por camada de segurança</a></li></ul>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>Governo dos EUA força suspensão de Fable 5 e Mythos 5</a></li></ul>
           <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
         </aside>
         <article class="article-col" data-screen-label="#24 · Leitura">
@@ -282,19 +282,19 @@
   </div>
 </section>
 
-<section class="art" id="a15" data-sev="medium">
+<section class="art" id="a15" data-sev="high">
   <div class="art-num">15</div>
   <div>
-    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / Product Safety</span></div>
-    <h2>Anthropic lançou o Claude Fable 5 com salvaguardas e deixou o Mythos 5 trancado para uso restrito</h2>
-    <p>A Anthropic colocou o Claude Fable 5 no público e manteve o Claude Mythos 5, a variante com capacidades de cibersegurança mais fortes, restrita a usuários verificados. O modelo foi dividido não por capacidade, mas por política de risco.</p><p>Isso é um sinal importante: a indústria já está tratando assistência ofensiva como algo que precisa de gates, classifiers e fallback controlado. O futuro do agente de IA não é só “mais inteligente”; é “mais controlado, ou deveria ser”.</p>
-    <div class="callout"><strong>O que fazer:</strong> Tratar acesso a modelos avançados como privilégio, revisar políticas para uso de IA em tarefas sensíveis e registrar quando uma solicitação é desviada para fallback ou bloqueada.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.anthropic.com/claude/fable" target="_blank" rel="noopener">Anthropic</a> · <a href="https://thehackernews.com/2026/06/anthropic-releases-claude-fable-5-its.html" target="_blank" rel="noopener">The Hacker News</a></p>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Export Control</span></div>
+    <h2>Governo dos EUA força suspensão de Fable 5 e Mythos 5 e mostra o risco de depender de modelo alugado</h2>
+    <p>A Anthropic recebeu em 12 de junho, às 17h21 ET, uma diretiva de controle de exportação do governo dos EUA mandando suspender o acesso a Claude Fable 5 e Claude Mythos 5 por qualquer estrangeiro, dentro ou fora dos Estados Unidos. Na prática, a empresa disse que precisou desligar os modelos para todos os clientes para conseguir cumprir a ordem.</p><p>O gatilho alegado foi um possível jailbreak estreito ligado a análise de código e correção de falhas — exatamente o tipo de capacidade dual-use que defensores usam todos os dias. A Anthropic contestou a base técnica da medida, disse que não recebeu uma demonstração robusta de jailbreak universal e afirmou que o nível de capacidade também existe em outros modelos públicos.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar dependência de frontier model como risco operacional e regulatório: mapear workloads críticos que ficam presos a um único provedor, manter fallback testado, revisar contratos/SLA e separar tarefas sensíveis de segurança em fluxos que sobrevivam a bloqueios repentinos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener">Anthropic</a> · <a href="https://snyk.io/blog/fable-mythos-suspension-security-takeaways/" target="_blank" rel="noopener">Snyk</a> · <a href="https://www.pcmag.com/news/anthropic-blocks-fable-5-mythos-5-access-amid-government-order" target="_blank" rel="noopener">PCMag</a></p>
   </div>
 </section>
           <div class="card card-pad mt-8 lead-orange">
             <span class="sec-id">fechamento</span>
-            <p class="mt-4">Resumo sem perfume: patch de borda e ERP não é tarefa para depois, AUR e npm continuam sendo pontos onde a confiança vira vetor, e IA já entrou de vez na parte feia da história. Não é mais só produtividade; é também escala para pesquisa, exploração e fraude. Que bonito. Que chato. Que importante.</p>
+            <p class="mt-4">Resumo sem perfume: patch de borda e ERP não é tarefa para depois, AUR e npm continuam sendo pontos onde a confiança vira vetor, e IA já entrou de vez na parte feia da história — inclusive no nível regulatório, com modelo derrubado por ordem de governo. Não é mais só produtividade; é também escala, dependência e risco de plataforma. Que bonito. Que chato. Que importante.</p>
             <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
           </div>
         </article>
