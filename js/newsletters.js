@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-06-15", edition:"#24", date:"15 JUN 2026", title:"Patch Tuesday monstro, VPN zero-day, AUR envenenado e IA saindo do palco para o ataque",
+    summary:"Microsoft veio com 200 falhas e 6 zero-days, Check Point e Ivanti sofreram exploração em VPN/appliance, Arch AUR foi envenenado, PeopleSoft e phpBB quebraram autenticação, e IA já apareceu como vetor em agente, worm, exploit dev e AppSec.",
+    tags:["Zero-Day","Supply Chain","Data Breach","AI Security","RCE"], stories:15, crit:5, file:"newsletters/2026-06-15.html" },
   { id:"2026-06-08", edition:"#23", date:"08 JUN 2026", title:"WordPress sangrando, SD-WAN sem patch, supply chain npm e IA acelerando o ataque",
     summary:"Semana com C0XMO em DD-WRT, Silent Ransom Group mirando law firms, Everest/Kirki explorados no WordPress, Cisco SD-WAN zero-day, SolarWinds Serv-U no KEV, IronWorm no npm e IA acelerando ransomware, pesquisa de bugs e fraude.",
     tags:["Zero-Day","Supply Chain","WordPress","AI Security","Data Breach"], stories:15, crit:5, file:"newsletters/2026-06-08.html" },

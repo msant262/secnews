@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #24 — 15 JUN 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Patch Tuesday da Microsoft, zero-day de VPN na Check Point, AUR envenenado, PeopleSoft explorado, breaches em ServiceNow/Novo Nordisk/Tchap, e IA já entrando no ciclo de ataque.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#24 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#24</span><span class="mono-tag">15 JUN 2026</span><span class="mono-tag">22 min de leitura</span></div>
+      <h1>Patch Tuesday monstro, VPN zero-day, AUR envenenado e IA saindo do palco para o ataque</h1>
+      <div class="tags"><span class="badge">Zero-Day</span><span class="badge">Supply Chain</span><span class="badge">Data Breach</span><span class="badge">AI Security</span><span class="badge">RCE</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">5</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">7</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">3</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#24 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>Microsoft despeja 200 correções e 6 zero-days no colo de todo mundo</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Check Point corrige zero-day em VPN e liga o caso ao Qilin</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot high"></span>Mais de 400 pacotes do AUR viram vetor para rootkit e roubo de credenciais</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>Oracle PeopleSoft ganha correção emergencial para CVE-2026-35273</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot critical"></span>phpBB corrige bypass de autenticação com idade de pré-história</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>ServiceNow tem incidente e exposição via endpoint sem autenticação</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>Novo Nordisk expõe dados pseudonimizados de testes clínicos</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot medium"></span>Tchap sofre brecha e expõe metadados de milhares de contas</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot medium"></span>Coreia do Sul pune Coupang com multa recorde por vazamento</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot critical"></span>Ivanti Sentry corrige comando remoto crítico e outra falha de certificado</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot high"></span>Agentjacking transforma relatório falso em comando malicioso para agentes</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>Worm de IA roda em modelos open-weight locais e se espalha sozinho</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>Google alerta: zero-day com IA já saiu do laboratório e foi barrado antes do ataque</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Langflow sofre exploração ativa de path traversal</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot medium"></span>Anthropic separa modelo público e modelo restrito por camada de segurança</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#24 · Leitura">
+<div class="read-intro">
+  <p>Semana de segunda-feira que entrou com café forte e saiu com zero-day, VPN velha demais, AUR envenenado e um recado simpático da IA: ela já não é só interface; também é superfície, acelerador e, às vezes, o próprio problema.</p>
+  <p>Montei a seleção com o que realmente mexe com exposição, operação e risco de verdade. Nada de poeira de thread quente sem substância — aqui o caos teve evidência, efeito e coisa prática para fazer hoje.</p>
+</div>
+          <h2 class="split-title">Segurança geral</h2>
+
+
+<section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Patch Tuesday / Windows</span></div>
+    <h2>Microsoft vem com 200 falhas e 6 zero-days; a mais cara é sempre a que chega em lote</h2>
+    <p>O Patch Tuesday de junho veio gordo: 200 vulnerabilidades, 33 classificadas como críticas e seis zero-days. Uma delas já estava sendo explorada em ataques. Segunda-feira com cara de plantão, do jeitinho que ninguém pediu.</p><p>Entre os destaques estão correções para o CTFMON/GreenPlasma, um DoS em HTTP/2, dois bypasses de BitLocker e outras falhas que mostram a mesma coisa de sempre: atraso de patch é um hobby caro demais.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar os updates de junho sem drama, começar pelos sistemas expostos à internet, validar o comportamento de HTTP/2 e revisar qualquer exceção em BitLocker/WinRE antes que isso vire susto.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://msrc.microsoft.com/update-guide/" target="_blank" rel="noopener">Microsoft</a> · <a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-june-2026-patch-tuesday-fixes-6-zero-days-200-flaws/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">VPN / Zero-day</span></div>
+    <h2>Check Point teve VPN zero-day explorado e o velho IKEv1 continua sendo problema de mundo real</h2>
+    <p>A CVE-2026-50751 permitia que atacantes remotos, sem autenticação, batessem uma VPN da Check Point usando configurações legadas de IKEv1. O detalhe feio: a exploração começou em maio e ganhou força em junho.</p><p>A empresa disse que o caso atingiu poucas dezenas de organizações, mas pelo menos uma vítima foi ligada ao Qilin. Segurança de borda continua sendo aquela área em que o legado não envelhece; ele só espera a hora de morder.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar os gateways, remover dependência de IKEv1, exigir IKEv2 e certificados de máquina quando possível, e revisar logs de acesso para sinais de pós-exploração.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.checkpoint.com/blog/" target="_blank" rel="noopener">Check Point</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA</a> · <a href="https://www.bleepingcomputer.com/news/security/check-point-links-vpn-zero-day-attacks-to-qilin-ransomware-gang/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a3" data-sev="high">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Supply Chain / Linux</span></div>
+    <h2>AUR do Arch Linux foi envenenado com rootkit e infostealer para caçar segredos de dev</h2>
+    <p>Mais de 400 pacotes no Arch User Repository foram comprometidos para distribuir um rootkit e um infostealer. O abuso usa scripts de instalação para puxar um pacote npm malicioso e, a partir daí, mirar segredos de navegador, Slack, GitHub, Vault, SSH, Docker e afins.</p><p>Quando a cadeia de suprimento entra no ambiente de trabalho do dev, a bagunça já não é só no laptop. Ela vira risco de conta, de pipeline e de todo o resto que depende de confiança implícita demais.</p>
+    <div class="callout"><strong>O que fazer:</strong> Revisar os pacotes afetados, rotacionar credenciais e tokens expostos, verificar integridade do ambiente de build e considerar reinstalação limpa se houver indício de rootkit.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/over-400-arch-linux-packages-compromised-to-push-rootkit-infostealer/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.sonatype.com/blog" target="_blank" rel="noopener">Sonatype</a></p>
+  </div>
+</section>
+
+<section class="art" id="a4" data-sev="critical">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">ERP / RCE</span></div>
+    <h2>Oracle PeopleSoft apanhou de uma RCE sem autenticação e a exploração já estava acontecendo</h2>
+    <p>A CVE-2026-35273 afeta PeopleSoft PeopleTools e permite execução remota de código sem autenticação. A Oracle soltou um alerta fora de ciclo porque o problema é daquelas falhas que ninguém quer ver no lado de fora da porta.</p><p>Relatos de exploração zero-day ligados ao caso apontam para atividade associada à UNC6240/ShinyHunters. Traduzindo: o brinquedo era antigo, mas alguém já tinha descoberto como arrancar a tampa.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar o alerta de segurança da Oracle imediatamente, revisar exposição de PeopleSoft na borda, investigar logs de acesso e tratar qualquer instância pública como prioridade máxima.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.oracle.com/security-alerts/alert-cve-2026-35273.html" target="_blank" rel="noopener">Oracle</a> · <a href="https://www.rapid7.com/blog/post/etr-active-exploitation-of-oracle-peoplesoft-zero-day-cve-2026-35273/" target="_blank" rel="noopener">Rapid7</a> · <a href="https://censys.com/advisory/cve-2026-35273/" target="_blank" rel="noopener">Censys</a></p>
+  </div>
+</section>
+
+<section class="art" id="a5" data-sev="critical">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Web App / Auth Bypass</span></div>
+    <h2>phpBB corrigiu bypass de autenticação de 10 anos; um request bastava para virar admin</h2>
+    <p>Uma falha de autenticação no phpBB deixou qualquer pessoa logar como qualquer usuário, inclusive administrador, com uma única requisição HTTP. O bug atravessou uma década escondido no código, o que é quase admirável — se o objetivo fosse humilhar todo mundo.</p><p>A correção saiu no phpBB 3.3.17, mas a linha 4.x ainda não tinha um release seguro no momento da publicação. Em fórum, esse tipo de falha vira tomada de site, leitura de mensagem privada e defacement com crachá emprestado.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar para 3.3.17 ou master no ramo 4.x, revisar contas administrativas, checar fluxos OAuth após o update e procurar sinais de logins impossíveis no período vulnerável.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.phpbb.com/community/viewforum.php?f=14" target="_blank" rel="noopener">phpBB</a> · <a href="https://www.aikido.dev/blog" target="_blank" rel="noopener">Aikido</a> · <a href="https://www.bleepingcomputer.com/news/security/phpbb-forum-fixes-auth-bypass-bug-lurking-for-a-decade/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">SaaS / Data Exposure</span></div>
+    <h2>ServiceNow admitiu incidente e uma API vulnerável virou porta para dados de clientes</h2>
+    <p>A ServiceNow disse que um endpoint API vulnerável permitiu acesso não autorizado a dados de instâncias de clientes. O problema foi tratado internamente com update em 5 de junho e comunicado em casos de suporte para os afetados.</p><p>É o tipo de história que mostra como ticket, workflow e documentação interna podem virar ouro para atacante. Não é só “dados de sistema”; é a memória operacional da empresa, com bastante chance de ter o que não devia estar no texto.</p>
+    <div class="callout"><strong>O que fazer:</strong> Revisar logs para chamadas ao endpoint afetado, identificar tickets e registros expostos, rotacionar tokens compartilhados em workflows de suporte e garantir logging de API ativo.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.servicenow.com/company/trust" target="_blank" rel="noopener">ServiceNow</a> · <a href="https://www.bleepingcomputer.com/news/security/servicenow-discloses-security-incident-exposing-customer-data/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://thehackernews.com/2026/06/servicenow-flaw-exploited-to-gain.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Data Breach / Pharma</span></div>
+    <h2>Novo Nordisk confirmou vazamento de dados de ensaios clínicos e contatos de profissionais de saúde</h2>
+    <p>A Novo Nordisk disse que atacantes copiaram dados não públicos de alguns ensaios clínicos. Os registros incluem IDs pseudonimizados, ano de nascimento, sexo, biomarcadores e detalhes de participação.</p><p>O vazamento também alcançou contatos de profissionais de saúde, o que já acende o modo phishing sem precisar de muita imaginação. Mesmo sem nomes diretos, a combinação de contexto clínico e canal de contato costuma ser convite para golpe bem feito.</p>
+    <div class="callout"><strong>O que fazer:</strong> Avisar possíveis impactados, reforçar phishing e callback verification, monitorar tentativas de engenharia social e revisar qualquer credencial ou contato sensível que tenha passado pelos sistemas afetados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.novonordisk.com/news-and-media/news-and-ir-materials/news-details.html" target="_blank" rel="noopener">Novo Nordisk</a> · <a href="https://www.reuters.com/legal/litigation/novo-nordisk-hit-by-cyber-incident-probes-data-breach-2026-06-11/" target="_blank" rel="noopener">Reuters</a> · <a href="https://www.bleepingcomputer.com/news/security/pharmaceutical-giant-novo-nordisk-discloses-security-breach/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a8" data-sev="medium">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Data Breach / Gov</span></div>
+    <h2>Tchap vazou dados de 73 mil servidores públicos franceses e o estrago ficou no lado público da conversa</h2>
+    <p>O governo francês disse que a brecha no Tchap afetou mais de 73 mil contas do setor público. O ponto importante é que conversas privadas continuam criptografadas; o que vazou foi o conteúdo de salas públicas e metadados associados a usuários.</p><p>Ainda assim, nome, e-mail, avatar e organização já são suficientes para abrir a porteira da engenharia social. Ataque em mensageria governamental não precisa destruir tudo para ser útil ao atacante; às vezes basta deixar a fotografia da estrutura na mesa.</p>
+    <div class="callout"><strong>O que fazer:</strong> Reforçar higiene de uso em salas públicas, revisar contas comprometidas, monitorar phishing com contexto interno e separar com mais rigor o que pode ou não circular em chats abertos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.numerique.gouv.fr/" target="_blank" rel="noopener">DINUM</a> · <a href="https://www.bleepingcomputer.com/news/security/french-govt-says-tchap-breach-affected-over-73-000-accounts/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.theregister.com/security/" target="_blank" rel="noopener">The Register</a></p>
+  </div>
+</section>
+
+<section class="art" id="a9" data-sev="medium">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Privacy / Enforcement</span></div>
+    <h2>Coupang levou multa recorde de US$ 409 milhões e virou lembrete caríssimo do preço de um vazamento</h2>
+    <p>A Coreia do Sul anunciou uma multa de 625 bilhões de won, cerca de US$ 409 milhões, contra a Coupang por um vazamento massivo de dados de clientes e por coleta ilegal de informações pessoais. É a conta chegando com juros e sem parcelamento.</p><p>Mesmo sendo uma história regulatória, ela conversa diretamente com segurança: quando o vazamento é grande o bastante, a dor deixa de ser técnica e passa a ser financeira, jurídica e reputacional ao mesmo tempo.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar minimização de dados e governança de coleta como controle de segurança, revisar retenção e acesso, e alinhar resposta a incidente com jurídico, privacidade e comunicação antes que o problema escale.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.reuters.com/legal/litigation/south-korea-fines-coupang-409-mln-countrys-largest-data-breach-penalty-2026-06-11/" target="_blank" rel="noopener">Reuters</a> · <a href="https://www.nytimes.com/2026/06/11/world/asia/south-korea-coupang-fine.html" target="_blank" rel="noopener">The New York Times</a></p>
+  </div>
+</section>
+
+<section class="art" id="a10" data-sev="critical">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Perimeter / Appliance</span></div>
+    <h2>Ivanti Sentry também apanhou: command injection crítica e exploração já em campo</h2>
+    <p>A Ivanti publicou correções para o Sentry depois que a CVE-2026-10520, uma command injection de severidade máxima, apareceu sendo explorada em ataques. O pacote ainda inclui outra falha, a CVE-2026-10523, ligada a validação de certificado.</p><p>O caso atingiu poucas dezenas de organizações, mas isso é o suficiente para virar dor de cabeça séria quando o appliance está na beira da rede. “Aparelho de borda” é sempre uma expressão bonitinha até alguém conseguir comando remoto nele.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar para as versões corrigidas da Ivanti, restringir exposição externa, remover configurações legadas sempre que possível e investigar qualquer comportamento anômalo em appliances Sentry.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://hub.ivanti.com/s/article/Security-Advisory-Ivanti-Sentry-CVE-2026-10520-CVE-2026-10523?language=en_US" target="_blank" rel="noopener">Ivanti</a> · <a href="https://www.bleepingcomputer.com/news/security/max-severity-ivanti-sentry-vulnerability-now-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.rapid7.com/blog/post/etr-cve-2026-10520-cve-2026-10523-multiple-critical-vulnerabilities-affecting-ivanti-sentry/" target="_blank" rel="noopener">Rapid7</a></p>
+  </div>
+</section>
+          <h2 class="split-title">Segurança em IA</h2>
+
+<section class="art" id="a11" data-sev="high">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Agentic Security</span></div>
+    <h2>Agentjacking mostra como um agente de código pode ler “ajuda” e obedecer malware sem perceber</h2>
+    <p>Pesquisadores da Tenet Security descreveram o Agentjacking, um ataque que injeta conteúdo malicioso em eventos do Sentry para fazer agentes de código como Claude Code e Cursor executarem comandos perigosos.</p><p>O truque é nojento porque explora a confiança entre ferramentas: o agente recebe o evento como se fosse diagnóstico legítimo e passa a rodar instruções do atacante com os privilégios da máquina do dev. É prompt injection com crachá de produção.</p>
+    <div class="callout"><strong>O que fazer:</strong> Não deixar agente executar comando sem revisão humana, restringir o que MCP e ferramentas externas podem ver, e tratar saída de observabilidade como dado não confiável até prova em contrário.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/06/agentjacking-attack-tricks-ai-coding.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://www.tenet-security.com/" target="_blank" rel="noopener">Tenet Security</a></p>
+  </div>
+</section>
+
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Malware</span></div>
+    <h2>Pesquisadores criaram um worm de IA que se replica usando modelos locais e sem pedir licença pra ninguém</h2>
+    <p>A equipe da University of Toronto mostrou um worm capaz de usar um LLM local para raciocinar sobre cada alvo, adaptar a próxima etapa e se replicar sem tocar em um serviço comercial de IA.</p><p>A parte pior não é a estética de filme ruim; é o modelo operacional. Se o malware consegue pensar com os recursos do host comprometido, ele deixa de depender de um payload fixo e passa a gerar a própria estratégia em tempo de execução.</p>
+    <div class="callout"><strong>O que fazer:</strong> Separar ambientes com GPU, reforçar segmentação e egress control, tratar execução local de modelos como superfície de risco e priorizar patch de serviços expostos antes que vire material para um worm adaptativo.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.utoronto.ca/news/u-t-researchers-demonstrate-ai-worm-could-target-any-online-device" target="_blank" rel="noopener">University of Toronto</a> · <a href="https://arxiv.org/abs/2606.03811" target="_blank" rel="noopener">arXiv</a> · <a href="https://thehackernews.com/2026/06/researchers-build-self-replicating-ai.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Threat Intel</span></div>
+    <h2>Google disse ter visto o primeiro zero-day desenvolvido com ajuda de IA antes da pancadaria acontecer</h2>
+    <p>O relatório novo do Google Threat Intelligence Group diz que um ator criminoso planejava usar um zero-day desenvolvido com ajuda de IA em uma campanha ampla, e que a descoberta preventiva pode ter evitado a execução.</p><p>O recado aqui é simples e meio desagradável: IA já entrou no ciclo de exploit development de verdade. Não é mais só “assistente para escrever e-mail”; agora também ajuda a encontrar, testar e empacotar exploração.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar tempos de patch e validação como se o atacante já estivesse usando IA para reduzir o tempo entre CVE e exploit funcional; priorizar hardening em ativos expostos e acelerar detecção de anomalia.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/google-threat-intelligence-group-report/" target="_blank" rel="noopener">Google Blog</a> · <a href="https://cloud.google.com/blog/topics/threat-intelligence/ai-vulnerability-exploitation-initial-access/" target="_blank" rel="noopener">Google Cloud Threat Intelligence</a> · <a href="https://thehackernews.com/2026/05/hackers-used-ai-to-develop-first-known.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / AppSec</span></div>
+    <h2>Langflow levou path traversal em ataques e lembra que plataforma de IA também é software comum, só que mais perigoso</h2>
+    <p>A CVE-2026-5027, uma path traversal em Langflow, já estava sendo explorada para escrever arquivos arbitrários em servidores expostos. A plataforma é popular para criar apps e agentes de IA, o que aumenta a curiosidade dos atacantes e a dor dos defensores.</p><p>O problema fica mais engraçado de um jeito horrível porque o produto usa auto-login anônimo por padrão. Ou seja: uma única requisição bem formada já basta para entrar no ponto vulnerável.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar para a versão corrigida do Langflow, revisar exposição pública, desativar auto-login onde possível e monitorar gravação de arquivos fora do diretório esperado.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/path-traversal-flaw-in-ai-dev-platform-langflow-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.tenable.com/security/research/tra-2026-02" target="_blank" rel="noopener">Tenable</a> · <a href="https://snyk.io/blog/" target="_blank" rel="noopener">Snyk</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="medium">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / Product Safety</span></div>
+    <h2>Anthropic lançou o Claude Fable 5 com salvaguardas e deixou o Mythos 5 trancado para uso restrito</h2>
+    <p>A Anthropic colocou o Claude Fable 5 no público e manteve o Claude Mythos 5, a variante com capacidades de cibersegurança mais fortes, restrita a usuários verificados. O modelo foi dividido não por capacidade, mas por política de risco.</p><p>Isso é um sinal importante: a indústria já está tratando assistência ofensiva como algo que precisa de gates, classifiers e fallback controlado. O futuro do agente de IA não é só “mais inteligente”; é “mais controlado, ou deveria ser”.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar acesso a modelos avançados como privilégio, revisar políticas para uso de IA em tarefas sensíveis e registrar quando uma solicitação é desviada para fallback ou bloqueada.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.anthropic.com/claude/fable" target="_blank" rel="noopener">Anthropic</a> · <a href="https://thehackernews.com/2026/06/anthropic-releases-claude-fable-5-its.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-orange">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Resumo sem perfume: patch de borda e ERP não é tarefa para depois, AUR e npm continuam sendo pontos onde a confiança vira vetor, e IA já entrou de vez na parte feia da história. Não é mais só produtividade; é também escala para pesquisa, exploração e fraude. Que bonito. Que chato. Que importante.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById("progress");function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+"%";}addEventListener("scroll",onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
