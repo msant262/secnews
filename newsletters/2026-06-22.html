@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #25 — 22 JUN 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Semana com Splunk e Cisco explorados e entrando no KEV da CISA, FortiSandbox e FortiBleed pressionando appliances Fortinet, F5 soltando patch emergencial do NGINX, Gravity SMTP vazando tokens, DragonForce escondendo C2 em relays do Teams, Klue expondo Salesforce via OAuth, e IA aparecendo em AutoJack, Mastra, JetBrains, Agentjacking e espionagem mirando pesquisa de IA.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#25 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#25</span><span class="mono-tag">22 JUN 2026</span><span class="mono-tag">20 min de leitura</span></div>
+      <h1>Splunk e Cisco no KEV, Fortinet sangrando credenciais, NGINX crítico e agentes de IA virando superfície real</h1>
+      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">Fortinet</span><span class="badge">Supply Chain</span><span class="badge">AI Security</span><span class="badge">Data Breach</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">5</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">7</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">3</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#25 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>Splunk Enterprise entrou no KEV: pre-auth RCE em plataforma que guarda a visão do SOC</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Cisco Catalyst SD-WAN Manager teve exploração limitada e patch com prazo curto</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>FortiSandbox teve três falhas exploradas; uma delas tinha acabado de sair do forno</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>F5 soltou patch fora de ciclo para NGINX com duas falhas críticas e risco de execução de código</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot medium"></span>Gravity SMTP expôs API keys e tokens em WordPress; Wordfence viu milhões de tentativas</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>FortiBleed vazou credenciais de quase 74 mil firewalls e VPNs Fortinet</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>DragonForce usou relays do Microsoft Teams para esconder C2 em tráfego confiável</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>Klue confirmou roubo de OAuth tokens e clientes tiveram dados Salesforce exfiltrados</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot medium"></span>AryStinger transformou roteadores D-Link antigos em proxies e executores distribuídos</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot medium"></span>Texas expôs dados de mais de 3 milhões de clientes de licenças de caça e pesca</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot high"></span>AutoJack mostrou que uma página maliciosa pode atravessar localhost e virar RCE em agente de IA</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot critical"></span>Mastra teve 140+ pacotes npm envenenados e Microsoft atribuiu à Sapphire Sleet</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>Plugins maliciosos do JetBrains Marketplace roubaram chaves de API de IA de devs</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Agentjacking usa eventos falsos do Sentry para mandar agentes de código executarem comandos</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>Google ligou UNC6508 a espionagem contra pesquisa médica, defesa, cyber e IA</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#25 · Leitura">
+<div class="read-intro">
+  <p>Semana com cara de “não deixa para depois”: Splunk e Cisco entraram no radar de exploração ativa, Fortinet apareceu duas vezes — uma por falhas em FortiSandbox, outra por credenciais vazadas — e o NGINX ganhou patch emergencial da F5.</p>
+  <p>Na parte de IA, o recado ficou cristalino: agentes, plugins, MCP, supply chain e pesquisa sensível já são superfície real. Não é tendência bonita de slide. É risco operacional com log, token, exploit e atacante com pressa.</p>
+</div>
+          <h2 class="split-title">Segurança geral</h2>
+
+<section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">SIEM / RCE</span></div>
+    <h2>Splunk Enterprise entrou no KEV: pre-auth RCE em plataforma que guarda a visão do SOC</h2>
+    <p>A CISA adicionou a CVE-2026-20253 ao catálogo de vulnerabilidades exploradas após confirmação de exploração em campo. A falha fica no endpoint do serviço PostgreSQL sidecar do Splunk Enterprise e permite que um atacante sem autenticação crie ou trunque arquivos se conseguir alcançar o serviço.</p><p>Isso é feio não só pelo RCE em si. Splunk costuma ser o lugar onde a empresa procura o atacante. Se ele toma o Splunk, ele pode mexer em evidência, apagar rastro, roubar credenciais armazenadas e deixar o SOC olhando para uma tela bonita e mentirosa. Delicioso, se você for o caos. Péssimo, se você for adulto responsável.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar para Splunk Enterprise 10.4.0, 10.2.4, 10.0.7 ou superior; se não der, avaliar a mitigação de desabilitar o PostgreSQL sidecar. Procurar path traversal, parâmetros PostgreSQL estranhos, execução inesperada de pg_dump/pg_restore e conexões de saída para servidores PostgreSQL desconhecidos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://advisory.splunk.com/advisories/SVD-2026-0603" target="_blank" rel="noopener">Splunk</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://www.helpnetsecurity.com/2026/06/19/splunk-vulnerability-cve-2026-20253-exploited/" target="_blank" rel="noopener">Help Net Security</a></p>
+  </div>
+</section>
+
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">SD-WAN / KEV</span></div>
+    <h2>Cisco Catalyst SD-WAN Manager teve exploração limitada e patch com prazo curto</h2>
+    <p>A Cisco corrigiu a CVE-2026-20262 no Catalyst SD-WAN Manager, uma falha de escrita arbitrária de arquivo no web UI. A exploração exige credenciais válidas com permissão de escrita, mas a própria Cisco disse ter visto exploração limitada em junho e a CISA colocou o caso no KEV.</p><p>O problema permite criar ou sobrescrever arquivos no sistema por meio de requests HTTP preparados para um endpoint de API. Na prática, isso pode abrir caminho para elevação até root quando combinado com upload de artefatos maliciosos. SD-WAN é o tipo de peça que ninguém quer descobrir comprometida pelo log do fornecedor, né.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar as versões corrigidas indicadas pela Cisco, auditar /var/log/nms/vmanage-server.log e logs de appserver/service-proxy por uploads WAR suspeitos, revisar contas com permissão de escrita e limitar acesso administrativo ao Manager.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sdwan-arbfw-c2rZvQ" target="_blank" rel="noopener">Cisco</a> · <a href="https://www.cisa.gov/news-events/alerts/2026/06/15/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA</a> · <a href="https://thehackernews.com/2026/06/cisco-releases-security-updates-for.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Fortinet / Appliance</span></div>
+    <h2>FortiSandbox teve três falhas exploradas; uma delas tinha acabado de sair do forno</h2>
+    <p>Pesquisadores relataram exploração de três vulnerabilidades no Fortinet FortiSandbox: CVE-2026-39813, CVE-2026-39808 e CVE-2026-25089. As três ficam na zona perigosa de appliance de segurança exposto, com bypass, path traversal e command injection no cardápio.</p><p>Duas já tinham patch desde abril; a CVE-2026-25089 tinha sido corrigida na semana anterior. Isso reforça uma verdade chata: para appliance de borda e ferramenta de segurança, janela de patch medida em “quando der” é praticamente convite com RSVP para atacante.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar imediatamente os patches de FortiSandbox/FortiSandbox Cloud/FortiSandbox PaaS, revisar exposição de interfaces administrativas, procurar requests HTTP anômalos e tratar qualquer instância não atualizada como potencialmente sondada.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://threatprotect.qualys.com/2026/06/17/fortinet-fortisandbox-vulnerability-exploited-by-attackers-cve-2026-39808-cve-2026-25089-cve-2026-39813/" target="_blank" rel="noopener">Qualys ThreatPROTECT</a> · <a href="https://thehackernews.com/2026/06/attackers-exploit-three-fortinet.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a4" data-sev="critical">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">NGINX / Edge</span></div>
+    <h2>F5 soltou patch fora de ciclo para NGINX com duas falhas críticas e risco de execução de código</h2>
+    <p>A F5 publicou atualizações emergenciais para múltiplos produtos NGINX. Duas falhas críticas — CVE-2026-42530 e CVE-2026-42055 — podem causar DoS e, em cenários específicos como ASLR desabilitado ou bypassado, permitir execução de código.</p><p>As falhas atingem módulos de HTTP/3, proxy protocol v2 e gRPC em configurações não padrão. Não há exploração reportada pela F5, mas NGINX fica na frente de coisa demais para virar “eu vejo isso depois”. Frente de aplicação é onde o problema gosta de ficar bronzeado.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar NGINX Plus, NGINX Open Source, NGINX Gateway Fabric e NGINX Instance Manager conforme os advisories. Como mitigação temporária, remover quic dos listen directives para HTTP/3 e revisar ignore_invalid_headers off / large_client_header_buffers.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://my.f5.com/manage/s/article/K000161614" target="_blank" rel="noopener">F5</a> · <a href="https://www.bleepingcomputer.com/news/security/f5-issues-out-of-band-patches-for-critical-nginx-vulnerabilities/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a5" data-sev="medium">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">WordPress / Info Disclosure</span></div>
+    <h2>Gravity SMTP expôs API keys e tokens em WordPress; Wordfence viu milhões de tentativas</h2>
+    <p>A CVE-2026-4020 no plugin Gravity SMTP permite que visitantes sem autenticação acessem um endpoint REST e extraiam um relatório grande com configuração, dados de sistema, plugins e credenciais de integrações de e-mail como Amazon SES, Google, Mailjet, Resend e Zoho.</p><p>A falha é classificada como média, mas impacto real depende do que estava guardado ali. Se o plugin tinha token vivo, o atacante ganhou caminho para abuso de e-mail, phishing em nome do site e reconhecimento com manual de instruções. Médio no papel, inconveniente pra cacete na vida.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar para Gravity SMTP 2.1.5 ou superior, rotacionar chaves/tokens de provedores de e-mail, procurar requests para /wp-json/gravitysmtp/v1/tests/mock-data com page=gravitysmtp-settings e revisar abuso de envio.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.wordfence.com/blog/2026/06/attackers-actively-exploiting-sensitive-information-exposure-vulnerability-in-gravity-smtp-plugin/" target="_blank" rel="noopener">Wordfence</a> · <a href="https://thehackernews.com/2026/06/hackers-exploit-gravity-smtp-wordpress.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-4020" target="_blank" rel="noopener">NVD</a></p>
+  </div>
+</section>
+
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Fortinet / Credenciais</span></div>
+    <h2>FortiBleed vazou credenciais de quase 74 mil firewalls e VPNs Fortinet</h2>
+    <p>A CISA alertou clientes Fortinet após o vazamento FortiBleed expor credenciais associadas a aproximadamente 74 mil dispositivos, incluindo firewalls e gateways VPN. Pesquisadores afirmam que o conjunto inclui URLs, usuários, e-mails e senhas em texto claro.</p><p>O pior aqui é a combinação: credencial reutilizada, appliance exposto e setor crítico na lista. Mesmo sem uma causa técnica única confirmada, o resultado operacional é simples: tem porta de borda com chave circulando por aí. E sim, isso é tão ruim quanto parece.</p>
+    <div class="callout"><strong>O que fazer:</strong> Encerrar sessões SSL VPN e administrativas, resetar senhas de VPN/admin, ativar MFA resistente a phishing, restringir interfaces de gestão na internet, remover contas não autorizadas e revisar logs de login/lateral movement.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/news-events/alerts/2026/06/18/cisa-urges-hardening-fortinet-devices-after-reports-credential-exposure" target="_blank" rel="noopener">CISA</a> · <a href="https://www.bleepingcomputer.com/news/security/cisa-warns-fortinet-users-to-secure-devices-after-fortibleed-leak/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.hudsonrock.com/fortinet" target="_blank" rel="noopener">Hudson Rock</a></p>
+  </div>
+</section>
+
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Ransomware / C2</span></div>
+    <h2>DragonForce usou relays do Microsoft Teams para esconder C2 em tráfego confiável</h2>
+    <p>A Symantec detalhou o Backdoor.Turn, um RAT em Go usado pelo DragonForce para mascarar comunicação de comando e controle dentro da infraestrutura TURN do Microsoft Teams. É o primeiro malware conhecido em campo abusando relays TURN do Teams para C2.</p><p>O truque é elegante de um jeito irritante: o defensor vê tráfego associado a Microsoft Teams, enquanto o malware passa comandos, recon, LDAP, coleta de certificados e roubo de credenciais de navegador. Confiar cegamente em domínio “bonito” nunca foi uma estratégia; era só preguiça bem vestida.</p>
+    <div class="callout"><strong>O que fazer:</strong> Monitorar padrões anômalos de Teams/TURN, correlacionar com processo de origem no endpoint, revisar IoCs da Symantec, caçar uso de BYOVD e tratar tráfego “confiável” como algo que também precisa de comportamento esperado.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.security.com/threat-intelligence/dragonforce-msteams-backdoor" target="_blank" rel="noopener">Symantec</a> · <a href="https://www.bleepingcomputer.com/news/security/ransomware-gang-abuses-microsoft-teams-relays-to-hide-malicious-traffic/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">SaaS / OAuth</span></div>
+    <h2>Klue confirmou roubo de OAuth tokens e clientes tiveram dados Salesforce exfiltrados</h2>
+    <p>A Klue confirmou atividade não autorizada em parte da sua infraestrutura de integração em 12 de junho. Segundo a empresa, um credencial legado comprometido permitiu obter tokens OAuth usados para conectar Klue a plataformas de terceiros, incluindo Salesforce.</p><p>Huntress e ReliaQuest viram uso desses tokens para acessar ambientes Salesforce de clientes e realizar extração de dados. O grupo Icarus reivindicou o ataque e a lista de afetados cresceu com nomes como Recorded Future, Tanium, Jamf, Sprout Social e Gong. SaaS supply chain, amor: quando a integração vira ponte levadiça abaixada.</p>
+    <div class="callout"><strong>O que fazer:</strong> Revogar tokens Klue/Salesforce, revisar Connected Apps e OAuth grants, auditar queries e exports no Salesforce, rotacionar credenciais de integrações, avisar times comerciais sobre phishing com dados reais e monitorar extorsão.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://klue.com/blog/an-update-on-recent-klue-security-incident" target="_blank" rel="noopener">Klue</a> · <a href="https://www.huntress.com/blog/klue-breach-investigation" target="_blank" rel="noopener">Huntress</a> · <a href="https://reliaquest.com/blog/threat-spotlight-integration-abused-in-crm-data-theft" target="_blank" rel="noopener">ReliaQuest</a> · <a href="https://www.bleepingcomputer.com/news/security/klue-oauth-breach-victim-list-grows-as-icarus-hackers-claim-attack/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a9" data-sev="medium">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Botnet / Routers</span></div>
+    <h2>AryStinger transformou roteadores D-Link antigos em proxies e executores distribuídos</h2>
+    <p>A XLab revelou a botnet AryStinger, que comprometeu mais de 4 mil roteadores antigos, principalmente D-Link DIR-850L e DIR-818LW, para atuar como proxy, scanner, túnel e executor remoto. Também há uma variante em Go mirando NAS, ainda menor, mas mais capaz.</p><p>O padrão é o de sempre: hardware legado, firmware esquecido e atacante usando a sua borda doméstica/pequeno escritório como trampolim global. Roteador EoL é praticamente uma planta de plástico: fica ali decorando e ninguém lembra que precisa cuidar.</p>
+    <div class="callout"><strong>O que fazer:</strong> Substituir roteadores EoL, aplicar firmware quando houver suporte, trocar senha padrão, desativar gestão remota, revisar DNS configurado no equipamento e monitorar tráfego de proxy/túnel fora do padrão.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://blog.xlab.qianxin.com/arystinger-botnet-hijacks-legacy-routers-for-global-attacks-en/" target="_blank" rel="noopener">XLab</a> · <a href="https://www.bleepingcomputer.com/news/security/arystinger-botnet-infected-thousands-of-d-link-routers-worldwide/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a10" data-sev="medium">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Data Breach / Gov</span></div>
+    <h2>Texas expôs dados de mais de 3 milhões de clientes de licenças de caça e pesca</h2>
+    <p>O Texas Parks and Wildlife Department informou que uma intrusão no fornecedor do sistema de licenças expôs dados pessoais de 3.087.721 clientes. O órgão disse que SSNs, datas de nascimento e dados financeiros não foram impactados, mas que o conjunto pode incluir carteira de motorista, passaporte, e-mail, telefone e endereço.</p><p>Mesmo sem cartão ou SSN, isso é material excelente para phishing, fraude e impersonação com contexto local. Vazamento em fornecedor de governo é o tipo de lembrete que a cadeia terceirizada também precisa de monitoramento, contrato e cobrança — que absurdo, segurança envolvendo terceiros, quem imaginaria.</p>
+    <div class="callout"><strong>O que fazer:</strong> Notificar afetados, oferecer monitoramento quando aplicável, reforçar alerta contra phishing, revisar controles do fornecedor, exigir evidência de contenção e implementar monitoramento adicional no sistema de licenças.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://tpwd.texas.gov/about/notification-of-data-security-incident" target="_blank" rel="noopener">Texas Parks and Wildlife Department</a> · <a href="https://www.bleepingcomputer.com/news/security/texas-govt-data-breach-exposes-over-3-million-drivers-licenses/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+          <h2 class="split-title">Segurança em IA</h2>
+
+<section class="art" id="a11" data-sev="high">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Agentic Security</span></div>
+    <h2>AutoJack mostrou que uma página maliciosa pode atravessar localhost e virar RCE em agente de IA</h2>
+    <p>Pesquisadores da Microsoft detalharam o AutoJack, uma cadeia em AutoGen Studio na qual conteúdo web não confiável renderizado por um agente conseguia alcançar um WebSocket MCP local e disparar processos no host. O problema foi endurecido no branch principal e a superfície vulnerável não chegou a release estável no PyPI, embora builds pré-release tenham tido a rota.</p><p>A lição é maior que o bug: localhost não é castelo quando um agente navega a web e também fala com serviços locais privilegiados. Se a mesma máquina junta browser agent, ferramenta de código e plano de controle, o atacante só precisa convencer uma peça “obediente” a atravessar a porta errada.</p>
+    <div class="callout"><strong>O que fazer:</strong> Isolar agentes que acessam conteúdo externo de serviços locais privilegiados, exigir autenticação/autorização em WebSockets e MCP, rodar protótipos com baixo privilégio e container/VM quando possível, e atualizar AutoGen Studio para código com o hardening aplicado.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/06/18/autojack-single-page-rce-host-running-ai-agent/" target="_blank" rel="noopener">Microsoft Security Blog</a> · <a href="https://thehackernews.com/2026/06/autojack-attack-lets-one-web-page.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a12" data-sev="critical">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">AI / npm Supply Chain</span></div>
+    <h2>Mastra teve 140+ pacotes npm envenenados e Microsoft atribuiu à Sapphire Sleet</h2>
+    <p>A Microsoft relatou um ataque de supply chain contra mais de 140 pacotes dos escopos mastra e @mastra no npm. O ator tomou a conta de mantenedor ehindero, publicou versões contaminadas e injetou a dependência typosquat easy-day-js, que executava payload via postinstall.</p><p>O update de 19 de junho atribuiu a atividade à Sapphire Sleet, grupo norte-coreano ligado a ataques financeiros e outros compromissos npm. O risco aqui vai direto para workstation e CI/CD: se npm install rodou no período errado, import nem precisava acontecer. O pacote se instalava e fazia a festa sozinho.</p>
+    <div class="callout"><strong>O que fazer:</strong> Identificar installs/updates de pacotes Mastra afetados, limpar caches, remover versões comprometidas, procurar execução de easy-day-js/setup.cjs, rotacionar tokens de npm/GitHub/cloud/LLM e revisar runners CI/CD como ambiente possivelmente comprometido.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/" target="_blank" rel="noopener">Microsoft Security Blog</a> · <a href="https://www.bleepingcomputer.com/news/security/microsoft-links-mastra-ai-supply-chain-attack-to-north-korean-hackers/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / IDE Plugins</span></div>
+    <h2>Plugins maliciosos do JetBrains Marketplace roubaram chaves de API de IA de devs</h2>
+    <p>A Aikido encontrou uma campanha com pelo menos 15 plugins do JetBrains Marketplace, publicados por sete contas, que se passavam por assistentes de IA e exfiltravam a API key inserida pelo desenvolvedor nas configurações. Juntos, os plugins somavam perto de 70 mil instalações.</p><p>A parte mais venenosa é que os plugins funcionavam como prometido: chat, review, commit message, testes. Só que, ao clicar em Apply, a chave era enviada em texto claro para servidor controlado pelo atacante. IDE plugin é dependência com acesso ao coração do dev, não enfeite de produtividade.</p>
+    <div class="callout"><strong>O que fazer:</strong> Remover os plugins listados pela Aikido/JetBrains, rotacionar chaves OpenAI/DeepSeek/SiliconFlow ou equivalentes inseridas nesses plugins, revisar cobrança/uso anômalo de API e criar política de allowlist para extensões de IDE.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.aikido.dev/blog/multiple-jetbrains-ide-plugins-caught-stealing-ai-keys" target="_blank" rel="noopener">Aikido</a> · <a href="https://www.bleepingcomputer.com/news/security/malicious-jetbrains-marketplace-plugins-steal-ai-api-keys-from-developers/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / MCP</span></div>
+    <h2>Agentjacking usa eventos falsos do Sentry para mandar agentes de código executarem comandos</h2>
+    <p>Pesquisadores da Tenet Security descreveram o Agentjacking: um atacante usa um DSN público do Sentry para injetar um evento falso com instruções em markdown. Quando um dev pede ao agente para corrigir issues do Sentry via MCP, o agente pode interpretar aquilo como orientação legítima e executar código no ambiente local.</p><p>O ataque é lindo de um jeito nojento porque não invade a infra antes. Ele contamina o dado que o agente confia. Observabilidade, ticket, alerta, log e “erro de produção” viram prompt injection com cara de trabalho. Bem-vindo ao futuro; ele trouxe uma faca dentro do dashboard.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar dados vindos de MCP/Sentry/observabilidade como não confiáveis, exigir aprovação humana antes de comandos shell, limitar permissões de agentes, usar allowlist de ferramentas e separar leitura de alerta de capacidade de execução.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://tenetsecurity.ai/blog/agentjacking-coding-agents-with-fake-sentry-errors/" target="_blank" rel="noopener">Tenet Security</a> · <a href="https://thehackernews.com/2026/06/agentjacking-attack-tricks-ai-coding.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="high">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Threat Intel</span></div>
+    <h2>Google ligou UNC6508 a espionagem contra pesquisa médica, defesa, cyber e IA</h2>
+    <p>O Google Threat Intelligence Group atribuiu à UNC6508, ator com nexo com a China, uma campanha sofisticada contra instituições acadêmicas, médicas e militares na América do Norte. O objetivo de coleta incluía inteligência de defesa, operações no Indo-Pacífico, sistemas não tripulados, programas ofensivos de cyber, pesquisa médica e inteligência artificial.</p><p>Aqui IA aparece como alvo estratégico, não ferramenta mágica. Pesquisa de IA virou propriedade intelectual sensível, com valor militar, econômico e geopolítico. Atacante estatal não está roubando paper por curiosidade acadêmica; está comprando tempo com credencial alheia.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar REDCap e remover versões antigas, procurar INFINITERED com YARA/IoCs do Google, reforçar 2SV resistente a phishing para admins, revisar regras de compliance/content routing e garantir logs de Workspace/SIEM cobrindo alterações administrativas.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/prc-targets-us-medical-research" target="_blank" rel="noopener">Google Threat Intelligence Group</a></p>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-orange">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Resumo sem passar perfume no incêndio: borda e plataforma de observabilidade precisam de patch rápido, credencial de appliance vazada vira emergência, integração SaaS não é confiança automática, e IA entrou no miolo da cadeia de suprimento e do fluxo de trabalho dos devs. A boa notícia é que quase tudo aqui tem ação prática. A má é que ação prática dá trabalho. Vida adulta, infelizmente, continua sem patch.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById("progress");function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+"%";}addEventListener("scroll",onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>

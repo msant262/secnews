@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-06-22", edition:"#25", date:"22 JUN 2026", title:"Splunk e Cisco no KEV, Fortinet sangrando credenciais, NGINX crítico e agentes de IA virando superfície real",
+    summary:"Semana com Splunk e Cisco explorados e entrando no KEV da CISA, FortiSandbox e FortiBleed pressionando appliances Fortinet, F5 soltando patch emergencial do NGINX, Gravity SMTP vazando tokens, DragonForce escondendo C2 em relays do Teams, Klue expondo Salesforce via OAuth, e IA aparecendo em AutoJack, Mastra, JetBrains, Agentjacking e espionagem mirando pesquisa de IA.",
+    tags:["CISA KEV","Fortinet","Supply Chain","AI Security","Data Breach"], stories:15, crit:5, file:"newsletters/2026-06-22.html" },
   { id:"2026-06-15", edition:"#24", date:"15 JUN 2026", title:"Patch Tuesday monstro, VPN zero-day, AUR envenenado e governo dos EUA puxando freio em modelo de IA",
     summary:"Microsoft veio com 200 falhas e 6 zero-days, Check Point e Ivanti sofreram exploração em VPN/appliance, Arch AUR foi envenenado, PeopleSoft e phpBB quebraram autenticação, e IA entrou na pauta com agentes, worm, exploit dev, AppSec e Fable 5/Mythos 5 suspensos por ordem do governo dos EUA.",
     tags:["Zero-Day","Supply Chain","Data Breach","AI Security","RCE"], stories:15, crit:5, file:"newsletters/2026-06-15.html" },
