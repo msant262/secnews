@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #26 — 29 JUN 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Semana com CISA correndo atrás de Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix no KEV; KDDI expondo até 14,2 milhões de logins; Polymarket perdendo US$ 3 milhões em supply chain; Bluekit evoluindo para Browser-in-the-Middle; e IA virando disputa de frontier models com GPT-5.6 Sol, Mythos liberado para organizações confiáveis, Sakana Fugu roteando modelos e Ornith-1.0 trazendo self-scaffolding RL para coding agents.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#26 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#26</span><span class="mono-tag">29 JUN 2026</span><span class="mono-tag">22 min de leitura</span></div>
+      <h1>Cisco, Windchill e UniFi no KEV; KDDI vaza logins; IA acelera com Sol, Mythos, Fugu e Ornith</h1>
+      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">Supply Chain</span><span class="badge">Frontier AI</span><span class="badge">Data Breach</span><span class="badge">AI Agents</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">4</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">9</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">2</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#26 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>Cisco Unified CM entrou no KEV com SSRF explorada e prazo de correção apertado</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>PTC Windchill e FlexPLM tiveram RCE explorada com webshells e IoCs novos</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>Lantronix e Ubiquiti entraram no KEV: IoT, UniFi OS e borda continuam sendo buffet livre</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot high"></span>KDDI avisou que até 14,2 milhões de logins de e-mail podem ter vazado no Japão</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot high"></span>FBI e CISA: atores russos agora miram chaves de recuperação de backup do Signal</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>Polymarket perdeu cerca de US$ 3 milhões após JavaScript malicioso em fornecedor de frontend</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>GitLab corrigiu 13 falhas, incluindo XSS alto e vazamento em Duo Workflows</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>Bluekit evoluiu para Browser-in-the-Middle e deixa o login acontecer no navegador do atacante</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot medium"></span>Shop, da Shopify, foi abusado para inserir recibos falsos e empurrar callback phishing</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot medium"></span>Polônia prendeu grupo de SIM swapping ligado a milhões roubados em cripto</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot critical"></span>Amazon Q para VS Code permitia execução de código e roubo de credenciais ao abrir repo malicioso</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>OpenAI abriu preview do GPT-5.6 Sol com cyber mais forte e acesso controlado pelo governo</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>EUA liberaram Claude Mythos 5 para organizações confiáveis depois do freio por risco de jailbreak</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Sakana Fugu tenta transformar orquestração de frontier models em produto de soberania operacional</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>Ornith-1.0 põe self-scaffolding RL em modelos abertos de coding e cutuca o risco de reward hacking</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#26 · Leitura">
+<div class="read-intro">
+  <p>Semana daquelas em que a borda olha para a gente e sorri com todos os dentes: Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix apareceram no KEV da CISA, com exploração ativa ou urgência real de correção.</p>
+  <p>Do outro lado, IA teve uma semana grande de verdade: OpenAI abriu o preview do GPT-5.6 Sol com cyber capability e rollout limitado, os EUA destravaram Mythos para organizações confiáveis, Sakana lançou Fugu como orquestrador de modelos e DeepReinforce colocou Ornith-1.0 na mesa dos coding agents abertos. Isso é menos “feature legal” e mais infraestrutura estratégica começando a andar com freio, cinto e faca escondida no porta-luvas.</p>
+</div>
+          <h2 class="split-title">Segurança geral</h2>
+
+<section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Cisco / KEV</span></div>
+    <h2>Cisco Unified CM entrou no KEV com SSRF explorada e prazo de correção apertado</h2>
+    <p>A CISA colocou a CVE-2026-20230 no catálogo KEV depois de exploração ativa contra Cisco Unified Communications Manager e Unified CM SME. A falha é SSRF, pode ser explorada remotamente sem autenticação por requisições HTTP preparadas e, segundo a CISA, permite escrever arquivos no sistema operacional que podem ser usados depois para elevar privilégio até root.</p><p>Esse é o tipo de bug que parece “só telefonia” até alguém lembrar que Unified CM costuma estar enfiado no meio da comunicação corporativa, com confiança demais e segmentação de menos. A Cisco já tinha corrigido em 3 de junho e avisado que havia PoC; depois veio exploração real. Ou seja: a fase “vamos observar” acabou, amor.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar as versões corrigidas da Cisco imediatamente, restringir acesso HTTP administrativo, procurar arquivos inesperados escritos pelo serviço, revisar logs de requisições anômalas e tratar instâncias expostas como prioridade de resposta, não como backlog bonitinho.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-cucm-ssrf-cXPnHcW.html" target="_blank" rel="noopener">Cisco</a> · <a href="https://www.bleepingcomputer.com/news/security/cisa-sets-urgent-deadline-to-fix-cisco-flaw-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">PLM / RCE</span></div>
+    <h2>PTC Windchill e FlexPLM tiveram RCE explorada com webshells e IoCs novos</h2>
+    <p>A CISA também adicionou a CVE-2026-12569 ao KEV. A falha afeta PTC Windchill e FlexPLM, envolve validação inadequada/deserialização de dados não confiáveis e pode permitir execução remota de código sem autenticação. A própria PTC publicou atualização emergencial dizendo ter recebido relatos de atividade elevada e liberou IoCs novos.</p><p>O detalhe que incomoda: os indicadores incluem webshells JSP em caminhos de login do Windchill, header de comando X-windchill-req e recomendação explícita de caçar POST para /Windchill/login/[hex].jsp. Isso não é “risco teórico em produto de nicho”. É atacante mexendo em sistema que guarda produto, engenharia, manufatura e propriedade intelectual. Aquele cofre lindo que alguém deixou com janela aberta.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar patches/remediações da PTC, bloquear IoCs conhecidos, caçar webshells JSP com nomes hexadecimais em /Windchill/login/, alertar qualquer header X-windchill-req, restringir exposição pública e revisar logs de POST/transferência grande no tier da aplicação.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.ptc.com/en/about/trust-center/advisory-center/active-advisories/windchill-flexplm-rce-vulnerability" target="_blank" rel="noopener">PTC</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://www.bleepingcomputer.com/news/security/cisa-sets-urgent-deadline-to-fix-cisco-flaw-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Edge / Infra</span></div>
+    <h2>Lantronix e Ubiquiti entraram no KEV: IoT, UniFi OS e borda continuam sendo buffet livre</h2>
+    <p>No dia 23, a CISA adicionou uma falha da Lantronix EDS5000 e três do Ubiquiti UniFi OS ao KEV. A CVE-2025-67038 permite injeção de comandos no parâmetro username com execução como root no Lantronix. No UniFi OS, a CISA listou CVE-2026-34908, CVE-2026-34909 e CVE-2026-34910, cobrindo controle de acesso inadequado, path traversal e validação inadequada que pode levar a command injection.</p><p>O padrão aqui é velho e ainda assim todo mundo insiste em fingir surpresa: equipamento de borda, appliance “só de rede”, painel administrativo acessível demais e patch que chega quando o atacante já está fazendo inventário. Se gerencia rede, não é periférico. É o corredor por onde o incêndio passeia.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar firmware Lantronix EDS5000 e UniFi OS, remover gestão da internet, revisar contas e alterações não autorizadas, procurar comandos suspeitos em logs, segmentar administração e priorizar qualquer appliance exposto que esteja fora da versão corrigida.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://community.ui.com/releases/Security-Advisory-Bulletin-064-064/84811c09-4cf4-42ab-bd61-cc994445963b" target="_blank" rel="noopener">Ubiquiti</a> · <a href="https://ltrxdev.atlassian.net/wiki/spaces/LTRXTS/pages/2538438657/Latest+Firmware+for+the+EDS5000+series+EDS5008+EDS5016+EDS5032" target="_blank" rel="noopener">Lantronix</a></p>
+  </div>
+</section>
+
+<section class="art" id="a4" data-sev="high">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Data Breach / ISP</span></div>
+    <h2>KDDI avisou que até 14,2 milhões de logins de e-mail podem ter vazado no Japão</h2>
+    <p>A KDDI, uma das maiores operadoras japonesas, revelou que invasores acessaram um sistema de e-mail usado por cinco outros ISPs: STNet, JCOM, Chubu Telecommunications, NIFTY e BIGLOBE. A empresa descobriu o incidente em 17 de junho e disse que a investigação ainda está em andamento.</p><p>O número máximo informado é pesado: até 14,22 milhões de contas de clientes atuais, antigos e inativos podem ter tido e-mail e senha expostos. A KDDI disse que parte das senhas estava em hash e/ou criptografada, mas não detalhou formato, proporção ou força. Traduzindo: dá para reduzir pânico, não dá para relaxar.</p>
+    <div class="callout"><strong>O que fazer:</strong> Forçar reset de senha para contas afetadas, ativar 2FA onde existir, caçar reutilização de credenciais em VPN/SaaS, monitorar credential stuffing e preparar comunicação antifraude para clientes, porque phishing com dado real é o golpe vestido de terno.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://newsroom.kddi.com/news/assets/2026/kddi_nr_s-71_4593/kddi_nr_s-71_4593_pdf_01.pdf" target="_blank" rel="noopener">KDDI</a> · <a href="https://www.bleepingcomputer.com/news/security/data-breach-exposes-up-to-142-million-email-logins-at-six-isps/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a5" data-sev="high">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Messaging / Phishing</span></div>
+    <h2>FBI e CISA: atores russos agora miram chaves de recuperação de backup do Signal</h2>
+    <p>O FBI e a CISA atualizaram um alerta sobre phishing contra aplicativos de mensagens comerciais, especialmente Signal. A campanha é atribuída a atores ligados a serviços de inteligência russos e mira pessoas de alto valor: autoridades atuais e antigas, militares, políticos, jornalistas e figuras-chave na Ucrânia.</p><p>A evolução é venenosa: além de tentar roubar códigos/PINs ou vincular dispositivos, os operadores agora induzem a vítima a ativar backups do Signal e entregar a Backup Recovery Key. Com essa chave, o atacante pode restaurar conversas históricas em outro dispositivo. Não quebrou criptografia; fez algo muito mais comum: convenceu o humano a entregar a chave.</p>
+    <div class="callout"><strong>O que fazer:</strong> Nunca compartilhar Backup Recovery Key, código ou PIN por chat; se a chave foi exposta, gerar uma nova nas configurações de backup; educar alvos sensíveis; revisar dispositivos vinculados; e reportar incidentes ao IC3/CISA quando houver suspeita.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.ic3.gov/PSA/2026/PSA260626" target="_blank" rel="noopener">FBI IC3</a> · <a href="https://www.bleepingcomputer.com/news/security/fbi-russian-hackers-now-target-signal-backup-recovery-keys/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Supply Chain / Web3</span></div>
+    <h2>Polymarket perdeu cerca de US$ 3 milhões após JavaScript malicioso em fornecedor de frontend</h2>
+    <p>A Polymarket disse que vai reembolsar clientes que perderam cerca de US$ 3 milhões depois que atacantes injetaram script malicioso no frontend oficial por meio de um fornecedor/dependência do site. Usuários foram induzidos a aprovar transações fraudulentas enquanto estavam na página legítima da plataforma.</p><p>O backend da Polymarket não teria sido comprometido, mas isso é pouco consolo para quem clicou no site certo e assinou a transação errada. Supply chain de frontend é especialmente cruel em cripto: o ataque aparece no lugar onde o usuário já esperava confiar. A interface vira phishing com crachá.</p>
+    <div class="callout"><strong>O que fazer:</strong> Inventariar scripts e fornecedores de frontend, aplicar SRI/CSP onde possível, monitorar mudanças de assets em produção, exigir revisão de dependências críticas, alertar usuários sobre transações inesperadas e preparar kill switch para assets externos comprometidos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/polymarket-customers-lose-3-million-in-supply-chain-attack/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://x.com/PolymarketTrade/status/2070155882906730671" target="_blank" rel="noopener">Polymarket</a> · <a href="https://x.com/PeckShieldAlert/status/2070157742514618443" target="_blank" rel="noopener">PeckShield</a></p>
+  </div>
+</section>
+
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">DevSecOps / GitLab</span></div>
+    <h2>GitLab corrigiu 13 falhas, incluindo XSS alto e vazamento em Duo Workflows</h2>
+    <p>O GitLab lançou as versões 19.1.1, 19.0.3 e 18.11.6 para CE/EE com 13 correções de segurança. Entre os destaques estão XSS de alta severidade no Analytics Dashboard, XSS no Web IDE workbench asset handler e divulgação de informações no Duo Workflows.</p><p>GitLab auto-hospedado costuma ser o coração do pipeline: código, CI/CD, secrets, issue, merge request e pacote. Falha “só de XSS” nesse contexto pode virar roubo de sessão, alteração de pipeline ou pivô para informação sensível. O repositório não é uma biblioteca silenciosa; é uma fábrica com chaves penduradas na parede.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar self-managed GitLab para 19.1.1, 19.0.3 ou 18.11.6; revisar usuários privilegiados e sessões suspeitas; conferir pipelines/variables alterados recentemente; e manter GitLab.com fora da lista de pânico, porque já roda versão corrigida.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-1-1-released/" target="_blank" rel="noopener">GitLab</a> · <a href="https://www.securityweek.com/gitlab-patches-13-vulnerabilities-including-code-execution-info-disclosure-flaws/" target="_blank" rel="noopener">SecurityWeek</a></p>
+  </div>
+</section>
+
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Phishing / BitM</span></div>
+    <h2>Bluekit evoluiu para Browser-in-the-Middle e deixa o login acontecer no navegador do atacante</h2>
+    <p>A Netcraft confirmou Bluekit operando em escala, com cerca de 70 hostnames detectados na última semana. A plataforma de phishing agora usa Browser-in-the-Middle via rrweb: a página legítima é carregada em um navegador controlado pelo atacante e a vítima interage com uma transmissão DOM em tempo real.</p><p>Isso muda a dinâmica do AitM tradicional. Em vez de só proxyar tráfego, o atacante faz a vítima autenticar diretamente no browser dele, com sessão, MFA e tudo no ambiente que ele controla. Ainda tem CAPTCHA falso, fingerprinting, WebRTC para detectar proxy/VPN e JavaScript obfuscado. Phishing-as-a-service, agora com acabamento premium de desgraça.</p>
+    <div class="callout"><strong>O que fazer:</strong> Reforçar proteção contra phishing resistente a proxy/BitM, usar FIDO2/passkeys quando possível, treinar usuários para latência/comportamento estranho em login, monitorar WebSocket e rrweb fora de contexto, e ajustar detecção por comportamento de sessão, não só por domínio.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.netcraft.com/blog/bluekit-phishing-as-a-service-threat" target="_blank" rel="noopener">Netcraft</a> · <a href="https://www.bleepingcomputer.com/news/security/bluekit-phishing-kit-adopts-browser-in-the-middle-for-login-theft/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a9" data-sev="medium">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Fraude / Mobile</span></div>
+    <h2>Shop, da Shopify, foi abusado para inserir recibos falsos e empurrar callback phishing</h2>
+    <p>Pesquisadores da Gen Digital observaram golpistas abusando do app Shop, usado para rastrear pedidos, para colocar recibos falsos no histórico de compras de usuários. Os recibos imitam marcas como Norton, McAfee, Apple e PayPal e incluem telefone para “contestar” cobranças.</p><p>O truque é social engineering clássica, só que entregue dentro de um app confiável, não por e-mail suspeito na caixa de spam. A vítima liga, conversa com falso suporte e pode entregar credenciais, cartões, OTPs ou instalar software de acesso remoto. Adultos no mundo real ainda atendem telefone; criminoso sabe disso melhor que muito time de segurança.</p>
+    <div class="callout"><strong>O que fazer:</strong> Não ligar para telefones dentro de recibos suspeitos; verificar cobranças direto com banco/fornecedor; reportar lojas suspeitas no app; resetar senhas e cancelar cartões se houve contato com golpista; e treinar suporte para reconhecer callback phishing fora do e-mail.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/order-tracking-app-shop-abused-to-push-callback-phishing-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.gendigital.com/blog/insights/research/fake-invoices-shopping-apps" target="_blank" rel="noopener">Gen Digital</a></p>
+  </div>
+</section>
+
+<section class="art" id="a10" data-sev="medium">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">SIM Swap / Crypto</span></div>
+    <h2>Polônia prendeu grupo de SIM swapping ligado a milhões roubados em cripto</h2>
+    <p>Autoridades polonesas prenderam quatro suspeitos acusados de invadir parceiros de telecomunicação e contas de e-mail de funcionários para viabilizar SIM swapping. A operação teve apoio do FBI e da Homeland Security Investigations dos EUA.</p><p>Segundo a investigação, o grupo sequestrava números de telefone, interceptava SMS e comunicações de e-mail e assumia contas em exchanges de criptomoedas. O valor lavado passaria de dezenas de milhões de zlotys, pelo menos alguns milhões de dólares. SIM como segundo fator já era gambiarra; para cripto, é praticamente deixar o cofre com cadeado de diário adolescente.</p>
+    <div class="callout"><strong>O que fazer:</strong> Trocar SMS por FIDO2/app autenticador resistente a phishing, proteger contas telco com PIN forte, monitorar alteração de SIM/eSIM, usar allowlist de saque em exchanges e alertar clientes de alto risco para takeover por telecom.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/poland-busts-sim-swapping-gang-tied-to-millions-in-crypto-theft/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://cbzc.policja.gov.pl/bzc/aktualnosci/975,Czlonkowie-grupy-przestepczej-w-rekach-CBZC-wsparcie-agentow-FBI-oraz-HSI.html" target="_blank" rel="noopener">CBZC</a></p>
+  </div>
+</section>
+          <h2 class="split-title">Segurança em IA</h2>
+
+<section class="art" id="a11" data-sev="critical">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">AI / MCP</span></div>
+    <h2>Amazon Q para VS Code permitia execução de código e roubo de credenciais ao abrir repo malicioso</h2>
+    <p>A Wiz divulgou a CVE-2026-12957 na extensão Amazon Q Developer para VS Code. O problema estava no carregamento automático de servidores MCP a partir de arquivos do workspace, sem consentimento do usuário e com herança completa do ambiente. Abrir um repositório malicioso com Amazon Q ativo podia executar comandos com acesso a AWS keys, tokens e contexto local.</p><p>A AWS corrigiu no language server 1.65.0, mas a lição é maior: MCP é ferramenta poderosa demais para ser autoexecutada por conveniência. Quando o assistente de código ganha permissão de spawn local e o repo controla configuração, o “clonei para testar” vira “entreguei minha cloud com laço”. Fofo, moderno, caríssimo.</p>
+    <div class="callout"><strong>O que fazer:</strong> Garantir Amazon Q language server 1.65.0 ou superior, recarregar/atualizar IDEs com auto-update bloqueado, revisar pastas .amazonq/mcp.json em projetos, exigir consentimento explícito para MCP e rodar repos desconhecidos em ambiente isolado sem credenciais cloud.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.wiz.io/blog/amazon-q-vulnerability" target="_blank" rel="noopener">Wiz</a> · <a href="https://aws.amazon.com/security/security-bulletins/2026-047-aws/" target="_blank" rel="noopener">AWS Security Bulletin</a> · <a href="https://github.com/aws/language-servers/security/advisories/GHSA-xhcr-j4j9-3gh7" target="_blank" rel="noopener">GitHub Advisory</a></p>
+  </div>
+</section>
+
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Frontier Models</span></div>
+    <h2>OpenAI abriu preview do GPT-5.6 Sol com cyber mais forte e acesso controlado pelo governo</h2>
+    <p>A OpenAI apresentou a família GPT-5.6 — Sol, Terra e Luna — em preview limitado para parceiros confiáveis. Sol é o flagship; Terra mira equilíbrio de custo/capacidade; Luna é a opção rápida e barata. O ponto que interessa para segurança: a própria OpenAI diz que Sol é seu modelo mais capaz para cybersecurity, com ganhos em tarefas longas de vulnerability research e exploração, além de um novo esforço máximo de reasoning e um “ultra mode” com subagentes.</p><p>O lançamento veio com rollout faseado e coordenação com o governo dos EUA. No ExploitBench, segundo a OpenAI, Sol fica competitivo com Mythos Preview usando cerca de um terço dos tokens de saída; ao mesmo tempo, a empresa diz que ele não cruzou o limiar “Cyber Critical” e que não produziu full-chain exploit autônomo contra Chromium/Firefox nas condições testadas. Tradução sem perfume: a capacidade defensiva subiu, a zona cinzenta dual-use ficou maior e o controle de acesso virou parte do produto.</p>
+    <div class="callout"><strong>O que fazer:</strong> Times de AppSec e vuln research devem testar Sol como acelerador defensivo com escopo, logging e revisão humana; empresas precisam definir política para modelos frontier em tarefas cyber; e qualquer uso com exploração, fuzzing ou patching deve ter ambiente isolado, autorização explícita e trilha auditável.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://openai.com/index/previewing-gpt-5-6-sol/" target="_blank" rel="noopener">OpenAI</a> · <a href="https://deploymentsafety.openai.com/gpt-5-6-preview/" target="_blank" rel="noopener">GPT-5.6 Preview System Card</a> · <a href="https://thehackernews.com/2026/06/openai-limits-gpt-56-rollout-as-sol.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Model Access</span></div>
+    <h2>EUA liberaram Claude Mythos 5 para organizações confiáveis depois do freio por risco de jailbreak</h2>
+    <p>Depois de mais de duas semanas de bloqueio/export control sobre os modelos Fable e Mythos, o governo dos EUA permitiu que a Anthropic liberasse o Claude Mythos 5 para um grupo de organizações confiáveis — incluindo empresas e agências ligadas a defesa de infraestrutura crítica, segundo relatos de Semafor/Reuters e cobertura posterior. Foi uma descompressão importante na briga entre capacidade frontier, risco de jailbreak e acesso para defensores.</p><p>A notícia importa porque Mythos virou referência explícita no resto do mercado: OpenAI compara Sol com Mythos Preview em benchmark de exploração, Sakana usa a interrupção de Fable/Mythos como argumento contra dependência de fornecedor único, e compradores enterprise agora precisam entender que “modelo disponível” pode depender de política pública, não só de cartão corporativo. A camada de acesso virou superfície estratégica. Bonito? Sim. Confortável? Nem um pouco.</p>
+    <div class="callout"><strong>O que fazer:</strong> Para uso corporativo de modelos frontier, mapear dependência de fornecedor, região e política de acesso; manter alternativa operacional para workflows críticos; definir quem pode usar modelos cyber avançados; e revisar contratos/controles para casos em que governo, export control ou vendor pause derrubem acesso da noite para o dia.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.semafor.com/article/06/27/2026/us-releases-powerful-anthropic-model-mythos-to-some-us-companies" target="_blank" rel="noopener">Semafor</a> · <a href="https://www.reuters.com/technology/us-releases-anthropic-model-mythos-some-us-companies-semafor-reports-2026-06-26/" target="_blank" rel="noopener">Reuters</a> · <a href="https://thehackernews.com/2026/06/openai-limits-gpt-56-rollout-as-sol.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Orchestration</span></div>
+    <h2>Sakana Fugu tenta transformar orquestração de frontier models em produto de soberania operacional</h2>
+    <p>A Sakana AI lançou o Sakana Fugu, um modelo-orquestrador que se apresenta como um único endpoint OpenAI-compatible, mas decide internamente quando responder sozinho e quando coordenar um pool trocável de modelos/agents. A versão Fugu Ultra é posicionada para tarefas longas e difíceis, com benchmarks em coding, reasoning e ciência, e a própria Sakana vende a tese como antídoto contra dependência de um único fornecedor.</p><p>O argumento é esperto: se Anthropic, OpenAI ou qualquer outro provider sofrer restrição, export control ou mudança comercial, um orquestrador poderia rotear ao redor do problema. Só que isso também cria uma nova caixa-preta de governança: quem decidiu qual modelo viu seu dado? Como auditar roteamento? Como aplicar política de privacidade, residência de dados e segurança quando a inteligência real está distribuída? Multi-agent sem governança vira microserviço com ansiedade e segredos, amor.</p>
+    <div class="callout"><strong>O que fazer:</strong> Antes de colocar orquestradores em fluxo sensível, exigir logs de roteamento, opção de excluir providers/modelos, política de dados por agente, avaliação de privacidade e teste contra prompt injection/cross-agent leakage. Resiliência de fornecedor é linda; opacidade operacional é onde a merda nasce.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://sakana.ai/fugu-release/" target="_blank" rel="noopener">Sakana AI</a> · <a href="https://sakana.ai/fugu/" target="_blank" rel="noopener">Sakana Fugu</a> · <a href="https://www.marktechpost.com/2026/06/22/sakana-ai-launches-sakana-fugu-an-orchestration-model-that-routes-tasks-across-a-swappable-pool-of-frontier-llms/" target="_blank" rel="noopener">MarkTechPost</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="high">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Open Models</span></div>
+    <h2>Ornith-1.0 põe self-scaffolding RL em modelos abertos de coding e cutuca o risco de reward hacking</h2>
+    <p>A DeepReinforce lançou o Ornith-1.0, família MIT/open-source de modelos para agentic coding em quatro tamanhos: 9B dense, 31B dense, 35B MoE e 397B MoE. A promessa não é só “mais um modelo de código”: o mecanismo central é self-scaffolding reinforcement learning, em que o modelo aprende a gerar tanto o scaffold/harness da tarefa quanto a solução, otimizando os dois juntos.</p><p>Isso é interessante pra caralho e perigoso pelo motivo óbvio: quando o modelo ajuda a moldar o próprio ambiente de treino, reward hacking deixa de ser rodapé acadêmico e vira risco de engenharia. A DeepReinforce descreve camadas de defesa — fronteira fixa de confiança, monitor determinístico para ações proibidas e juiz LLM congelado como veto — mas a validação independente ainda importa. Código agentic aberto melhora acesso, reduz dependência de vendor e também dá para atacante um laboratório de automação cada vez mais competente.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar modelos abertos de coding como componentes de alto privilégio: avaliar benchmarks com ceticismo, testar em tarefas reais, rodar em sandbox sem segredos, bloquear acesso a testes/artefatos protegidos, auditar harnesses gerados e não aceitar “open source” como sinônimo automático de seguro.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://deep-reinforce.com/ornith_1_0.html" target="_blank" rel="noopener">DeepReinforce</a> · <a href="https://www.techtimes.com/articles/319122/20260626/open-source-coding-model-ornith-10-writes-its-own-training-scaffold-reinforcement-learning.htm" target="_blank" rel="noopener">TechTimes</a> · <a href="https://huggingface.co/collections/deepreinforce-ai/ornith-10" target="_blank" rel="noopener">Hugging Face</a></p>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-orange">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Resumo sem maquiagem: se está no KEV, sai do backlog e vira ação; se o sistema processa produto, voz, identidade, e-mail ou frontend financeiro, ele merece mais que “depois eu vejo”. E na parte de IA, a semana gritou uma coisa só: modelo frontier virou infraestrutura crítica, agente virou usuário privilegiado e orquestrador virou dependência estratégica. Governança agora não é slide de compliance; é o cinto de segurança antes de enfiar um motor de foguete no pipeline.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById("progress");function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+"%";}addEventListener("scroll",onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
