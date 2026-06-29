@@ -1,8 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
-  { id:"2026-06-29", edition:"#26", date:"29 JUN 2026", title:"Cisco e UniFi no KEV, Windchill com webshell, KDDI vazando logins e IA tropeçando em MCP e repos “limpos”",
-    summary:"Semana com CISA correndo atrás de Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix no KEV; KDDI expondo até 14,2 milhões de logins; Polymarket perdendo US$ 3 milhões em supply chain; Bluekit evoluindo para Browser-in-the-Middle; e IA aparecendo em Amazon Q, repositórios GitHub “limpos”, tenants falsos da OpenAI, agentes achando bugs no FFmpeg e malware tentando confundir análise assistida por IA.",
-    tags:["CISA KEV","Supply Chain","AI Security","Data Breach","MCP"], stories:15, crit:4, file:"newsletters/2026-06-29.html" },
+  { id:"2026-06-29", edition:"#26", date:"29 JUN 2026", title:"Cisco, Windchill e UniFi no KEV; KDDI vaza logins; IA acelera com Sol, Mythos, Fugu e Ornith",
+    summary:"Semana com CISA correndo atrás de Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix no KEV; KDDI expondo até 14,2 milhões de logins; Polymarket perdendo US$ 3 milhões em supply chain; Bluekit evoluindo para Browser-in-the-Middle; e IA virando disputa de frontier models com GPT-5.6 Sol, Mythos liberado para organizações confiáveis, Sakana Fugu roteando modelos e Ornith-1.0 trazendo self-scaffolding RL para coding agents.",
+    tags:["CISA KEV","Supply Chain","Frontier AI","Data Breach","AI Agents"], stories:15, crit:4, file:"newsletters/2026-06-29.html" },
   { id:"2026-06-22", edition:"#25", date:"22 JUN 2026", title:"Splunk e Cisco no KEV, Fortinet sangrando credenciais, NGINX crítico e agentes de IA virando superfície real",
     summary:"Semana com Splunk e Cisco explorados e entrando no KEV da CISA, FortiSandbox e FortiBleed pressionando appliances Fortinet, F5 soltando patch emergencial do NGINX, Gravity SMTP vazando tokens, DragonForce escondendo C2 em relays do Teams, Klue expondo Salesforce via OAuth, e IA aparecendo em AutoJack, Mastra, JetBrains, Agentjacking e espionagem mirando pesquisa de IA.",
     tags:["CISA KEV","Fortinet","Supply Chain","AI Security","Data Breach"], stories:15, crit:5, file:"newsletters/2026-06-22.html" },

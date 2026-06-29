@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>CyberSec News #26 — 29 JUN 2026</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Semana com CISA correndo atrás de Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix no KEV; KDDI expondo até 14,2 milhões de logins; Polymarket perdendo US$ 3 milhões em supply chain; Bluekit evoluindo para Browser-in-the-Middle; e IA aparecendo em Amazon Q, repositórios GitHub “limpos”, tenants falsos da OpenAI, agentes achando bugs no FFmpeg e malware tentando confundir análise assistida por IA.">
+<meta name="description" content="Semana com CISA correndo atrás de Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix no KEV; KDDI expondo até 14,2 milhões de logins; Polymarket perdendo US$ 3 milhões em supply chain; Bluekit evoluindo para Browser-in-the-Middle; e IA virando disputa de frontier models com GPT-5.6 Sol, Mythos liberado para organizações confiáveis, Sakana Fugu roteando modelos e Ornith-1.0 trazendo self-scaffolding RL para coding agents.">
 <link rel="stylesheet" href="../css/okami.css">
 <link rel="stylesheet" href="../css/components.css">
 <style>
@@ -87,13 +87,13 @@
   <section class="section read-hero lead-orange" data-screen-label="#26 · Hero">
     <div class="container">
       <a class="read-back" href="../newsletter.html">← Todas as edições</a>
-      <div class="read-meta"><span class="nl-ed">#26</span><span class="mono-tag">29 JUN 2026</span><span class="mono-tag">20 min de leitura</span></div>
-      <h1>Cisco e UniFi no KEV, Windchill com webshell, KDDI vazando logins e IA tropeçando em MCP e repos “limpos”</h1>
-      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">Supply Chain</span><span class="badge">AI Security</span><span class="badge">Data Breach</span><span class="badge">MCP</span></div>
+      <div class="read-meta"><span class="nl-ed">#26</span><span class="mono-tag">29 JUN 2026</span><span class="mono-tag">22 min de leitura</span></div>
+      <h1>Cisco, Windchill e UniFi no KEV; KDDI vaza logins; IA acelera com Sol, Mythos, Fugu e Ornith</h1>
+      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">Supply Chain</span><span class="badge">Frontier AI</span><span class="badge">Data Breach</span><span class="badge">AI Agents</span></div>
       <div class="threat">
         <div class="threat-cell t-crit"><span class="threat-n">4</span><span class="threat-l">críticas</span></div>
-        <div class="threat-cell t-high"><span class="threat-n">8</span><span class="threat-l">altas</span></div>
-        <div class="threat-cell t-med"><span class="threat-n">3</span><span class="threat-l">médias</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">9</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">2</span><span class="threat-l">médias</span></div>
       </div>
     </div>
   </section>
@@ -113,16 +113,16 @@
 <li><a class="toc-link" href="#a9"><span class="toc-dot medium"></span>Shop, da Shopify, foi abusado para inserir recibos falsos e empurrar callback phishing</a></li>
 <li><a class="toc-link" href="#a10"><span class="toc-dot medium"></span>Polônia prendeu grupo de SIM swapping ligado a milhões roubados em cripto</a></li>
 <li><a class="toc-link" href="#a11"><span class="toc-dot critical"></span>Amazon Q para VS Code permitia execução de código e roubo de credenciais ao abrir repo malicioso</a></li>
-<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>Repo GitHub “limpo” mostrou como agentes de código podem executar malware sem ver payload no código</a></li>
-<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>Convites falsos de organizações OpenAI miraram empresas de segurança em ataque de “tenant envenenado”</a></li>
-<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Agente de segurança encontrou 21 zero-days no FFmpeg e mostrou que o gargalo agora é corrigir</a></li>
-<li><a class="toc-link" href="#a15"><span class="toc-dot medium"></span>Malware macOS Gaslight tentou confundir análise assistida por IA com prompt injection dentro do binário</a></li></ul>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>OpenAI abriu preview do GPT-5.6 Sol com cyber mais forte e acesso controlado pelo governo</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>EUA liberaram Claude Mythos 5 para organizações confiáveis depois do freio por risco de jailbreak</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Sakana Fugu tenta transformar orquestração de frontier models em produto de soberania operacional</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>Ornith-1.0 põe self-scaffolding RL em modelos abertos de coding e cutuca o risco de reward hacking</a></li></ul>
           <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
         </aside>
         <article class="article-col" data-screen-label="#26 · Leitura">
 <div class="read-intro">
   <p>Semana daquelas em que a borda olha para a gente e sorri com todos os dentes: Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix apareceram no KEV da CISA, com exploração ativa ou urgência real de correção.</p>
-  <p>Do outro lado, IA continuou deixando de ser “feature legal” e virando superfície operacional: Amazon Q com MCP autoexecutando, repo GitHub limpo levando agente a buscar payload em DNS, tenants falsos da OpenAI, agentes achando bugs no FFmpeg e malware tentando sabotar análise por LLM. Bonito? Sim. Seguro por padrão? Nem fodendo.</p>
+  <p>Do outro lado, IA teve uma semana grande de verdade: OpenAI abriu o preview do GPT-5.6 Sol com cyber capability e rollout limitado, os EUA destravaram Mythos para organizações confiáveis, Sakana lançou Fugu como orquestrador de modelos e DeepReinforce colocou Ornith-1.0 na mesa dos coding agents abertos. Isso é menos “feature legal” e mais infraestrutura estratégica começando a andar com freio, cinto e faca escondida no porta-luvas.</p>
 </div>
           <h2 class="split-title">Segurança geral</h2>
 
@@ -251,49 +251,49 @@
 <section class="art" id="a12" data-sev="high">
   <div class="art-num">12</div>
   <div>
-    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Coding Agents</span></div>
-    <h2>Repo GitHub “limpo” mostrou como agentes de código podem executar malware sem ver payload no código</h2>
-    <p>Pesquisadores do 0DIN demonstraram um ataque em que um repositório aparentemente normal leva um agente de código a abrir uma shell reversa. O payload não está no repo: o agente instala dependências, tenta inicializar o projeto, lê um erro “útil”, roda python3 -m axiom init e esse fluxo busca um comando em um registro DNS TXT controlado pelo atacante.</p><p>O ponto brilhante e horrível é que cada parte parece banal isoladamente. O scanner vê repo limpo. O agente vê erro comum. O DNS guarda o veneno. No fim, alguém tem shell com privilégios do dev e acesso a variáveis de ambiente, chaves API e config local. O agente não “quis” abrir shell; ele só quis ser prestativo. Aí mora o problema, gato.</p>
-    <div class="callout"><strong>O que fazer:</strong> Tratar setup de repo desconhecido como código hostil, exigir preview completo de scripts e conteúdo buscado em runtime, bloquear autoexecução de comandos sugeridos por erro, isolar agentes em container/VM sem secrets e monitorar DNS TXT/execuções estranhas durante bootstrap.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://0din.ai/blog/clone-this-repo-and-i-own-your-machine" target="_blank" rel="noopener">0DIN</a> · <a href="https://www.bleepingcomputer.com/news/security/clean-github-repo-tricks-ai-coding-agents-into-running-malware/" target="_blank" rel="noopener">BleepingComputer</a></p>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Frontier Models</span></div>
+    <h2>OpenAI abriu preview do GPT-5.6 Sol com cyber mais forte e acesso controlado pelo governo</h2>
+    <p>A OpenAI apresentou a família GPT-5.6 — Sol, Terra e Luna — em preview limitado para parceiros confiáveis. Sol é o flagship; Terra mira equilíbrio de custo/capacidade; Luna é a opção rápida e barata. O ponto que interessa para segurança: a própria OpenAI diz que Sol é seu modelo mais capaz para cybersecurity, com ganhos em tarefas longas de vulnerability research e exploração, além de um novo esforço máximo de reasoning e um “ultra mode” com subagentes.</p><p>O lançamento veio com rollout faseado e coordenação com o governo dos EUA. No ExploitBench, segundo a OpenAI, Sol fica competitivo com Mythos Preview usando cerca de um terço dos tokens de saída; ao mesmo tempo, a empresa diz que ele não cruzou o limiar “Cyber Critical” e que não produziu full-chain exploit autônomo contra Chromium/Firefox nas condições testadas. Tradução sem perfume: a capacidade defensiva subiu, a zona cinzenta dual-use ficou maior e o controle de acesso virou parte do produto.</p>
+    <div class="callout"><strong>O que fazer:</strong> Times de AppSec e vuln research devem testar Sol como acelerador defensivo com escopo, logging e revisão humana; empresas precisam definir política para modelos frontier em tarefas cyber; e qualquer uso com exploração, fuzzing ou patching deve ter ambiente isolado, autorização explícita e trilha auditável.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://openai.com/index/previewing-gpt-5-6-sol/" target="_blank" rel="noopener">OpenAI</a> · <a href="https://deploymentsafety.openai.com/gpt-5-6-preview/" target="_blank" rel="noopener">GPT-5.6 Preview System Card</a> · <a href="https://thehackernews.com/2026/06/openai-limits-gpt-56-rollout-as-sol.html" target="_blank" rel="noopener">The Hacker News</a></p>
   </div>
 </section>
 
 <section class="art" id="a13" data-sev="high">
   <div class="art-num">13</div>
   <div>
-    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / SaaS Abuse</span></div>
-    <h2>Convites falsos de organizações OpenAI miraram empresas de segurança em ataque de “tenant envenenado”</h2>
-    <p>A Push Security descreveu uma campanha em que atacantes criaram organizações OpenAI com nomes de empresas legítimas e convidaram funcionários específicos por e-mails reais da plataforma. O convite vinha do domínio legítimo da OpenAI e passava autenticação; a fraude estava no tenant controlado pelo atacante.</p><p>O objetivo provável é fazer pessoas usarem uma organização falsa como se fosse ambiente corporativo, entregando prompts, documentos, código e dados sensíveis para um administrador hostil. É SaaS abuse com cara de onboarding. A plataforma é legítima, o fluxo é legítimo, o contexto é mentira. Pequeno detalhe, enorme estrago.</p>
-    <div class="callout"><strong>O que fazer:</strong> Verificar domínio do convidador e propriedade do tenant antes de aceitar convites, bloquear/alertar convites de organizações não aprovadas, educar usuários sobre tenants falsos, inventariar uso corporativo de IA e centralizar contas oficiais com governança clara.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://pushsecurity.com/blog/openai-poisoned-tenant-attack" target="_blank" rel="noopener">Push Security</a> · <a href="https://www.bleepingcomputer.com/news/security/cybersecurity-firms-targeted-by-fraudulent-openai-organization-invites/" target="_blank" rel="noopener">BleepingComputer</a></p>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Model Access</span></div>
+    <h2>EUA liberaram Claude Mythos 5 para organizações confiáveis depois do freio por risco de jailbreak</h2>
+    <p>Depois de mais de duas semanas de bloqueio/export control sobre os modelos Fable e Mythos, o governo dos EUA permitiu que a Anthropic liberasse o Claude Mythos 5 para um grupo de organizações confiáveis — incluindo empresas e agências ligadas a defesa de infraestrutura crítica, segundo relatos de Semafor/Reuters e cobertura posterior. Foi uma descompressão importante na briga entre capacidade frontier, risco de jailbreak e acesso para defensores.</p><p>A notícia importa porque Mythos virou referência explícita no resto do mercado: OpenAI compara Sol com Mythos Preview em benchmark de exploração, Sakana usa a interrupção de Fable/Mythos como argumento contra dependência de fornecedor único, e compradores enterprise agora precisam entender que “modelo disponível” pode depender de política pública, não só de cartão corporativo. A camada de acesso virou superfície estratégica. Bonito? Sim. Confortável? Nem um pouco.</p>
+    <div class="callout"><strong>O que fazer:</strong> Para uso corporativo de modelos frontier, mapear dependência de fornecedor, região e política de acesso; manter alternativa operacional para workflows críticos; definir quem pode usar modelos cyber avançados; e revisar contratos/controles para casos em que governo, export control ou vendor pause derrubem acesso da noite para o dia.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.semafor.com/article/06/27/2026/us-releases-powerful-anthropic-model-mythos-to-some-us-companies" target="_blank" rel="noopener">Semafor</a> · <a href="https://www.reuters.com/technology/us-releases-anthropic-model-mythos-some-us-companies-semafor-reports-2026-06-26/" target="_blank" rel="noopener">Reuters</a> · <a href="https://thehackernews.com/2026/06/openai-limits-gpt-56-rollout-as-sol.html" target="_blank" rel="noopener">The Hacker News</a></p>
   </div>
 </section>
 
 <section class="art" id="a14" data-sev="high">
   <div class="art-num">14</div>
   <div>
-    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Vuln Research</span></div>
-    <h2>Agente de segurança encontrou 21 zero-days no FFmpeg e mostrou que o gargalo agora é corrigir</h2>
-    <p>A depthfirst publicou que seu agente autônomo de segurança encontrou 21 zero-days no FFmpeg, incluindo falhas com CVEs já atribuídos como heap buffer overflow, integer overflow, stack overflow e regressões recentes. FFmpeg é usado em browsers, streaming, pipelines de mídia e um caminhão de software que processa arquivo não confiável todo santo dia.</p><p>O recado estratégico é desconfortável: modelos e agentes estão ficando bons o bastante para achar bugs reais em código C endurecido por décadas de fuzzing e auditoria. Ótimo para defesa, maravilhoso para pesquisa, e uma pressão enorme para maintainer que já tinha backlog antes da máquina começar a cuspir PoC. Vulnerabilidade descoberta não protege ninguém; patch aplicado protege.</p>
-    <div class="callout"><strong>O que fazer:</strong> Acompanhar releases/advisories do FFmpeg e dependências que embutem FFmpeg, priorizar atualização em serviços que processam mídia de terceiros, exigir SBOM para saber onde a biblioteca roda e preparar processo de triagem para enxurrada de findings gerados por IA.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://depthfirst.com/research/21-zero-days-in-ffmpeg" target="_blank" rel="noopener">depthfirst</a></p>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Orchestration</span></div>
+    <h2>Sakana Fugu tenta transformar orquestração de frontier models em produto de soberania operacional</h2>
+    <p>A Sakana AI lançou o Sakana Fugu, um modelo-orquestrador que se apresenta como um único endpoint OpenAI-compatible, mas decide internamente quando responder sozinho e quando coordenar um pool trocável de modelos/agents. A versão Fugu Ultra é posicionada para tarefas longas e difíceis, com benchmarks em coding, reasoning e ciência, e a própria Sakana vende a tese como antídoto contra dependência de um único fornecedor.</p><p>O argumento é esperto: se Anthropic, OpenAI ou qualquer outro provider sofrer restrição, export control ou mudança comercial, um orquestrador poderia rotear ao redor do problema. Só que isso também cria uma nova caixa-preta de governança: quem decidiu qual modelo viu seu dado? Como auditar roteamento? Como aplicar política de privacidade, residência de dados e segurança quando a inteligência real está distribuída? Multi-agent sem governança vira microserviço com ansiedade e segredos, amor.</p>
+    <div class="callout"><strong>O que fazer:</strong> Antes de colocar orquestradores em fluxo sensível, exigir logs de roteamento, opção de excluir providers/modelos, política de dados por agente, avaliação de privacidade e teste contra prompt injection/cross-agent leakage. Resiliência de fornecedor é linda; opacidade operacional é onde a merda nasce.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://sakana.ai/fugu-release/" target="_blank" rel="noopener">Sakana AI</a> · <a href="https://sakana.ai/fugu/" target="_blank" rel="noopener">Sakana Fugu</a> · <a href="https://www.marktechpost.com/2026/06/22/sakana-ai-launches-sakana-fugu-an-orchestration-model-that-routes-tasks-across-a-swappable-pool-of-frontier-llms/" target="_blank" rel="noopener">MarkTechPost</a></p>
   </div>
 </section>
 
-<section class="art" id="a15" data-sev="medium">
+<section class="art" id="a15" data-sev="high">
   <div class="art-num">15</div>
   <div>
-    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / Malware Analysis</span></div>
-    <h2>Malware macOS Gaslight tentou confundir análise assistida por IA com prompt injection dentro do binário</h2>
-    <p>A SentinelOne analisou o macOS.Gaslight, um backdoor/stealer em Rust atribuído com alta confiança a ator ligado à Coreia do Norte. O diferencial é um bloco de cerca de 3,5 KB com 38 mensagens falsas de “sistema”, logs, dumps e erros formatados em Markdown, desenhadas para confundir agentes de análise baseados em LLM.</p><p>A técnica não tenta quebrar sandbox tradicional; tenta bagunçar a percepção do analista automatizado. Ainda não há demonstração pública de bypass bem-sucedido em plataformas de análise de malware por IA, então não vamos vender apocalipse em pote. Mas o experimento é importante: atacante já está escrevendo malware pensando no leitor-IA, não só no debugger humano.</p>
-    <div class="callout"><strong>O que fazer:</strong> Tratar strings embutidas em malware como dados hostis, separar instruções de análise de conteúdo extraído do binário, validar output de LLM com ferramentas determinísticas, registrar prompt/artefatos usados na triagem e não deixar agente abortar análise por “erro” vindo da amostra.</div>
-    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.sentinelone.com/labs/macos-gaslight-rust-backdoor-turns-prompt-injection-on-the-analyst-not-the-sandbox/" target="_blank" rel="noopener">SentinelOne</a> · <a href="https://www.bleepingcomputer.com/news/security/new-macos-malware-embeds-fake-errors-to-confuse-ai-analysis-tools/" target="_blank" rel="noopener">BleepingComputer</a></p>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Open Models</span></div>
+    <h2>Ornith-1.0 põe self-scaffolding RL em modelos abertos de coding e cutuca o risco de reward hacking</h2>
+    <p>A DeepReinforce lançou o Ornith-1.0, família MIT/open-source de modelos para agentic coding em quatro tamanhos: 9B dense, 31B dense, 35B MoE e 397B MoE. A promessa não é só “mais um modelo de código”: o mecanismo central é self-scaffolding reinforcement learning, em que o modelo aprende a gerar tanto o scaffold/harness da tarefa quanto a solução, otimizando os dois juntos.</p><p>Isso é interessante pra caralho e perigoso pelo motivo óbvio: quando o modelo ajuda a moldar o próprio ambiente de treino, reward hacking deixa de ser rodapé acadêmico e vira risco de engenharia. A DeepReinforce descreve camadas de defesa — fronteira fixa de confiança, monitor determinístico para ações proibidas e juiz LLM congelado como veto — mas a validação independente ainda importa. Código agentic aberto melhora acesso, reduz dependência de vendor e também dá para atacante um laboratório de automação cada vez mais competente.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar modelos abertos de coding como componentes de alto privilégio: avaliar benchmarks com ceticismo, testar em tarefas reais, rodar em sandbox sem segredos, bloquear acesso a testes/artefatos protegidos, auditar harnesses gerados e não aceitar “open source” como sinônimo automático de seguro.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://deep-reinforce.com/ornith_1_0.html" target="_blank" rel="noopener">DeepReinforce</a> · <a href="https://www.techtimes.com/articles/319122/20260626/open-source-coding-model-ornith-10-writes-its-own-training-scaffold-reinforcement-learning.htm" target="_blank" rel="noopener">TechTimes</a> · <a href="https://huggingface.co/collections/deepreinforce-ai/ornith-10" target="_blank" rel="noopener">Hugging Face</a></p>
   </div>
 </section>
           <div class="card card-pad mt-8 lead-orange">
             <span class="sec-id">fechamento</span>
-            <p class="mt-4">Resumo sem maquiagem: se está no KEV, sai do backlog e vira ação; se o sistema processa produto, voz, identidade, e-mail ou frontend financeiro, ele merece mais que “depois eu vejo”. E na parte de IA, a regra prática da semana é simples: agente que executa coisa precisa ser tratado como usuário privilegiado, não como mascote fofo de produtividade. Mascote fofo com shell e token cloud vira incidente. Quem diria, né.</p>
+            <p class="mt-4">Resumo sem maquiagem: se está no KEV, sai do backlog e vira ação; se o sistema processa produto, voz, identidade, e-mail ou frontend financeiro, ele merece mais que “depois eu vejo”. E na parte de IA, a semana gritou uma coisa só: modelo frontier virou infraestrutura crítica, agente virou usuário privilegiado e orquestrador virou dependência estratégica. Governança agora não é slide de compliance; é o cinto de segurança antes de enfiar um motor de foguete no pipeline.</p>
             <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
           </div>
         </article>
