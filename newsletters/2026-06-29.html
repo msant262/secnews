@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #26 — 29 JUN 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Semana com CISA correndo atrás de Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix no KEV; KDDI expondo até 14,2 milhões de logins; Polymarket perdendo US$ 3 milhões em supply chain; Bluekit evoluindo para Browser-in-the-Middle; e IA aparecendo em Amazon Q, repositórios GitHub “limpos”, tenants falsos da OpenAI, agentes achando bugs no FFmpeg e malware tentando confundir análise assistida por IA.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#26 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#26</span><span class="mono-tag">29 JUN 2026</span><span class="mono-tag">20 min de leitura</span></div>
+      <h1>Cisco e UniFi no KEV, Windchill com webshell, KDDI vazando logins e IA tropeçando em MCP e repos “limpos”</h1>
+      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">Supply Chain</span><span class="badge">AI Security</span><span class="badge">Data Breach</span><span class="badge">MCP</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">4</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">8</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">3</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#26 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>Cisco Unified CM entrou no KEV com SSRF explorada e prazo de correção apertado</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>PTC Windchill e FlexPLM tiveram RCE explorada com webshells e IoCs novos</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>Lantronix e Ubiquiti entraram no KEV: IoT, UniFi OS e borda continuam sendo buffet livre</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot high"></span>KDDI avisou que até 14,2 milhões de logins de e-mail podem ter vazado no Japão</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot high"></span>FBI e CISA: atores russos agora miram chaves de recuperação de backup do Signal</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>Polymarket perdeu cerca de US$ 3 milhões após JavaScript malicioso em fornecedor de frontend</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>GitLab corrigiu 13 falhas, incluindo XSS alto e vazamento em Duo Workflows</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>Bluekit evoluiu para Browser-in-the-Middle e deixa o login acontecer no navegador do atacante</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot medium"></span>Shop, da Shopify, foi abusado para inserir recibos falsos e empurrar callback phishing</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot medium"></span>Polônia prendeu grupo de SIM swapping ligado a milhões roubados em cripto</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot critical"></span>Amazon Q para VS Code permitia execução de código e roubo de credenciais ao abrir repo malicioso</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>Repo GitHub “limpo” mostrou como agentes de código podem executar malware sem ver payload no código</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>Convites falsos de organizações OpenAI miraram empresas de segurança em ataque de “tenant envenenado”</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Agente de segurança encontrou 21 zero-days no FFmpeg e mostrou que o gargalo agora é corrigir</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot medium"></span>Malware macOS Gaslight tentou confundir análise assistida por IA com prompt injection dentro do binário</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#26 · Leitura">
+<div class="read-intro">
+  <p>Semana daquelas em que a borda olha para a gente e sorri com todos os dentes: Cisco Unified CM, PTC Windchill/FlexPLM, Ubiquiti e Lantronix apareceram no KEV da CISA, com exploração ativa ou urgência real de correção.</p>
+  <p>Do outro lado, IA continuou deixando de ser “feature legal” e virando superfície operacional: Amazon Q com MCP autoexecutando, repo GitHub limpo levando agente a buscar payload em DNS, tenants falsos da OpenAI, agentes achando bugs no FFmpeg e malware tentando sabotar análise por LLM. Bonito? Sim. Seguro por padrão? Nem fodendo.</p>
+</div>
+          <h2 class="split-title">Segurança geral</h2>
+
+<section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Cisco / KEV</span></div>
+    <h2>Cisco Unified CM entrou no KEV com SSRF explorada e prazo de correção apertado</h2>
+    <p>A CISA colocou a CVE-2026-20230 no catálogo KEV depois de exploração ativa contra Cisco Unified Communications Manager e Unified CM SME. A falha é SSRF, pode ser explorada remotamente sem autenticação por requisições HTTP preparadas e, segundo a CISA, permite escrever arquivos no sistema operacional que podem ser usados depois para elevar privilégio até root.</p><p>Esse é o tipo de bug que parece “só telefonia” até alguém lembrar que Unified CM costuma estar enfiado no meio da comunicação corporativa, com confiança demais e segmentação de menos. A Cisco já tinha corrigido em 3 de junho e avisado que havia PoC; depois veio exploração real. Ou seja: a fase “vamos observar” acabou, amor.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar as versões corrigidas da Cisco imediatamente, restringir acesso HTTP administrativo, procurar arquivos inesperados escritos pelo serviço, revisar logs de requisições anômalas e tratar instâncias expostas como prioridade de resposta, não como backlog bonitinho.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-cucm-ssrf-cXPnHcW.html" target="_blank" rel="noopener">Cisco</a> · <a href="https://www.bleepingcomputer.com/news/security/cisa-sets-urgent-deadline-to-fix-cisco-flaw-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">PLM / RCE</span></div>
+    <h2>PTC Windchill e FlexPLM tiveram RCE explorada com webshells e IoCs novos</h2>
+    <p>A CISA também adicionou a CVE-2026-12569 ao KEV. A falha afeta PTC Windchill e FlexPLM, envolve validação inadequada/deserialização de dados não confiáveis e pode permitir execução remota de código sem autenticação. A própria PTC publicou atualização emergencial dizendo ter recebido relatos de atividade elevada e liberou IoCs novos.</p><p>O detalhe que incomoda: os indicadores incluem webshells JSP em caminhos de login do Windchill, header de comando X-windchill-req e recomendação explícita de caçar POST para /Windchill/login/[hex].jsp. Isso não é “risco teórico em produto de nicho”. É atacante mexendo em sistema que guarda produto, engenharia, manufatura e propriedade intelectual. Aquele cofre lindo que alguém deixou com janela aberta.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar patches/remediações da PTC, bloquear IoCs conhecidos, caçar webshells JSP com nomes hexadecimais em /Windchill/login/, alertar qualquer header X-windchill-req, restringir exposição pública e revisar logs de POST/transferência grande no tier da aplicação.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.ptc.com/en/about/trust-center/advisory-center/active-advisories/windchill-flexplm-rce-vulnerability" target="_blank" rel="noopener">PTC</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://www.bleepingcomputer.com/news/security/cisa-sets-urgent-deadline-to-fix-cisco-flaw-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Edge / Infra</span></div>
+    <h2>Lantronix e Ubiquiti entraram no KEV: IoT, UniFi OS e borda continuam sendo buffet livre</h2>
+    <p>No dia 23, a CISA adicionou uma falha da Lantronix EDS5000 e três do Ubiquiti UniFi OS ao KEV. A CVE-2025-67038 permite injeção de comandos no parâmetro username com execução como root no Lantronix. No UniFi OS, a CISA listou CVE-2026-34908, CVE-2026-34909 e CVE-2026-34910, cobrindo controle de acesso inadequado, path traversal e validação inadequada que pode levar a command injection.</p><p>O padrão aqui é velho e ainda assim todo mundo insiste em fingir surpresa: equipamento de borda, appliance “só de rede”, painel administrativo acessível demais e patch que chega quando o atacante já está fazendo inventário. Se gerencia rede, não é periférico. É o corredor por onde o incêndio passeia.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar firmware Lantronix EDS5000 e UniFi OS, remover gestão da internet, revisar contas e alterações não autorizadas, procurar comandos suspeitos em logs, segmentar administração e priorizar qualquer appliance exposto que esteja fora da versão corrigida.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://community.ui.com/releases/Security-Advisory-Bulletin-064-064/84811c09-4cf4-42ab-bd61-cc994445963b" target="_blank" rel="noopener">Ubiquiti</a> · <a href="https://ltrxdev.atlassian.net/wiki/spaces/LTRXTS/pages/2538438657/Latest+Firmware+for+the+EDS5000+series+EDS5008+EDS5016+EDS5032" target="_blank" rel="noopener">Lantronix</a></p>
+  </div>
+</section>
+
+<section class="art" id="a4" data-sev="high">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Data Breach / ISP</span></div>
+    <h2>KDDI avisou que até 14,2 milhões de logins de e-mail podem ter vazado no Japão</h2>
+    <p>A KDDI, uma das maiores operadoras japonesas, revelou que invasores acessaram um sistema de e-mail usado por cinco outros ISPs: STNet, JCOM, Chubu Telecommunications, NIFTY e BIGLOBE. A empresa descobriu o incidente em 17 de junho e disse que a investigação ainda está em andamento.</p><p>O número máximo informado é pesado: até 14,22 milhões de contas de clientes atuais, antigos e inativos podem ter tido e-mail e senha expostos. A KDDI disse que parte das senhas estava em hash e/ou criptografada, mas não detalhou formato, proporção ou força. Traduzindo: dá para reduzir pânico, não dá para relaxar.</p>
+    <div class="callout"><strong>O que fazer:</strong> Forçar reset de senha para contas afetadas, ativar 2FA onde existir, caçar reutilização de credenciais em VPN/SaaS, monitorar credential stuffing e preparar comunicação antifraude para clientes, porque phishing com dado real é o golpe vestido de terno.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://newsroom.kddi.com/news/assets/2026/kddi_nr_s-71_4593/kddi_nr_s-71_4593_pdf_01.pdf" target="_blank" rel="noopener">KDDI</a> · <a href="https://www.bleepingcomputer.com/news/security/data-breach-exposes-up-to-142-million-email-logins-at-six-isps/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a5" data-sev="high">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Messaging / Phishing</span></div>
+    <h2>FBI e CISA: atores russos agora miram chaves de recuperação de backup do Signal</h2>
+    <p>O FBI e a CISA atualizaram um alerta sobre phishing contra aplicativos de mensagens comerciais, especialmente Signal. A campanha é atribuída a atores ligados a serviços de inteligência russos e mira pessoas de alto valor: autoridades atuais e antigas, militares, políticos, jornalistas e figuras-chave na Ucrânia.</p><p>A evolução é venenosa: além de tentar roubar códigos/PINs ou vincular dispositivos, os operadores agora induzem a vítima a ativar backups do Signal e entregar a Backup Recovery Key. Com essa chave, o atacante pode restaurar conversas históricas em outro dispositivo. Não quebrou criptografia; fez algo muito mais comum: convenceu o humano a entregar a chave.</p>
+    <div class="callout"><strong>O que fazer:</strong> Nunca compartilhar Backup Recovery Key, código ou PIN por chat; se a chave foi exposta, gerar uma nova nas configurações de backup; educar alvos sensíveis; revisar dispositivos vinculados; e reportar incidentes ao IC3/CISA quando houver suspeita.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.ic3.gov/PSA/2026/PSA260626" target="_blank" rel="noopener">FBI IC3</a> · <a href="https://www.bleepingcomputer.com/news/security/fbi-russian-hackers-now-target-signal-backup-recovery-keys/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Supply Chain / Web3</span></div>
+    <h2>Polymarket perdeu cerca de US$ 3 milhões após JavaScript malicioso em fornecedor de frontend</h2>
+    <p>A Polymarket disse que vai reembolsar clientes que perderam cerca de US$ 3 milhões depois que atacantes injetaram script malicioso no frontend oficial por meio de um fornecedor/dependência do site. Usuários foram induzidos a aprovar transações fraudulentas enquanto estavam na página legítima da plataforma.</p><p>O backend da Polymarket não teria sido comprometido, mas isso é pouco consolo para quem clicou no site certo e assinou a transação errada. Supply chain de frontend é especialmente cruel em cripto: o ataque aparece no lugar onde o usuário já esperava confiar. A interface vira phishing com crachá.</p>
+    <div class="callout"><strong>O que fazer:</strong> Inventariar scripts e fornecedores de frontend, aplicar SRI/CSP onde possível, monitorar mudanças de assets em produção, exigir revisão de dependências críticas, alertar usuários sobre transações inesperadas e preparar kill switch para assets externos comprometidos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/polymarket-customers-lose-3-million-in-supply-chain-attack/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://x.com/PolymarketTrade/status/2070155882906730671" target="_blank" rel="noopener">Polymarket</a> · <a href="https://x.com/PeckShieldAlert/status/2070157742514618443" target="_blank" rel="noopener">PeckShield</a></p>
+  </div>
+</section>
+
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">DevSecOps / GitLab</span></div>
+    <h2>GitLab corrigiu 13 falhas, incluindo XSS alto e vazamento em Duo Workflows</h2>
+    <p>O GitLab lançou as versões 19.1.1, 19.0.3 e 18.11.6 para CE/EE com 13 correções de segurança. Entre os destaques estão XSS de alta severidade no Analytics Dashboard, XSS no Web IDE workbench asset handler e divulgação de informações no Duo Workflows.</p><p>GitLab auto-hospedado costuma ser o coração do pipeline: código, CI/CD, secrets, issue, merge request e pacote. Falha “só de XSS” nesse contexto pode virar roubo de sessão, alteração de pipeline ou pivô para informação sensível. O repositório não é uma biblioteca silenciosa; é uma fábrica com chaves penduradas na parede.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar self-managed GitLab para 19.1.1, 19.0.3 ou 18.11.6; revisar usuários privilegiados e sessões suspeitas; conferir pipelines/variables alterados recentemente; e manter GitLab.com fora da lista de pânico, porque já roda versão corrigida.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-1-1-released/" target="_blank" rel="noopener">GitLab</a> · <a href="https://www.securityweek.com/gitlab-patches-13-vulnerabilities-including-code-execution-info-disclosure-flaws/" target="_blank" rel="noopener">SecurityWeek</a></p>
+  </div>
+</section>
+
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Phishing / BitM</span></div>
+    <h2>Bluekit evoluiu para Browser-in-the-Middle e deixa o login acontecer no navegador do atacante</h2>
+    <p>A Netcraft confirmou Bluekit operando em escala, com cerca de 70 hostnames detectados na última semana. A plataforma de phishing agora usa Browser-in-the-Middle via rrweb: a página legítima é carregada em um navegador controlado pelo atacante e a vítima interage com uma transmissão DOM em tempo real.</p><p>Isso muda a dinâmica do AitM tradicional. Em vez de só proxyar tráfego, o atacante faz a vítima autenticar diretamente no browser dele, com sessão, MFA e tudo no ambiente que ele controla. Ainda tem CAPTCHA falso, fingerprinting, WebRTC para detectar proxy/VPN e JavaScript obfuscado. Phishing-as-a-service, agora com acabamento premium de desgraça.</p>
+    <div class="callout"><strong>O que fazer:</strong> Reforçar proteção contra phishing resistente a proxy/BitM, usar FIDO2/passkeys quando possível, treinar usuários para latência/comportamento estranho em login, monitorar WebSocket e rrweb fora de contexto, e ajustar detecção por comportamento de sessão, não só por domínio.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.netcraft.com/blog/bluekit-phishing-as-a-service-threat" target="_blank" rel="noopener">Netcraft</a> · <a href="https://www.bleepingcomputer.com/news/security/bluekit-phishing-kit-adopts-browser-in-the-middle-for-login-theft/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a9" data-sev="medium">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">Fraude / Mobile</span></div>
+    <h2>Shop, da Shopify, foi abusado para inserir recibos falsos e empurrar callback phishing</h2>
+    <p>Pesquisadores da Gen Digital observaram golpistas abusando do app Shop, usado para rastrear pedidos, para colocar recibos falsos no histórico de compras de usuários. Os recibos imitam marcas como Norton, McAfee, Apple e PayPal e incluem telefone para “contestar” cobranças.</p><p>O truque é social engineering clássica, só que entregue dentro de um app confiável, não por e-mail suspeito na caixa de spam. A vítima liga, conversa com falso suporte e pode entregar credenciais, cartões, OTPs ou instalar software de acesso remoto. Adultos no mundo real ainda atendem telefone; criminoso sabe disso melhor que muito time de segurança.</p>
+    <div class="callout"><strong>O que fazer:</strong> Não ligar para telefones dentro de recibos suspeitos; verificar cobranças direto com banco/fornecedor; reportar lojas suspeitas no app; resetar senhas e cancelar cartões se houve contato com golpista; e treinar suporte para reconhecer callback phishing fora do e-mail.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/order-tracking-app-shop-abused-to-push-callback-phishing-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.gendigital.com/blog/insights/research/fake-invoices-shopping-apps" target="_blank" rel="noopener">Gen Digital</a></p>
+  </div>
+</section>
+
+<section class="art" id="a10" data-sev="medium">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">SIM Swap / Crypto</span></div>
+    <h2>Polônia prendeu grupo de SIM swapping ligado a milhões roubados em cripto</h2>
+    <p>Autoridades polonesas prenderam quatro suspeitos acusados de invadir parceiros de telecomunicação e contas de e-mail de funcionários para viabilizar SIM swapping. A operação teve apoio do FBI e da Homeland Security Investigations dos EUA.</p><p>Segundo a investigação, o grupo sequestrava números de telefone, interceptava SMS e comunicações de e-mail e assumia contas em exchanges de criptomoedas. O valor lavado passaria de dezenas de milhões de zlotys, pelo menos alguns milhões de dólares. SIM como segundo fator já era gambiarra; para cripto, é praticamente deixar o cofre com cadeado de diário adolescente.</p>
+    <div class="callout"><strong>O que fazer:</strong> Trocar SMS por FIDO2/app autenticador resistente a phishing, proteger contas telco com PIN forte, monitorar alteração de SIM/eSIM, usar allowlist de saque em exchanges e alertar clientes de alto risco para takeover por telecom.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/poland-busts-sim-swapping-gang-tied-to-millions-in-crypto-theft/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://cbzc.policja.gov.pl/bzc/aktualnosci/975,Czlonkowie-grupy-przestepczej-w-rekach-CBZC-wsparcie-agentow-FBI-oraz-HSI.html" target="_blank" rel="noopener">CBZC</a></p>
+  </div>
+</section>
+          <h2 class="split-title">Segurança em IA</h2>
+
+<section class="art" id="a11" data-sev="critical">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">AI / MCP</span></div>
+    <h2>Amazon Q para VS Code permitia execução de código e roubo de credenciais ao abrir repo malicioso</h2>
+    <p>A Wiz divulgou a CVE-2026-12957 na extensão Amazon Q Developer para VS Code. O problema estava no carregamento automático de servidores MCP a partir de arquivos do workspace, sem consentimento do usuário e com herança completa do ambiente. Abrir um repositório malicioso com Amazon Q ativo podia executar comandos com acesso a AWS keys, tokens e contexto local.</p><p>A AWS corrigiu no language server 1.65.0, mas a lição é maior: MCP é ferramenta poderosa demais para ser autoexecutada por conveniência. Quando o assistente de código ganha permissão de spawn local e o repo controla configuração, o “clonei para testar” vira “entreguei minha cloud com laço”. Fofo, moderno, caríssimo.</p>
+    <div class="callout"><strong>O que fazer:</strong> Garantir Amazon Q language server 1.65.0 ou superior, recarregar/atualizar IDEs com auto-update bloqueado, revisar pastas .amazonq/mcp.json em projetos, exigir consentimento explícito para MCP e rodar repos desconhecidos em ambiente isolado sem credenciais cloud.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.wiz.io/blog/amazon-q-vulnerability" target="_blank" rel="noopener">Wiz</a> · <a href="https://aws.amazon.com/security/security-bulletins/2026-047-aws/" target="_blank" rel="noopener">AWS Security Bulletin</a> · <a href="https://github.com/aws/language-servers/security/advisories/GHSA-xhcr-j4j9-3gh7" target="_blank" rel="noopener">GitHub Advisory</a></p>
+  </div>
+</section>
+
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Coding Agents</span></div>
+    <h2>Repo GitHub “limpo” mostrou como agentes de código podem executar malware sem ver payload no código</h2>
+    <p>Pesquisadores do 0DIN demonstraram um ataque em que um repositório aparentemente normal leva um agente de código a abrir uma shell reversa. O payload não está no repo: o agente instala dependências, tenta inicializar o projeto, lê um erro “útil”, roda python3 -m axiom init e esse fluxo busca um comando em um registro DNS TXT controlado pelo atacante.</p><p>O ponto brilhante e horrível é que cada parte parece banal isoladamente. O scanner vê repo limpo. O agente vê erro comum. O DNS guarda o veneno. No fim, alguém tem shell com privilégios do dev e acesso a variáveis de ambiente, chaves API e config local. O agente não “quis” abrir shell; ele só quis ser prestativo. Aí mora o problema, gato.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar setup de repo desconhecido como código hostil, exigir preview completo de scripts e conteúdo buscado em runtime, bloquear autoexecução de comandos sugeridos por erro, isolar agentes em container/VM sem secrets e monitorar DNS TXT/execuções estranhas durante bootstrap.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://0din.ai/blog/clone-this-repo-and-i-own-your-machine" target="_blank" rel="noopener">0DIN</a> · <a href="https://www.bleepingcomputer.com/news/security/clean-github-repo-tricks-ai-coding-agents-into-running-malware/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / SaaS Abuse</span></div>
+    <h2>Convites falsos de organizações OpenAI miraram empresas de segurança em ataque de “tenant envenenado”</h2>
+    <p>A Push Security descreveu uma campanha em que atacantes criaram organizações OpenAI com nomes de empresas legítimas e convidaram funcionários específicos por e-mails reais da plataforma. O convite vinha do domínio legítimo da OpenAI e passava autenticação; a fraude estava no tenant controlado pelo atacante.</p><p>O objetivo provável é fazer pessoas usarem uma organização falsa como se fosse ambiente corporativo, entregando prompts, documentos, código e dados sensíveis para um administrador hostil. É SaaS abuse com cara de onboarding. A plataforma é legítima, o fluxo é legítimo, o contexto é mentira. Pequeno detalhe, enorme estrago.</p>
+    <div class="callout"><strong>O que fazer:</strong> Verificar domínio do convidador e propriedade do tenant antes de aceitar convites, bloquear/alertar convites de organizações não aprovadas, educar usuários sobre tenants falsos, inventariar uso corporativo de IA e centralizar contas oficiais com governança clara.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://pushsecurity.com/blog/openai-poisoned-tenant-attack" target="_blank" rel="noopener">Push Security</a> · <a href="https://www.bleepingcomputer.com/news/security/cybersecurity-firms-targeted-by-fraudulent-openai-organization-invites/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Vuln Research</span></div>
+    <h2>Agente de segurança encontrou 21 zero-days no FFmpeg e mostrou que o gargalo agora é corrigir</h2>
+    <p>A depthfirst publicou que seu agente autônomo de segurança encontrou 21 zero-days no FFmpeg, incluindo falhas com CVEs já atribuídos como heap buffer overflow, integer overflow, stack overflow e regressões recentes. FFmpeg é usado em browsers, streaming, pipelines de mídia e um caminhão de software que processa arquivo não confiável todo santo dia.</p><p>O recado estratégico é desconfortável: modelos e agentes estão ficando bons o bastante para achar bugs reais em código C endurecido por décadas de fuzzing e auditoria. Ótimo para defesa, maravilhoso para pesquisa, e uma pressão enorme para maintainer que já tinha backlog antes da máquina começar a cuspir PoC. Vulnerabilidade descoberta não protege ninguém; patch aplicado protege.</p>
+    <div class="callout"><strong>O que fazer:</strong> Acompanhar releases/advisories do FFmpeg e dependências que embutem FFmpeg, priorizar atualização em serviços que processam mídia de terceiros, exigir SBOM para saber onde a biblioteca roda e preparar processo de triagem para enxurrada de findings gerados por IA.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://depthfirst.com/research/21-zero-days-in-ffmpeg" target="_blank" rel="noopener">depthfirst</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="medium">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / Malware Analysis</span></div>
+    <h2>Malware macOS Gaslight tentou confundir análise assistida por IA com prompt injection dentro do binário</h2>
+    <p>A SentinelOne analisou o macOS.Gaslight, um backdoor/stealer em Rust atribuído com alta confiança a ator ligado à Coreia do Norte. O diferencial é um bloco de cerca de 3,5 KB com 38 mensagens falsas de “sistema”, logs, dumps e erros formatados em Markdown, desenhadas para confundir agentes de análise baseados em LLM.</p><p>A técnica não tenta quebrar sandbox tradicional; tenta bagunçar a percepção do analista automatizado. Ainda não há demonstração pública de bypass bem-sucedido em plataformas de análise de malware por IA, então não vamos vender apocalipse em pote. Mas o experimento é importante: atacante já está escrevendo malware pensando no leitor-IA, não só no debugger humano.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar strings embutidas em malware como dados hostis, separar instruções de análise de conteúdo extraído do binário, validar output de LLM com ferramentas determinísticas, registrar prompt/artefatos usados na triagem e não deixar agente abortar análise por “erro” vindo da amostra.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.sentinelone.com/labs/macos-gaslight-rust-backdoor-turns-prompt-injection-on-the-analyst-not-the-sandbox/" target="_blank" rel="noopener">SentinelOne</a> · <a href="https://www.bleepingcomputer.com/news/security/new-macos-malware-embeds-fake-errors-to-confuse-ai-analysis-tools/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-orange">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Resumo sem maquiagem: se está no KEV, sai do backlog e vira ação; se o sistema processa produto, voz, identidade, e-mail ou frontend financeiro, ele merece mais que “depois eu vejo”. E na parte de IA, a regra prática da semana é simples: agente que executa coisa precisa ser tratado como usuário privilegiado, não como mascote fofo de produtividade. Mascote fofo com shell e token cloud vira incidente. Quem diria, né.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById("progress");function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+"%";}addEventListener("scroll",onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
