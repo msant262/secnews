@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>CyberSec News #27 — 06 JUL 2026</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Semana com SharePoint e SimpleHelp entrando no KEV da CISA, Oracle E-Business Suite já sendo explorado, Bad Epoll dando root em Linux/Android, Google derrubando parte da rede NetNut, Coreia do Norte espalhando 108 pacotes maliciosos, ARToken/EvilTokens industrializando phishing de Microsoft 365, breaches em Medtronic e Aflac, e IA aparecendo em ransomware agentic, browsers vulneráveis a prompt injection, GeneBench-Pro e movimentação forte de modelos da Anthropic.">
+<meta name="description" content="Semana com SharePoint e SimpleHelp entrando no KEV da CISA, Oracle E-Business Suite já sendo explorado, Bad Epoll dando root em Linux/Android, Google derrubando parte da rede NetNut, Coreia do Norte espalhando 108 pacotes maliciosos, ARToken/EvilTokens industrializando phishing de Microsoft 365, breaches em Medtronic e Aflac, e IA aparecendo em ransomware agentic, browsers vulneráveis a prompt injection, GeneBench-Pro, GPT-5.6 Sol e movimentação forte de modelos da Anthropic.">
 <link rel="stylesheet" href="../css/okami.css">
 <link rel="stylesheet" href="../css/components.css">
 <style>
@@ -87,12 +87,12 @@
   <section class="section read-hero lead-orange" data-screen-label="#27 · Hero">
     <div class="container">
       <a class="read-back" href="../newsletter.html">← Todas as edições</a>
-      <div class="read-meta"><span class="nl-ed">#27</span><span class="mono-tag">06 JUL 2026</span><span class="mono-tag">23 min de leitura</span></div>
+      <div class="read-meta"><span class="nl-ed">#27</span><span class="mono-tag">06 JUL 2026</span><span class="mono-tag">25 min de leitura</span></div>
       <h1>SharePoint e SimpleHelp no KEV, Oracle EBS exposto, NetNut desmontado e IA entrando no ransomware</h1>
       <div class="tags"><span class="badge">CISA KEV</span><span class="badge">Exploited</span><span class="badge">Supply Chain</span><span class="badge">Data Breach</span><span class="badge">AI Agents</span></div>
       <div class="threat">
         <div class="threat-cell t-crit"><span class="threat-n">4</span><span class="threat-l">críticas</span></div>
-        <div class="threat-cell t-high"><span class="threat-n">10</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">11</span><span class="threat-l">altas</span></div>
         <div class="threat-cell t-med"><span class="threat-n">1</span><span class="threat-l">média</span></div>
       </div>
     </div>
@@ -115,14 +115,15 @@
 <li><a class="toc-link" href="#a11"><span class="toc-dot critical"></span>JadePuffer mostra ransomware operado por agente de IA</a></li>
 <li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>BioShocking engana browsers agentic a roubar dados</a></li>
 <li><a class="toc-link" href="#a13"><span class="toc-dot medium"></span>OpenAI lançou GeneBench-Pro para biologia computacional</a></li>
-<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Anthropic mexe em Fable, Mythos e Sonnet 5</a></li>
-<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>Extensão falsa da Perplexity interceptava buscas no Chrome</a></li></ul>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>OpenAI colocou GPT-5.6 Sol em preview limitado</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>Anthropic mexe em Fable, Mythos e Sonnet 5</a></li>
+<li><a class="toc-link" href="#a16"><span class="toc-dot high"></span>Extensão falsa da Perplexity interceptava buscas no Chrome</a></li></ul>
           <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
         </aside>
         <article class="article-col" data-screen-label="#27 · Leitura">
 <div class="read-intro">
   <p>Semana boa para quem gosta de priorização brutal: SharePoint e SimpleHelp entraram no KEV, Oracle E-Business Suite apareceu em exploração real e Bad Epoll trouxe root local para Linux/Android. Não é semana de “vamos acompanhar”, é semana de tirar coisa exposta do caminho antes que ela vire manchete interna.</p>
-  <p>Na camada de IA, o recado ficou mais claro: agentes já aparecem em ransomware, browsers agentic continuam confundindo teatro com ação real, e os grandes laboratórios estão mexendo em bio, acesso de modelo e custo/capacidade. Ou seja: IA não é uma seção lateral. É o motor novo enfiado dentro da superfície de ataque.</p>
+  <p>Na camada de IA, o recado ficou mais claro: agentes já aparecem em ransomware, browsers agentic continuam confundindo teatro com ação real, e os grandes laboratórios estão mexendo em bio, acesso de modelo, custo/capacidade e lançamento de frontier model. O preview do GPT-5.6 Sol entra aqui porque é exatamente isso: mais capacidade em coding, bio e cyber, com release faseado e salvaguarda reforçada. Ou seja: IA não é uma seção lateral. É o motor novo enfiado dentro da superfície de ataque.</p>
 </div>
           <h2 class="split-title">Segurança geral</h2>
 
@@ -274,6 +275,17 @@
 <section class="art" id="a14" data-sev="high">
   <div class="art-num">14</div>
   <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Frontier Models</span></div>
+    <h2>OpenAI colocou GPT-5.6 Sol em preview limitado com foco forte em cyber, coding e bio</h2>
+    <p>A OpenAI iniciou o preview limitado da família GPT-5.6: Sol como flagship, Terra como modelo balanceado e Luna como opção mais rápida/barata. O detalhe que importa para segurança não é só “modelo novo”: Sol chega com novo nível máximo de reasoning, modo ultra com subagentes, avanço em Terminal-Bench 2.1, melhorias em GeneBench v1 e ganho em tarefas longas de cibersegurança.</p><p>A empresa diz que Sol empurra a fronteira em vulnerability research e exploração, ficando competitivo com Mythos Preview no ExploitBench usando cerca de um terço dos tokens de saída, sem cruzar o limiar Cyber Critical no Preparedness Framework. Traduzindo: mais poder para defesa, pesquisa e automação — e mais motivo para tratar acesso a frontier model como mudança de infraestrutura crítica, não brinquedo de laboratório.</p>
+    <div class="callout"><strong>O que fazer:</strong> Times que usam LLMs em AppSec, pentest, SOC, coding agents ou bio devem testar Sol/Terra/Luna com avaliação própria, registrar onde há ganho real, manter fallback de modelo, revisar política de dados sensíveis, e acompanhar salvaguardas/latência porque o preview pode bloquear ou atrasar tarefas legítimas em áreas dual-use.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://openai.com/index/previewing-gpt-5-6-sol/" target="_blank" rel="noopener">OpenAI - previewing GPT-5.6 Sol</a> · <a href="http://deploymentsafety.openai.com/gpt-5-6-preview" target="_blank" rel="noopener">GPT-5.6 Preview system card</a> · <a href="https://arxiv.org/abs/2605.11086" target="_blank" rel="noopener">ExploitGym</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="high">
+  <div class="art-num">15</div>
+  <div>
     <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Model Access</span></div>
     <h2>Anthropic reorganiza a semana: Fable volta, Sonnet 5 chega e acesso a frontier model fica político</h2>
     <p>A Anthropic confirmou que o Department of Commerce retirou controles de exportação sobre Fable 5 e Mythos 5, permitindo restaurar Fable globalmente; ao mesmo tempo, a empresa comunicou mudanças temporárias no acesso via assinaturas e lançou o Sonnet 5 como modelo mais agentic da linha Sonnet, perto de Opus 4.8 em alguns cenários e com preço menor.</p><p>A história não é só ‘modelo novo’. É dependência operacional: times que constroem produto, automação ou segurança em cima de frontier models agora precisam lidar com disponibilidade que pode mudar por política pública, avaliação de risco, tier comercial ou estratégia de vendor. Modelo virou infraestrutura; acesso virou controle de mudança. Bonito, instável e cheio de contrato para ler — o inferno em três atos.</p>
@@ -282,8 +294,8 @@
   </div>
 </section>
 
-<section class="art" id="a15" data-sev="high">
-  <div class="art-num">15</div>
+<section class="art" id="a16" data-sev="high">
+  <div class="art-num">16</div>
   <div>
     <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Brand Abuse</span></div>
     <h2>Extensão falsa da Perplexity no Chrome Web Store interceptava buscas e sugestões</h2>
@@ -295,7 +307,7 @@
 
           <div class="card card-pad mt-8 lead-orange">
             <span class="sec-id">fechamento</span>
-            <p class="mt-4">Resumo sem maquiagem: vulnerabilidade no KEV não é backlog, ferramenta de suporte remoto não é “só helpdesk”, appliance exposto não é paisagem e PoC de GitHub não é brinquedo fora de sandbox. Do lado de IA, o padrão está ficando adulto rápido demais: agentes fazem ataque, browsers tomam prompt injection, benchmarks medem capacidade científica e modelos frontier mudam de acesso como infraestrutura regulada. A parte operacional agora é simples e chata: inventário, isolamento, patch, fallback e log. O básico, aquele safado, venceu de novo.</p>
+            <p class="mt-4">Resumo sem maquiagem: vulnerabilidade no KEV não é backlog, ferramenta de suporte remoto não é “só helpdesk”, appliance exposto não é paisagem e PoC de GitHub não é brinquedo fora de sandbox. Do lado de IA, o padrão está ficando adulto rápido demais: agentes fazem ataque, browsers tomam prompt injection, benchmarks medem capacidade científica, GPT-5.6 Sol sobe a régua de cyber/coding/bio e modelos frontier mudam de acesso como infraestrutura regulada. A parte operacional agora é simples e chata: inventário, isolamento, patch, fallback e log. O básico, aquele safado, venceu de novo.</p>
             <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
           </div>
         </article>
