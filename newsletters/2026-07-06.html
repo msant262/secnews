@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #27 — 06 JUL 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Semana com SharePoint e SimpleHelp entrando no KEV da CISA, Oracle E-Business Suite já sendo explorado, Bad Epoll dando root em Linux/Android, Google derrubando parte da rede NetNut, Coreia do Norte espalhando 108 pacotes maliciosos, ARToken/EvilTokens industrializando phishing de Microsoft 365, breaches em Medtronic e Aflac, e IA aparecendo em ransomware agentic, browsers vulneráveis a prompt injection, GeneBench-Pro e movimentação forte de modelos da Anthropic.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#27 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#27</span><span class="mono-tag">06 JUL 2026</span><span class="mono-tag">23 min de leitura</span></div>
+      <h1>SharePoint e SimpleHelp no KEV, Oracle EBS exposto, NetNut desmontado e IA entrando no ransomware</h1>
+      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">Exploited</span><span class="badge">Supply Chain</span><span class="badge">Data Breach</span><span class="badge">AI Agents</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">4</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">10</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">1</span><span class="threat-l">média</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#27 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>SharePoint Server entrou no KEV com RCE autenticada explorada</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>SimpleHelp falha em OIDC e vira entrega para Djinn Stealer</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot high"></span>Bad Epoll dá root local em Linux 6.4+ e Android</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>Oracle EBS crítico já está sendo explorado</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot high"></span>Google degradou a rede proxy NetNut/Popa</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>Coreia do Norte publicou 108 pacotes maliciosos na PolinRider</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>ARToken expõe phishing Microsoft 365 com PRT e BEC</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>Medtronic notificou clientes após breach ShinyHunters</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot high"></span>Aflac Japan expôs dados pessoais e bancários de 4,38 milhões</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot high"></span>ChocoPoC mira pesquisadores via PoCs trojanizados</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot critical"></span>JadePuffer mostra ransomware operado por agente de IA</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>BioShocking engana browsers agentic a roubar dados</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot medium"></span>OpenAI lançou GeneBench-Pro para biologia computacional</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Anthropic mexe em Fable, Mythos e Sonnet 5</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>Extensão falsa da Perplexity interceptava buscas no Chrome</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#27 · Leitura">
+<div class="read-intro">
+  <p>Semana boa para quem gosta de priorização brutal: SharePoint e SimpleHelp entraram no KEV, Oracle E-Business Suite apareceu em exploração real e Bad Epoll trouxe root local para Linux/Android. Não é semana de “vamos acompanhar”, é semana de tirar coisa exposta do caminho antes que ela vire manchete interna.</p>
+  <p>Na camada de IA, o recado ficou mais claro: agentes já aparecem em ransomware, browsers agentic continuam confundindo teatro com ação real, e os grandes laboratórios estão mexendo em bio, acesso de modelo e custo/capacidade. Ou seja: IA não é uma seção lateral. É o motor novo enfiado dentro da superfície de ataque.</p>
+</div>
+          <h2 class="split-title">Segurança geral</h2>
+
+<section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Microsoft / KEV</span></div>
+    <h2>CISA colocou SharePoint Server no KEV: RCE autenticada já está em exploração</h2>
+    <p>A CISA adicionou a CVE-2026-45659 ao catálogo KEV em 1º de julho depois de exploração ativa contra Microsoft SharePoint Server. A falha é descrita como deserialização de dados não confiáveis e permite que um atacante autenticado, com privilégio baixo, execute código pela rede em sistemas vulneráveis.</p><p>SharePoint é uma daquelas peças que todo mundo trata como “só colaboração” até virar porta de entrada para dado interno, documentos sensíveis e movimento lateral. O detalhe importante: não precisa ser admin; uma conta comprometida com pouco privilégio pode ser suficiente para começar a brincadeira. Fofo, se você gosta de incêndio em biblioteca corporativa.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar os updates da Microsoft, priorizar servidores expostos ou com acesso amplo, revisar logs de autenticação e requisições incomuns, caçar webshells/arquivos novos em diretórios da aplicação, e tratar qualquer conta SharePoint suspeita como possível pivô interno.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45659" target="_blank" rel="noopener">Microsoft MSRC</a> · <a href="https://www.bleepingcomputer.com/news/security/cisa-microsoft-sharepoint-rce-flaw-now-actively-exploited/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Remote Support / KEV</span></div>
+    <h2>SimpleHelp falha em OIDC, entra no KEV e vira entrega para Djinn Stealer/Taskweaver</h2>
+    <p>A CVE-2026-48558, no SimpleHelp, também entrou no KEV da CISA. O problema está no fluxo OIDC: em configurações vulneráveis, tokens de identidade submetidos no login eram aceitos sem validação adequada da assinatura criptográfica, permitindo sessão autenticada de técnico com token forjado — e, em alguns cenários, bypass de MFA.</p><p>A exploração já apareceu em campanha com Djinn Stealer e Taskweaver, com impacto em Windows, macOS e Linux. Ferramenta de suporte remoto é privilégio embalado como conveniência; quando isso quebra, atacante não precisa arrombar a porta, ele entra vestido de helpdesk.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar/mitigar conforme orientação do SimpleHelp e CISA, revisar se OIDC está habilitado, rotacionar credenciais de técnicos, auditar sessões recentes, procurar conexões remotas fora do padrão e isolar qualquer servidor de suporte que tenha ficado exposto enquanto vulnerável.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-48558" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://www.bleepingcomputer.com/news/security/hackers-exploit-critical-simplehelp-flaw-deploy-new-djinn-infostealer-taskweaver-malware/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a3" data-sev="high">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Linux / Android</span></div>
+    <h2>Bad Epoll dá root local em Linux 6.4+ e pode alcançar sandbox de browser</h2>
+    <p>A falha CVE-2026-46242, apelidada de Bad Epoll, é um use-after-free no kernel Linux. Segundo a pesquisa pública de Jaeyoung Chung, um usuário sem privilégio consegue explorar a corrida para elevar privilégio a root; no ambiente testado, a exploração chegou a cerca de 99% de sucesso. Atinge kernels 6.4 ou mais novos e também interessa ao mundo Android.</p><p>Não há sinal público de exploração real nem entrada no KEV até agora, mas isso não deixa a história pequena. Epoll é recurso central: servidor, browser, rede, tudo encosta nisso. E o detalhe elegante e desagradável é que o bug mora perto de outro achado por Mythos; IA encontrou um irmão, humano achou o outro. Segurança ainda não virou botão mágico, graças a Deus e infelizmente.</p>
+    <div class="callout"><strong>O que fazer:</strong> Acompanhar backports da distribuição, aplicar o commit upstream a6dc643c6931 ou pacote corrigido, priorizar hosts multiusuário, desktops de desenvolvedores e ambientes com sandbox/browser expostos, e monitorar abuso local pós-comprometimento.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/07/new-bad-epoll-linux-kernel-flaw-lets.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://github.com/J-jaeyoung/bad-epoll" target="_blank" rel="noopener">Write-up técnico</a> · <a href="https://git.kernel.org/stable/c/a6dc643c69311677c574a0f17a3f4d66a5f3744b" target="_blank" rel="noopener">Kernel stable commit</a></p>
+  </div>
+</section>
+
+<section class="art" id="a4" data-sev="critical">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Oracle EBS</span></div>
+    <h2>Oracle E-Business Suite crítico já está sendo explorado; há centenas de instâncias expostas</h2>
+    <p>Pesquisadores da Defused observaram exploração da CVE-2026-46817 em honeypots Oracle E-Business Suite. A falha afeta o componente File Transmission do Oracle Payments e permite takeover remoto sem autenticação por HTTP, com complexidade baixa. A correção saiu no Critical Patch Update de maio, mas atacante obviamente não espera calendário de comitê.</p><p>A Shadowserver e a cobertura da BleepingComputer apontaram centenas — depois mais de 900 — instâncias EBS expostas na internet. EBS costuma carregar financeiro, pagamento, fornecedor e processo corporativo sensível. Ou seja: é exatamente o tipo de alvo que transforma patch atrasado em reunião com jurídico.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar o CPU de maio/patches Oracle imediatamente, tirar EBS da internet quando possível, restringir acesso por VPN/allowlist, revisar logs HTTP do Oracle Payments/File Transmission, caçar criação de usuários/processos estranhos e acionar IR se havia exposição antes da correção.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/new-oracle-e-business-suite-flaw-now-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.oracle.com/security-alerts/cspumay2026.html" target="_blank" rel="noopener">Oracle Critical Patch Update</a> · <a href="https://dashboard.shadowserver.org/statistics/iot-devices/time-series/?vendor=oracle&model=oracle+e-business+suite" target="_blank" rel="noopener">Shadowserver dashboard</a></p>
+  </div>
+</section>
+
+<section class="art" id="a5" data-sev="high">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Botnet / Proxy</span></div>
+    <h2>Google degradou a NetNut/Popa, rede proxy residencial com cerca de 2 milhões de dispositivos</h2>
+    <p>O Google Threat Intelligence Group, com FBI, Lumen e parceiros, disse ter reduzido significativamente a rede NetNut/Popa, que transformava dispositivos domésticos — incluindo smart TVs e streaming boxes — em relays residenciais alugados. A estimativa citada é de pelo menos 2 milhões de dispositivos.</p><p>Proxy residencial é a camuflagem perfeita para crime barato: password spray, scraping, fraude, espionagem e tráfego que parece vir de uma casa normal. O dono do dispositivo fica com o IP sujo; o atacante fica com a conveniência. A internet das coisas, como sempre, fazendo estágio não remunerado no crime organizado.</p>
+    <div class="callout"><strong>O que fazer:</strong> Em casa e empresas pequenas, revisar Android TVs/boxes baratos, remover apps suspeitos, atualizar firmware e resetar dispositivos comprometidos. Em defesa corporativa, enriquecer detecção com reputação de proxy residencial, olhar padrões de login por ASN/IP doméstico impossível e aplicar rate limit inteligente.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/google-continued-disruption-residential-proxy-networks" target="_blank" rel="noopener">Google Cloud / GTIG</a> · <a href="https://thehackernews.com/2026/07/google-disrupts-netnut-residential.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://www.bleepingcomputer.com/news/security/netnut-proxy-network-disrupted-2-million-infected-devices-cut-off/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Supply Chain / DPRK</span></div>
+    <h2>Coreia do Norte publicou 108 pacotes e extensões maliciosas na campanha PolinRider</h2>
+    <p>A campanha PolinRider, ligada ao cluster Contagious Interview da Coreia do Norte, expandiu para 108 pacotes/extensões únicos e 162 artefatos maliciosos em npm, Packagist, Go e Chrome. A Socket alerta que a atividade segue ativa, com expectativa de novos pacotes conforme contas e repositórios forem comprometidos.</p><p>O alvo continua sendo desenvolvedor, especialmente no entorno de cripto e contratação falsa. Esse é o ponto: cadeia de suprimentos moderna não precisa envenenar um pacote gigante para doer; basta convencer um dev cansado a abrir projeto, rodar teste ou instalar extensão com cara de trabalho. Recrutamento virou vetor de malware. LinkedIn, parabéns pela contribuição involuntária.</p>
+    <div class="callout"><strong>O que fazer:</strong> Bloquear execução automática em IDE quando abrir projeto desconhecido, revisar tasks/configs do VS Code/Cursor, usar sandbox para testes de candidatos, pinning e allowlist de dependências, monitorar postinstall/scripts suspeitos e treinar devs contra entrevistas técnicas com código não verificado.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://socket.dev/blog/polinrider-north-korea-linked-supply-chain-campaign-expands" target="_blank" rel="noopener">Socket</a> · <a href="https://thehackernews.com/2026/07/north-korean-hackers-publish-108.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://attack.mitre.org/groups/G1052/" target="_blank" rel="noopener">MITRE ATT&CK - Contagious Interview</a></p>
+  </div>
+</section>
+
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Microsoft 365 / PhaaS</span></div>
+    <h2>ARToken expõe painel de afiliado EvilTokens para phishing Microsoft 365 com PRT e BEC</h2>
+    <p>A Cisco Talos analisou o ARToken, plataforma phishing-as-a-service aparentemente ligada ao EvilTokens. O painel React expôs mais de 80 endpoints e mostra capacidade para roubar tokens Microsoft 365, persistir com Primary Refresh Tokens, acessar Outlook/SharePoint/OneDrive e operar campanhas de BEC com automação.</p><p>O mecanismo central continua lindo de feio: device code phishing usando infraestrutura legítima da Microsoft, contornando MFA na prática porque a vítima autentica no lugar certo para entregar o token ao operador errado. E com AI no fluxo de BEC, o golpe ganha escala, tradução e priorização financeira. Phishing virou SaaS com roadmap, que ódio eficiente.</p>
+    <div class="callout"><strong>O que fazer:</strong> Desabilitar ou restringir Device Code Flow quando não for necessário, exigir Conditional Access forte, monitorar criação/renovação anômala de PRT, detectar regras de inbox suspeitas, treinar usuários contra códigos de dispositivo e investigar logins com client/app incomum.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://blog.talosintelligence.com/artoken-inside-an-eviltokens-affiliate-panel-targeting-microsoft-365/" target="_blank" rel="noopener">Cisco Talos</a> · <a href="https://www.bleepingcomputer.com/news/security/artoken-phaas-exposes-eviltokens-microsoft-365-phishing-toolkit/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.sekoia.com/blog/new-widespread-eviltokens-kit-device-code-phishing-as-a-service-part-1" target="_blank" rel="noopener">Sekoia</a></p>
+  </div>
+</section>
+
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Healthcare / Breach</span></div>
+    <h2>Medtronic notificou clientes após breach reivindicado pela ShinyHunters</h2>
+    <p>A Medtronic começou a notificar clientes impactados por um incidente em sistemas corporativos entre 13 e 19 de abril. A ShinyHunters afirmou ter obtido 9 milhões de registros; a notificação fala em dados como nome, contato, data de nascimento, SSN e informações relacionadas à saúde, dependendo da pessoa afetada.</p><p>A empresa disse que dispositivos médicos não foram afetados e que os dados roubados não teriam sido publicados online. Ainda assim, dado de saúde com identificador pessoal é munição para fraude, engenharia social e extorsão emocional. Não precisa paralisar equipamento para machucar paciente; às vezes basta vazar contexto íntimo.</p>
+    <div class="callout"><strong>O que fazer:</strong> Notificados devem ativar monitoramento de crédito/identidade, ficar atentos a phishing com dados médicos reais e monitorar contas. Empresas de saúde devem revisar segmentação entre IT corporativo e ambiente clínico, logging de acesso a dados sensíveis e playbook de comunicação para vazamento de PII/PHI.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/medtronic-notifies-customers-impacted-by-shinyhunters-data-breach/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="http://oag.ca.gov/system/files/Consumer%20Letter%20-%20Exhibit%20A%20%281%29.pdf" target="_blank" rel="noopener">California OAG - notificação</a></p>
+  </div>
+</section>
+
+<section class="art" id="a9" data-sev="high">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Insurance / Breach</span></div>
+    <h2>Aflac Japan sofreu breach com dados pessoais e bancários de 4,38 milhões de clientes</h2>
+    <p>A Aflac divulgou que sua subsidiária japonesa foi acessada indevidamente entre 15 e 25 de junho. A empresa informou que arquivos impactados continham detalhes de apólices/cobertura, informações pessoais e dados bancários; a base afetada citada pela cobertura chega a 4,38 milhões de clientes.</p><p>O ataque foi limitado aos sistemas do Japão, segundo a empresa, mas a lição é global: seguradora concentra identidade, saúde financeira, beneficiários e dados bancários. É o tipo de base que criminoso olha e pensa: ‘obrigado pelo CRM completo’.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aflac deve notificar afetados e seguir com contenção/forense; clientes precisam monitorar contas bancárias e golpes com dados de apólice. Para seguradoras, revisar controles de acesso, detecção de exfiltração, segregação por região e simulações de fraude pós-breach.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/insurance-giant-aflac-discloses-data-breach-after-subsidiary-hack/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.sec.gov/Archives/edgar/data/4977/000162828026046124/afl-20260630.htm" target="_blank" rel="noopener">SEC filing</a> · <a href="https://www.aflac.co.jp/info/yorisou_faq.html" target="_blank" rel="noopener">Aflac Japan FAQ</a></p>
+  </div>
+</section>
+
+<section class="art" id="a10" data-sev="high">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Researcher OPSEC</span></div>
+    <h2>ChocoPoC usa PoCs trojanizados no GitHub para infectar pesquisadores via dependências PyPI</h2>
+    <p>Sekoia e YesWeHack encontraram repositórios de PoC no GitHub entregando o RAT ChocoPoC. A sacada é menos óbvia que enfiar malware no exploit: os repositórios puxavam pacotes Python maliciosos via dependência, como frint/skytext, e o payload final vinha de abuso de Mapbox datasets.</p><p>O alvo provável são pesquisadores, pentesters e gente que roda PoC de vulnerabilidade quente com pressa. E sim, isso é uma forma eficiente de punir curiosidade sem sandbox. O RAT executa comandos, coleta browser data, shell history, arquivos e configuração de rede. O PoC ‘gratuito’ cobra no cartão da sua máquina.</p>
+    <div class="callout"><strong>O que fazer:</strong> Nunca rodar PoC novo fora de VM descartável, revisar requirements/setup.py/pyproject antes de instalar, bloquear rede por padrão, usar contas sem segredos, limpar tokens de ambiente e preferir reproduções próprias ou fontes verificadas para vulnerabilidades em alta.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/new-chocopoc-malware-targets-researchers-via-trojanized-poc-exploits/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.sekoia.com/blog/dont-eat-the-chocopocs-how-vulnerability-researchers-were-repeatedly-targeted-by-trojanised-exploits" target="_blank" rel="noopener">Sekoia</a> · <a href="https://www.yeswehack.com/news/chocopocs-vulnerability-researchers-trojanised-exploits" target="_blank" rel="noopener">YesWeHack</a></p>
+  </div>
+</section>
+
+          <h2 class="split-title">Segurança em IA</h2>
+
+<section class="art" id="a11" data-sev="critical">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">AI / Ransomware</span></div>
+    <h2>JadePuffer mostra ransomware operado por agente de IA do reconhecimento à criptografia</h2>
+    <p>A Sysdig descreveu o que acredita ser o primeiro caso documentado de operação de ransomware conduzida integralmente por um agente LLM. No caso JadePuffer, o agente teria feito reconhecimento, coleta de credenciais, movimentação lateral, persistência, escalada de privilégio e criptografia, adaptando payloads quando etapas falhavam.</p><p>O acesso inicial veio por Langflow vulnerável (CVE-2025-3248), e o agente acabou criptografando 1.342 itens de configuração no Nacos. Alguns sinais ainda parecem ‘IA juvenil’ — endereço Bitcoin de exemplo, comentários naturais demais, AES possivelmente exagerado na nota — mas rir disso é perigoso. A versão ruim já machuca; a próxima versão só precisa ser menos burra.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar plataformas de AI app builder expostas como superfície crítica, remover credenciais cloud de ambientes Langflow, corrigir CVE-2025-3248 e similares, detectar payloads com iteração rápida/erro-correção, limitar egress, e treinar IR para ataques com automação adaptativa em minutos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion" target="_blank" rel="noopener">Sysdig</a> · <a href="https://www.bleepingcomputer.com/news/security/jadepuffer-ransomware-used-ai-agent-to-automate-entire-attack/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Browsers</span></div>
+    <h2>BioShocking engana browsers agentic a tratar roubo de dados como “jogo”</h2>
+    <p>Pesquisadores da LayerX publicaram o BioShocking, um PoC de prompt injection contra browsers com agentes. A página maliciosa apresenta um puzzle temático de BioShock que recompensa respostas “erradas” e ensina o agente a aceitar ações inseguras dentro de uma narrativa fictícia; no final, ele é levado a copiar dados sensíveis de um repositório.</p><p>O teste atingiu ChatGPT Atlas, Comet, Fellou, Genspark Browser, Sigma Browser e plugin Claude Chrome. Segundo a LayerX, só a OpenAI implementou correção efetiva no Atlas após o reporte; outras respostas foram ausentes ou insuficientes. O ponto é simples e desconfortável: agente que navega por você também pode obedecer uma página contra você.</p>
+    <div class="callout"><strong>O que fazer:</strong> Limitar acesso de AI browsers a contas sensíveis, exigir confirmação humana explícita para copiar/enviar dados, separar perfis de navegação, bloquear agentes em repositórios/drive/mail corporativo quando não houver política clara, e testar prompt injection como parte de avaliação de browser agentic.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://layerxsecurity.com/blog/bioshocking-ai-gaming-the-ai-browser-and-escaping-its-guardrails/" target="_blank" rel="noopener">LayerX</a> · <a href="https://www.bleepingcomputer.com/news/security/new-bioshocking-attack-manipulates-ai-browser-into-data-theft/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a13" data-sev="medium">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">AI / Bio + Benchmarks</span></div>
+    <h2>OpenAI lançou GeneBench-Pro para medir “gosto de pesquisa” em biologia computacional</h2>
+    <p>A OpenAI apresentou o GeneBench-Pro, benchmark com 129 problemas de nível de pesquisa em genômica, biologia quantitativa e medicina translacional. A proposta é medir julgamento de análise — escolher caminho, lidar com ambiguidade, revisar suposições e decidir quando um resultado está pronto — não só memória ou execução de pipeline.</p><p>Por que isso entra numa newsletter de segurança? Porque biologia computacional está virando território agentic também. Avaliar capacidade real em análise biológica ajuda defesa, pesquisa e auditoria; mas também aproxima modelos de tarefas dual-use. O benchmark sintético e com avaliação determinística é uma tentativa de medir o foguete antes de vender carona nele.</p>
+    <div class="callout"><strong>O que fazer:</strong> Organizações de pesquisa devem acompanhar benchmarks de bio/agentic reasoning como indicador de capacidade e risco, exigir revisão humana em análises biomédicas, registrar decisões de agentes, controlar dados sensíveis e separar uso exploratório de workflows com impacto clínico ou regulatório.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://openai.com/index/introducing-genebench-pro/" target="_blank" rel="noopener">OpenAI</a> · <a href="https://openai.com/index/genebench-pro/case-studies/" target="_blank" rel="noopener">GeneBench-Pro case studies</a> · <a href="https://huggingface.co/datasets/ajh-oai/genebench-pro-public-package" target="_blank" rel="noopener">Dataset público</a></p>
+  </div>
+</section>
+
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Model Access</span></div>
+    <h2>Anthropic reorganiza a semana: Fable volta, Sonnet 5 chega e acesso a frontier model fica político</h2>
+    <p>A Anthropic confirmou que o Department of Commerce retirou controles de exportação sobre Fable 5 e Mythos 5, permitindo restaurar Fable globalmente; ao mesmo tempo, a empresa comunicou mudanças temporárias no acesso via assinaturas e lançou o Sonnet 5 como modelo mais agentic da linha Sonnet, perto de Opus 4.8 em alguns cenários e com preço menor.</p><p>A história não é só ‘modelo novo’. É dependência operacional: times que constroem produto, automação ou segurança em cima de frontier models agora precisam lidar com disponibilidade que pode mudar por política pública, avaliação de risco, tier comercial ou estratégia de vendor. Modelo virou infraestrutura; acesso virou controle de mudança. Bonito, instável e cheio de contrato para ler — o inferno em três atos.</p>
+    <div class="callout"><strong>O que fazer:</strong> Mapear workflows dependentes de Claude/Fable/Mythos/Sonnet, manter fallback de modelo, testar degradação de qualidade/custo, definir política para dados sensíveis em frontier models e acompanhar mudanças de acesso antes de prometer SLA em cima de ferramenta que o fornecedor pode pausar.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener">Anthropic - Claude Sonnet 5</a> · <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener">Anthropic - redeploying Fable 5</a> · <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-to-restore-claude-fable-access-on-wednesday/" target="_blank" rel="noopener">BleepingComputer - Fable access</a> · <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-rolls-out-sonnet-5-with-near-opus-48-performance-at-a-lower-price/" target="_blank" rel="noopener">BleepingComputer - Sonnet 5</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="high">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Brand Abuse</span></div>
+    <h2>Extensão falsa da Perplexity no Chrome Web Store interceptava buscas e sugestões</h2>
+    <p>A Microsoft identificou uma extensão maliciosa no Chrome Web Store chamada “Search for perplexity ai”, usando branding parecido com Perplexity. Ela alterava o provedor de busca do navegador e roteava consultas da omnibox e sugestões em tempo real por infraestrutura do operador antes de redirecionar para serviços legítimos.</p><p>A Microsoft não encontrou roubo de credenciais, mas as permissões pedidas permitiam redirecionamento, reescrita de URLs e monitoramento de regras — o suficiente para virar coisa muito pior sem grande esforço. A febre de ferramentas de IA criou uma loja de fantasias perfeita: usuário instala ‘assistente’, atacante ganha telemetria de intenção.</p>
+    <div class="callout"><strong>O que fazer:</strong> Remover a extensão ID flkebkiofojicogddingbdmcmkpbplcd se instalada, revisar extensões por publisher/domínio, bloquear instalação livre em ambiente corporativo, monitorar alteração de search provider e rotacionar senhas críticas se houve uso em navegador comprometido.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/06/29/chromium-extension-uses-airelated-branding-redirect-browser-search/" target="_blank" rel="noopener">Microsoft Threat Intelligence</a> · <a href="https://www.bleepingcomputer.com/news/security/fake-perplexity-extension-on-chrome-web-store-tracked-searches/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+          <div class="card card-pad mt-8 lead-orange">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Resumo sem maquiagem: vulnerabilidade no KEV não é backlog, ferramenta de suporte remoto não é “só helpdesk”, appliance exposto não é paisagem e PoC de GitHub não é brinquedo fora de sandbox. Do lado de IA, o padrão está ficando adulto rápido demais: agentes fazem ataque, browsers tomam prompt injection, benchmarks medem capacidade científica e modelos frontier mudam de acesso como infraestrutura regulada. A parte operacional agora é simples e chata: inventário, isolamento, patch, fallback e log. O básico, aquele safado, venceu de novo.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById("progress");function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+"%";}addEventListener("scroll",onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
