@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-07-13", edition:"#28", date:"13 JUL 2026", title:"ShareFile em alerta, Gitea explorado, CMS no KEV e agentes de IA virando risco de build",
+    summary:"Semana com CISA colocando Adobe ColdFusion, Joomla/Langflow, iCagenda e Balbooa no KEV; Progress mandando clientes ShareFile derrubarem Storage Zone Controllers; Gitea Docker sendo explorado por auth bypass; U-Boot, WordPress, RedHook, Injective SDK, OpenMandriva e AssuranceAmerica mostrando que supply chain e dados pessoais seguem caros; e IA puxando a pauta com GPT-5.6 Sol, Claude Fable 5, Microsoft usando AI para achar bugs, Friendly Fire e GitLost/GhostApproval.",
+    tags:["CISA KEV","Exploited","Supply Chain","AI Agents","Frontier AI"], stories:15, crit:3, file:"newsletters/2026-07-13.html" },
   { id:"2026-07-06", edition:"#27", date:"06 JUL 2026", title:"SharePoint e SimpleHelp no KEV, Oracle EBS exposto, NetNut desmontado e IA entrando no ransomware",
     summary:"Semana com SharePoint e SimpleHelp entrando no KEV da CISA, Oracle E-Business Suite já sendo explorado, Bad Epoll dando root em Linux/Android, Google derrubando parte da rede NetNut, Coreia do Norte espalhando 108 pacotes maliciosos, ARToken/EvilTokens industrializando phishing de Microsoft 365, breaches em Medtronic e Aflac, e IA aparecendo em ransomware agentic, browsers vulneráveis a prompt injection, GeneBench-Pro, GPT-5.6 Sol e movimentação forte de modelos da Anthropic.",
     tags:["CISA KEV","Exploited","Supply Chain","Data Breach","AI Agents"], stories:16, crit:4, file:"newsletters/2026-07-06.html" },
