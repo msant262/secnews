@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #28 — 13 JUL 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Semana com CISA colocando Adobe ColdFusion, Joomla/Langflow, iCagenda e Balbooa no KEV; Progress mandando clientes ShareFile derrubarem Storage Zone Controllers; Gitea Docker sendo explorado por auth bypass; U-Boot, WordPress, RedHook, Injective SDK, OpenMandriva e AssuranceAmerica mostrando que supply chain e dados pessoais seguem caros; e IA puxando a pauta com GPT-5.6 Sol, Claude Fable 5, Microsoft usando AI para achar bugs, Friendly Fire e GitLost/GhostApproval.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#28 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#28</span><span class="mono-tag">13 JUL 2026</span><span class="mono-tag">23 min de leitura</span></div>
+      <h1>ShareFile em alerta, Gitea explorado, CMS no KEV e agentes de IA virando risco de build</h1>
+      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">Exploited</span><span class="badge">Supply Chain</span><span class="badge">AI Agents</span><span class="badge">Frontier AI</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">3</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">12</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">0</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#28 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>CISA colocou ColdFusion, Joomla e Langflow no KEV — e a exploração já está acontecendo</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Mais dois plugins CMS entram no KEV: iCagenda e Balbooa Forms com upload perigoso</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot high"></span>Progress mandou clientes ShareFile desligarem Storage Zone Controllers por “ameaça externa crível”</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>Gitea Docker: auth bypass crítico já explorado deixa atacante virar qualquer usuário por header</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot high"></span>Seis falhas no U-Boot podem quebrar cadeia de boot em roteadores, câmeras e BMCs</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>WP-SHELLSTORM expôs bastidor de operação que backdoorou milhares de sites WordPress/Joomla</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>RedHook agora abusa de Wireless ADB para ganhar shell no Android sem cabo nem root</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>Injective SDK no npm foi comprometido para roubar seed phrases e chaves privadas de cripto</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot high"></span>OpenMandriva denunciou tentativa de sabotagem interna após disputa entre contribuidores</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot high"></span>AssuranceAmerica expôs dados de quase 7 milhões de motoristas após invasão ligada a funcionário</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot high"></span>OpenAI relaxou limites do GPT-5.6 Sol após pico de demanda em Codex e ChatGPT Work</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>Anthropic estendeu Fable 5 e o aumento de Claude Code até 19 de julho</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>Microsoft avisou: AI vai aumentar o volume de patches do Windows</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Friendly Fire: agentes feitos para revisar código malicioso podem acabar executando o payload</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>GitLost e GhostApproval mostram o mesmo pecado: agente com credencial demais lendo coisa pública demais</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#28 · Leitura">
+<div class="read-intro">
+  <p>Essa semana veio com cheiro de borda exposta e build quebrável: CISA empilhou KEV em ColdFusion, Joomla, Langflow, iCagenda e Balbooa; Progress mandou clientes ShareFile desligarem controller on-prem; e Gitea mostrou como um header mal validado pode virar acesso admin em repositório de código. Nada disso é abstrato. É patch, shutdown, log e caça.</p>
+  <p>Na seção de IA, o assunto não ficou preso em “prompt injection bonitinho”. Teve movimento estratégico de modelo — GPT-5.6 Sol e Claude Fable 5 mudando limites de acesso — Microsoft dizendo que IA vai aumentar o volume de patches do Windows, e agentes de coding/security mostrando a mesma falha estrutural: credencial demais, autonomia demais e entrada não confiável demais. A indústria está colocando copiloto com chave mestra em sala cheia de bilhete malicioso. O que poderia dar errado, né?</p>
+</div>
+          <h2 class="split-title">Segurança geral</h2>
+<section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">CISA KEV / RCE</span></div>
+    <h2>CISA colocou ColdFusion, Joomla e Langflow no KEV — e a exploração já está acontecendo</h2>
+    <p>A CISA adicionou quatro falhas ao catálogo KEV em 7 de julho: Adobe ColdFusion CVE-2026-48282, Joomlack Page Builder CVE-2026-56290, Langflow CVE-2026-55255 e JoomShaper SP Page Builder CVE-2026-48908. Três têm cara de “se exposto, vira shell”: path traversal/RCE no ColdFusion e uploads arbitrários em construtores Joomla. A de Langflow é menos barulhenta no CVSS, mas mais venenosa operacionalmente: IDOR/cross-tenant para executar flows de outro usuário e roubar chaves de LLM/cloud em ambiente exposto.</p><p>O detalhe que importa: ColdFusion teve tentativa observada horas depois da divulgação pública; SP Page Builder e Page Builder CK já apareciam com webshell; e a exploração de Langflow veio casada com RCE em campanha oportunista para payloads de botnet/cryptojacking. Essa semana foi um lembrete gentil, na base do soco, de que “AI orchestration” também é cofre de credenciais.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar os quatro CVEs como prioridade de internet-facing. Atualizar ColdFusion e extensões Joomla, procurar PHP/webshells em /media, /images, /templates e diretórios de upload, revisar flows e chaves em Langflow, rotacionar credenciais LLM/cloud expostas e investigar qualquer host vulnerável antes do patch.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://thehackernews.com/2026/07/cisa-adds-4-actively-exploited-adobe.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://www.sysdig.com/blog/understanding-langflow-cve-2026-55255-and-why-higher-cvss-vulnerabilities-arent-always-the-most-exploited" target="_blank" rel="noopener">Sysdig</a></p>
+  </div>
+</section>
+
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">CISA KEV / CMS</span></div>
+    <h2>Mais dois plugins CMS entram no KEV: iCagenda e Balbooa Forms com upload perigoso</h2>
+    <p>No dia 10, a CISA adicionou mais duas vulnerabilidades exploradas ao KEV: CVE-2026-48939 no iCagenda e CVE-2026-56291 no Balbooa Forms. Ambas são falhas de upload irrestrito de arquivo perigoso — aquela categoria clássica que transforma site CMS em hospedagem gratuita para webshell.</p><p>A história não é sofisticada, e justamente por isso funciona. Site Joomla/WordPress esquecido, plugin velho, endpoint de upload, PHP plantado, persistence discreta e depois pivô para banco, painel ou servidor. O crime não precisa ser elegante quando o inventário está fazendo cosplay de lixeira.</p>
+    <div class="callout"><strong>O que fazer:</strong> Inventariar sites Joomla/WordPress e plugins, atualizar iCagenda e Balbooa Forms, bloquear execução de PHP em diretórios de upload, varrer arquivos recém-criados e nomes estranhos, revisar contas admin novas e colocar CMS legado atrás de WAF/allowlist até corrigir.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/news-events/alerts/2026/07/10/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA - alerta de 10 de julho</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a></p>
+  </div>
+</section>
+
+<section class="art" id="a3" data-sev="high">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">ShareFile / File Transfer</span></div>
+    <h2>Progress mandou clientes ShareFile desligarem Storage Zone Controllers por “ameaça externa crível”</h2>
+    <p>A Progress Software avisou clientes ShareFile com Storage Zone Controllers on-premises para desligarem manualmente os servidores. A empresa diz não ter indicação de acesso não autorizado a contas ou dados ShareFile, mas também disse que bloquear acesso via cloud não bastava: era para derrubar o Windows Server que hospeda o controller.</p><p>Isso tem cheiro operacional de risco sério, mesmo sem CVE público. Storage Zone Controller é componente exposto à internet para transferir arquivos entre ShareFile cloud e armazenamento local. Em português claro: fica na borda, toca dado sensível e lembra muito o tipo de superfície que grupos de extorsão adoram desde MOVEit. Quando vendor fala “desliga agora”, a resposta não é reunião de alinhamento; é desligar.</p>
+    <div class="callout"><strong>O que fazer:</strong> Clientes ShareFile com Storage Zone Controllers devem seguir a orientação da Progress, isolar/desligar o host, preservar logs, revisar acessos recentes, procurar webshell/processos novos e aguardar IOC/fix oficial antes de religar. Quem usa file-transfer exposto deve revisar inventário e plano de emergência para shutdown controlado.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/progress-urges-sharefile-customers-to-shut-down-servers-over-credible-threat/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://status.sharefile.com/" target="_blank" rel="noopener">Progress ShareFile status</a></p>
+  </div>
+</section>
+
+<section class="art" id="a4" data-sev="critical">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Gitea / Docker</span></div>
+    <h2>Gitea Docker: auth bypass crítico já explorado deixa atacante virar qualquer usuário por header</h2>
+    <p>Atacantes começaram a explorar a CVE-2026-20896 no Docker oficial do Gitea. O problema: em configuração padrão, o container vinha com REVERSE_PROXY_TRUSTED_PROXIES=* e, quando reverse-proxy auth estava habilitado, confiava no header X-WEBAUTH-USER vindo de qualquer IP. Resultado: cliente não autenticado podia declarar “sou admin” e o Gitea aceitava.</p><p>Gitea não é só wiki bonitinha. É código-fonte, pull request, CI/CD, segredo acidental e histórico de arquitetura. Um bypass desses em serviço exposto é supply chain na veia: compromete repositório, troca release, planta token e deixa o atacante escrever no coração do build. Um header. Sem senha. Sem token. A delicadeza de um pé na porta.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar imediatamente para Gitea 1.26.4 ou superior, restringir REVERSE_PROXY_TRUSTED_PROXIES a IPs confiáveis, impedir acesso direto ao container HTTP, revisar logs para uso de X-WEBAUTH-USER, auditar contas/admins, releases e commits recentes e rotacionar segredos se houver suspeita.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/hackers-exploit-critical-auth-bypass-in-gitea-docker-image/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://github.com/go-gitea/gitea/security/advisories/GHSA-f75j-4cw6-rmx4" target="_blank" rel="noopener">GitHub Security Advisory</a> · <a href="https://blog.gitea.com/release-of-1.26.3-and-1.26.4/" target="_blank" rel="noopener">Gitea releases</a></p>
+  </div>
+</section>
+
+<section class="art" id="a5" data-sev="high">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Firmware / Bootloader</span></div>
+    <h2>Seis falhas no U-Boot podem quebrar cadeia de boot em roteadores, câmeras e BMCs</h2>
+    <p>A Binarly encontrou seis falhas no U-Boot, bootloader usado em roteadores domésticos, câmeras, dispositivos embarcados e controladores de gerenciamento de servidores. Quatro causam crash; duas podem permitir execução de código antes da validação de assinatura da imagem, enquanto o bootloader ainda processa conteúdo não confiável.</p><p>A parte ruim: o patch já foi mesclado upstream, mas a release v2026.07 saiu sem as correções; a próxima está prevista só para outubro. E U-Boot vive dentro de firmwares de vendor, então o caminho até o dispositivo final é aquele desfile triste de OEM, integrador, modelo abandonado e usuário que nem sabe que tem bootloader.</p>
+    <div class="callout"><strong>O que fazer:</strong> Vendors devem aplicar os commits upstream sem esperar a próxima release. Operadores devem acompanhar firmware dos fabricantes, priorizar BMCs/equipamentos expostos a update remoto, exigir SBOM/boletim de U-Boot em appliances e tratar firmware update como controle de segurança, não “manutenção eventual”.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/07/six-new-u-boot-flaws-could-let.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://www.binarly.io/blog/unfit-to-boot-breaking-u-boots-fit-signature-verification" target="_blank" rel="noopener">Binarly</a> · <a href="https://www.binarly.io/advisories" target="_blank" rel="noopener">Binarly advisories</a></p>
+  </div>
+</section>
+
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">WordPress / Webshell</span></div>
+    <h2>WP-SHELLSTORM expôs bastidor de operação que backdoorou milhares de sites WordPress/Joomla</h2>
+    <p>Um servidor aberto por engano revelou a operação WP-SHELLSTORM: cerca de 800 MB com webshells, exploits, logs, listas de alvo e configurações. As listas tinham mais de 1,4 milhão de sites; os comprometidos confirmados ficaram bem abaixo disso, mas ainda na casa de milhares. O destaque foi o plugin Breeze (CVE-2026-3844), com mais de 17 mil backdoors segundo contagem interna do operador.</p><p>O achado é útil porque mostra a realidade sem glamour: exploit público, scanner em massa, plugin velho, webshell, revenda de acesso. Nada de zero-day cinematográfico. Só higiene ruim em escala industrial, e um criminoso esquecendo servidor Python aberto por 22 dias. Até bandido tem dívida técnica, pelo visto.</p>
+    <div class="callout"><strong>O que fazer:</strong> Patchar Breeze, Joomla JCE e demais plugins listados; bloquear execução em diretórios de upload; caçar arquivos como .bd.php, .wp-log.php e .brq-*.php; revisar processos [kworker] falsos; rotacionar credenciais de CMS/banco; e tratar Nacos/XXL-Job/Spring Boot expostos como possível segunda frente.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/07/exposed-hacker-server-reveals-wp.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://socradar.io/blog/wp-shellstorm-expose-1-4m-wordpress-sites/" target="_blank" rel="noopener">SOCRadar</a> · <a href="https://ctrlaltintel.com/research/Wordpress/" target="_blank" rel="noopener">Ctrl-Alt-Intel</a></p>
+  </div>
+</section>
+
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Android / Malware</span></div>
+    <h2>RedHook agora abusa de Wireless ADB para ganhar shell no Android sem cabo nem root</h2>
+    <p>A Group-IB analisou nova versão do malware Android RedHook que usa Accessibility para ativar Developer Options e Wireless Debugging, captura o código de pareamento na tela e conecta ao serviço ADB local em 127.0.0.1. Com isso, ganha privilégios shell (UID 2000), mais fortes que os de um app comum, sem precisar de root.</p><p>É uma evolução feia porque transforma recurso legítimo de desenvolvedor em pós-exploração móvel. Com Shizuku acoplado, o malware consegue instalar/remover apps, mudar configurações protegidas, criar overlays, capturar tela, simular gestos e operar 53 comandos. O usuário só vê “permita acessibilidade”; o resto é a máquina sendo educada contra o dono.</p>
+    <div class="callout"><strong>O que fazer:</strong> Instalar apps só da Play Store, manter Play Protect ativo, negar Accessibility para apps fora de extrema confiança, desativar Developer Options/Wireless Debugging quando não usado, caçar apps com uso abusivo de ADB/Shizuku e orientar usuários contra sites falsos de banco/governo enviados por mensagem ou ligação.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/redhook-android-malware-now-uses-wireless-adb-for-shell-access/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.group-ib.com/blog/redhook-android-rat-upgraded/" target="_blank" rel="noopener">Group-IB</a></p>
+  </div>
+</section>
+
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">npm / Crypto</span></div>
+    <h2>Injective SDK no npm foi comprometido para roubar seed phrases e chaves privadas de cripto</h2>
+    <p>Atacantes comprometeram uma conta legítima no GitHub da Injective Labs e publicaram a versão 1.20.21 do @injectivelabs/sdk-ts com malware. O pacote tem cerca de 50 mil downloads semanais e é usado em wallets, bots, DEXs e apps DeFi. A versão maliciosa foi baixada 310 vezes antes de ser depreciada; outras 17 packages associadas também foram pinadas para a versão comprometida.</p><p>O malware não rodava no install: esperava funções de geração/importação de wallet para capturar mnemonic seed e private key, codificar em base64 e exfiltrar via endpoint que parecia infraestrutura legítima da Injective. É supply chain com mira cirúrgica: não quer máquina genérica, quer chave que move dinheiro.</p>
+    <div class="callout"><strong>O que fazer:</strong> Quem instalou 1.20.21 deve considerar ambiente e wallets comprometidos, mover fundos para carteiras novas com seed nova, rotacionar segredos de CI/dev, atualizar para release limpa, revisar lockfiles e bloquear versões depreciadas em mirrors internos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/injective-sdk-on-npm-infected-with-cryptocurrency-wallet-stealer/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="http://socket.dev/blog/compromised-injective-sdk-npm-package" target="_blank" rel="noopener">Socket</a> · <a href="http://www.stepsecurity.io/blog/injective-npm-supply-chain-attack-18-packages-backdoored-to-steal-crypto-wallet-keys" target="_blank" rel="noopener">StepSecurity</a></p>
+  </div>
+</section>
+
+<section class="art" id="a9" data-sev="high">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Open Source / Insider</span></div>
+    <h2>OpenMandriva denunciou tentativa de sabotagem interna após disputa entre contribuidores</h2>
+    <p>O projeto OpenMandriva Linux afirmou ter sofrido uma tentativa de sabotagem interna: deleção de repositórios no GitHub e publicação de pacote vazio no Cooker que obsoletava pacotes dos desktops GNOME e Cosmic, potencialmente quebrando sistemas de usuários. O acusado nega intenção de sabotagem e diz que a ação foi parte de disputa técnica/política no projeto.</p><p>Independentemente da leitura jurídica, o caso é um lembrete brutal: projeto open source também tem risco de governança, privilégio excessivo e ressentimento humano com acesso admin. Nem toda supply chain quebra por APT; às vezes quebra porque alguém com permissão demais fica puto. Vida adulta, só que com repositório.</p>
+    <div class="callout"><strong>O que fazer:</strong> Projetos devem revisar quem tem admin em GitHub, mirrors e repositórios de pacote, exigir dupla aprovação para mudanças destrutivas, manter backups independentes, registrar ações administrativas e separar disputa comunitária de controle técnico de release.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/openmandriva-linux-says-contributor-tried-to-sabotage-the-project/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="http://forum.openmandriva.org/t/statement-regarding-attempted-distribution-sabotage/8997" target="_blank" rel="noopener">OpenMandriva forum</a></p>
+  </div>
+</section>
+
+<section class="art" id="a10" data-sev="high">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Insurance / Breach</span></div>
+    <h2>AssuranceAmerica expôs dados de quase 7 milhões de motoristas após invasão ligada a funcionário</h2>
+    <p>A seguradora americana AssuranceAmerica notificou vazamento que afetou 6.998.886 pessoas. Segundo a notificação ao Maine AG, atividade maliciosa em março mirou um funcionário, permitiu acesso a partes do ambiente de TI e cópia de arquivos. Os dados incluem nome, contato, apólice/conta de seguro, informações de veículo, sinistro e número de carteira de motorista.</p><p>Carteira de motorista + seguro + contato é pacote premium para fraude, sim swap social, phishing contextual e golpe de seguradora fake. A empresa disse ter desabilitado credenciais comprometidas, encerrado sessões não autorizadas e reforçado monitoramento. Bom. O problema é que o dado copiado não faz rollback.</p>
+    <div class="callout"><strong>O que fazer:</strong> Afetados devem monitorar crédito, contas e golpes usando informação de seguro/veículo. Seguradoras devem revisar proteção de contas de funcionários, detecção de exfiltração, segmentação de dados de cliente, retenção mínima e simulação de fraude pós-breach.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/assuranceamerica-data-breach-exposes-records-of-69-million-drivers/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://apps.web.maine.gov/online/aeviewer/ME/40/7bd774a8-af13-4101-a65b-d1f9058f1fb8.shtml" target="_blank" rel="noopener">Maine Attorney General</a> · <a href="https://techcrunch.com/2026/07/08/another-massive-data-breach-exposed-millions-of-drivers-license-numbers/" target="_blank" rel="noopener">TechCrunch</a></p>
+  </div>
+</section>
+          <h2 class="split-title">Segurança em IA</h2>
+<section class="art" id="a11" data-sev="high">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Frontier Models</span></div>
+    <h2>OpenAI relaxou limites do GPT-5.6 Sol após pico de demanda em Codex e ChatGPT Work</h2>
+    <p>A OpenAI removeu temporariamente a restrição de uso em janela de cinco horas para Plus, Pro e Business, resetou uso corrente e disse estar tornando o GPT-5.6 Sol mais eficiente. A mudança veio depois de 48 horas intensas de demanda em Codex e ChatGPT Work.</p><p>Isso entra aqui porque acesso a frontier model já virou capacidade operacional. Se o modelo mais forte fica limitado, fluxo de coding agent, análise, revisão de segurança e automação trava. Se a empresa relaxa limite e melhora eficiência, de repente mais gente coloca Sol no caminho crítico. Modelo não é mais “chat”: é dependência de build, SOC, AppSec e produto.</p>
+    <div class="callout"><strong>O que fazer:</strong> Times que usam GPT-5.6 Sol devem mapear tarefas críticas, medir consumo/custo/latência, manter fallback para modelos menores, registrar decisões de agente em código e segurança, e não prometer SLA interno em cima de limite promocional ou temporário.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-temporarily-relaxes-gpt-56-sol-usage-limits/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://x.com/thsottiaux/status/2076365965915467978" target="_blank" rel="noopener">OpenAI product update no X</a></p>
+  </div>
+</section>
+
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Model Access</span></div>
+    <h2>Anthropic estendeu Fable 5 e o aumento de Claude Code até 19 de julho</h2>
+    <p>A Anthropic prorrogou até 19 de julho o acesso promocional ao Claude Fable 5 para assinantes Pro, Max, Team e Enterprise elegíveis. O modelo pode consumir até 50% do limite semanal de assinatura; a empresa também estendeu o aumento de 50% nos limites semanais do Claude Code.</p><p>A mensagem estratégica é parecida com a da OpenAI: capacidade de modelo virou commodity escassa e política de acesso muda semana a semana. Para quem construiu fluxo em Claude Code, Fable, Cowork ou Microsoft 365, isso é controle de mudança — não curiosidade de power user. O fornecedor ajusta compute; seu pipeline sente. Delicioso, se você odeia previsibilidade.</p>
+    <div class="callout"><strong>O que fazer:</strong> Inventariar fluxos dependentes de Fable/Claude Code, medir onde o ganho justifica consumo maior de limite, preparar fallback para Sonnet/Opus/outros fornecedores, separar dados sensíveis por política e avisar produto/engenharia quando promoções de acesso tiverem prazo.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/claude-fable-5-stays-free-for-paid-users-until-july-19-as-anthropic-buys-more-time/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://support.claude.com/en/articles/15424964-claude-fable-5-promotional-access" target="_blank" rel="noopener">Anthropic Support</a></p>
+  </div>
+</section>
+
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI / Vulnerability Discovery</span></div>
+    <h2>Microsoft avisou: AI vai aumentar o volume de patches do Windows</h2>
+    <p>A Microsoft disse que clientes devem esperar mais correções de segurança no Windows conforme a empresa usa IA para encontrar vulnerabilidades mais rápido. O MDASH, harness agentic multi-modelo da Microsoft Security, varre binários críticos, valida candidatos com vários modelos e passa achados por uma pipeline específica do Windows antes de revisão humana.</p><p>A parte boa: mais bug encontrado antes de zero-day. A parte chata: mais patch, mais regressão possível, mais janela de manutenção e mais pressão em gestão de vulnerabilidades. O mesmo artigo também cita que a CISA começou a usar modelo da Anthropic para auditar software governamental. Defesa em velocidade de IA é ótima — desde que operação consiga acompanhar sem fingir que Patch Tuesday cabe numa planilha mansa.</p>
+    <div class="callout"><strong>O que fazer:</strong> Ajustar processo de patch para maior volume, automatizar validação em ambientes de teste, priorizar exposição real e criticidade, acompanhar mudanças no SDL de vendors e tratar achados de AI-assisted discovery como aumento permanente de cadência, não pico temporário.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-expects-more-windows-security-updates-from-ai-discovered-flaws/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://blogs.windows.com/windowsexperience/?p=180398" target="_blank" rel="noopener">Microsoft Windows blog</a> · <a href="https://www.microsoft.com/en-us/security/blog/2026/05/12/defense-at-ai-speed-microsofts-new-multi-model-agentic-security-system-tops-leading-industry-benchmark/" target="_blank" rel="noopener">Microsoft Security - MDASH</a></p>
+  </div>
+</section>
+
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Agents / AppSec</span></div>
+    <h2>Friendly Fire: agentes feitos para revisar código malicioso podem acabar executando o payload</h2>
+    <p>O AI Now Institute publicou o PoC Friendly Fire contra Claude Code e OpenAI Codex em modos autônomos que aprovam comandos por conta própria. A armadilha fica em projeto open source aparentemente normal: README sugere rodar security.sh, o agente interpreta como parte da revisão e executa binário escondido no host.</p><p>É uma ironia linda e horrível: você usa agente para revisar código de terceiro e o atacante usa a própria tarefa de “security testing” para transformar o agente no loader. Não é bug de versão específica; é falha de desenho quando texto não confiável chega a um agente com terminal e segredos por perto. AppSec terceirizado para IA sem sandbox vira roleta com prompt injection.</p>
+    <div class="callout"><strong>O que fazer:</strong> Não apontar agentes com auto-run para repositórios não confiáveis. Usar sandbox descartável sem credenciais, bloquear rede/segredos por padrão, exigir aprovação humana real para scripts/binários, monitorar execução iniciada por README/docs e separar análise estática de execução dinâmica.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/07/friendly-fire-ai-agents-built-to-catch.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://ainowinstitute.org/publications/friendly-fire-exploit-brief" target="_blank" rel="noopener">AI Now Institute</a> · <a href="https://github.com/Boyan-MILANOV/friendly-fire-ai-agent-exploit" target="_blank" rel="noopener">PoC público</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="high">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Agents / GitHub</span></div>
+    <h2>GitLost e GhostApproval mostram o mesmo pecado: agente com credencial demais lendo coisa pública demais</h2>
+    <p>Duas pesquisas bateram na mesma tecla. A Noma mostrou GitLost: um issue público pode induzir GitHub Agentic Workflows com token amplo a ler repositório privado e publicar conteúdo em comentário público. A Wiz mostrou GhostApproval: symlinks em repositórios maliciosos fazem AI coding assistants escreverem fora do projeto enquanto a caixa de aprovação mostra o alvo “bonitinho” errado.</p><p>O padrão é a tríade mortal: agente com acesso a dado privado, entrada não confiável e canal de saída. Coloque isso em GitHub, IDE ou workflow, e uma frase esperta vira exfiltração. “Human in the loop” não salva se a interface mente ou se o humano só aprova teatro.</p>
+    <div class="callout"><strong>O que fazer:</strong> Escopar tokens de agentes ao mínimo, evitar read org-wide por conveniência, bloquear posts públicos automáticos com conteúdo de repo privado, revisar symlinks antes de “setup workspace”, executar agentes em container sem acesso ao HOME, e exigir que ferramentas mostrem destino real de escrita antes da aprovação.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/07/public-github-issue-could-trick-github.html" target="_blank" rel="noopener">The Hacker News - GitLost</a> · <a href="https://noma.security/blog/gitlost-how-we-tricked-githubs-ai-agent-into-leaking-private-repos/" target="_blank" rel="noopener">Noma Security</a> · <a href="https://thehackernews.com/2026/07/ghostapproval-symlink-flaws-could-let.html" target="_blank" rel="noopener">The Hacker News - GhostApproval</a> · <a href="https://www.wiz.io/blog/ghostapproval-a-trust-boundary-gap-in-ai-coding-assistants" target="_blank" rel="noopener">Wiz Research</a></p>
+  </div>
+</section>
+          <div class="card card-pad mt-8 lead-orange">
+            <span class="sec-id">fechamento</span>
+            <p class="mt-4">Resumo sem maquiagem: vulnerabilidade no KEV é fila da frente, file-transfer exposto precisa ter plano de desligamento, Git self-hosted não pode confiar em header vindo da internet, e supply chain agora inclui maintainer irritado, pacote npm contaminado e agente de IA obediente demais. Do lado dos modelos, a pauta é menos “qual chatbot é melhor” e mais “qual infraestrutura crítica da sua operação depende de limite, compute e política de fornecedor”. Inventário, escopo, sandbox, fallback e log. Chato? Sim. Eficaz? Também.</p>
+            <a class="btn btn-primary mt-4" href="../apoie.html">Apoiar a CyberSec News <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById("progress");function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+"%";}addEventListener("scroll",onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
