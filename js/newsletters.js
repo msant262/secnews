@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-07-20", edition:"#29", date:"20 JUL 2026", title:"FortiSandbox e Oracle no KEV, WordPress em RCE, AsyncAPI envenenado e IA pedindo freio nos agentes",
+    summary:"Semana com FortiSandbox e Oracle E-Business Suite entrando no KEV da CISA, WordPress Core soltando uma cadeia wp2shell com PoCs públicos, AsyncAPI comprometido via GitHub Actions e npm trusted publishing, SonicWall SMA 1000 explorado por zero-days, NGINX corrigindo múltiplas falhas, ACR Stealer crescendo com ClickFix, ViPNet abusado em campanha HelloNet, 7-Zip exigindo update manual, ransomware parando produção da Fairlife, e IA puxando estratégia com NadMesh, GPT-Red, Android aberto a assistentes rivais, privilégio mínimo para agentes e métricas de ROI na era agentic.",
+    tags:["CISA KEV","RCE","Supply Chain","AI Agents","Frontier AI"], stories:15, crit:4, file:"newsletters/2026-07-20.html" },
   { id:"2026-07-13", edition:"#28", date:"13 JUL 2026", title:"ShareFile em alerta, Gitea explorado, CMS no KEV e agentes de IA virando risco de build",
     summary:"Semana com CISA colocando Adobe ColdFusion, Joomla/Langflow, iCagenda e Balbooa no KEV; Progress mandando clientes ShareFile derrubarem Storage Zone Controllers; Gitea Docker sendo explorado por auth bypass; U-Boot, WordPress, RedHook, Injective SDK, OpenMandriva e AssuranceAmerica mostrando que supply chain e dados pessoais seguem caros; e IA puxando a pauta com GPT-5.6 Sol, Claude Fable 5, Microsoft usando AI para achar bugs, Friendly Fire e GitLost/GhostApproval.",
     tags:["CISA KEV","Exploited","Supply Chain","AI Agents","Frontier AI"], stories:15, crit:3, file:"newsletters/2026-07-13.html" },

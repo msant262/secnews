@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #29 — 20 JUL 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Semana com FortiSandbox e Oracle E-Business Suite entrando no KEV da CISA, WordPress Core soltando uma cadeia wp2shell com PoCs públicos, AsyncAPI comprometido via GitHub Actions e npm trusted publishing, SonicWall SMA 1000 explorado por zero-days, NGINX corrigindo múltiplas falhas, ACR Stealer crescendo com ClickFix, ViPNet abusado em campanha HelloNet, 7-Zip exigindo update manual, ransomware parando produção da Fairlife, e IA puxando estratégia com NadMesh, GPT-Red, Android aberto a assistentes rivais, privilégio mínimo para agentes e métricas de ROI na era agentic.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#29 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#29</span><span class="mono-tag">20 JUL 2026</span><span class="mono-tag">24 min de leitura</span></div>
+      <h1>FortiSandbox e Oracle no KEV, WordPress em RCE, AsyncAPI envenenado e IA pedindo freio nos agentes</h1>
+      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">RCE</span><span class="badge">Supply Chain</span><span class="badge">AI Agents</span><span class="badge">Frontier AI</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">4</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">11</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">0</span><span class="threat-l">médias</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#29 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>CISA mandou correr no FortiSandbox: duas falhas exploradas entraram no KEV</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Oracle E-Business Suite também entrou no KEV — e sistema de negócio exposto nunca é “só TI”</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>WordPress Core teve cadeia “wp2shell” com PoCs públicos — patch agora, sem romantizar auto-update</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot high"></span>AsyncAPI foi envenenado no npm: trusted publishing não salva pipeline comprometido</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot critical"></span>SonicWall SMA 1000 foi comprometido por cadeia de zero-days, segundo a Volexity</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>NGINX 1.31.3 corrigiu três falhas de segurança — uma delas com overflow em worker</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>ACR Stealer cresceu em clientes Microsoft usando ClickFix, WebDAV e PowerShell ofuscado</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>HelloNet abusou do mecanismo de update do ViPNet contra governo, energia e transporte na Rússia</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot high"></span>7-Zip 26.02 corrigiu RCE em XZ — e você vai ter que atualizar na mão, claro</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot high"></span>Ransomware na Fairlife parou produção nos EUA e lembrou que cyber também mexe em leite</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot high"></span>NadMesh está caçando ComfyUI, Ollama, n8n, Gradio e tokens de Kubernetes</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>OpenAI mostrou GPT-Red: red team automatizado para treinar modelos contra prompt injection</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>Microsoft colocou a régua certa para agentes de IA: identidade própria, RBAC e ferramenta amarrada</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>União Europeia mandou Google abrir Android para assistentes de IA rivais — inclusive câmera, microfone e tela</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>OpenAI está empurrando a métrica que importa na era agentic: trabalho útil por dólar</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#29 · Leitura">
+<div class="read-intro">
+  <p>Essa semana teve o pacote completo da vida adulta em segurança: appliance Fortinet no KEV, Oracle E-Business Suite explorado, WordPress Core com RCE pré-auth e PoCs públicos, supply chain npm comprometida sem precisar roubar token npm, SonicWall SMA virando porta dos fundos e NGINX corrigindo falhas em worker. Não foi uma semana elegante. Foi eficiente, que é pior.</p>
+  <p>Na parte de IA, a pauta foi além do “chatbot tomou prompt injection”. NadMesh mostrou infraestrutura de IA exposta virando caça a chaves cloud e tokens de Kubernetes; OpenAI mostrou GPT-Red para escalar red team automatizado; Microsoft colocou identidade e RBAC no centro dos agentes; a União Europeia mexeu no acesso de assistentes ao Android; e a discussão de ROI da OpenAI deixou claro que agente vai entrar em workflow real com ferramenta real. Aí, lindo, segurança deixa de ser opcional e vira cinto de segurança antes da curva.</p>
+</div>
+          <h2 class="split-title">Segurança geral</h2>
+<section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">CISA KEV / Fortinet</span></div>
+    <h2>CISA mandou correr no FortiSandbox: duas falhas exploradas entraram no KEV</h2>
+    <p>A CISA adicionou CVE-2026-39808 e CVE-2026-25089 ao catálogo KEV depois de confirmar exploração ativa contra Fortinet FortiSandbox. As duas falhas já tinham correção disponível — abril e junho — e permitem execução remota de código por command injection sem autenticação e sem interação do usuário, segundo os advisories da Fortinet citados pela cobertura técnica.</p><p>O detalhe operacional é cruel: FortiSandbox fica justamente no caminho de análise de ameaça, onde muita empresa joga amostra suspeita, anexo, artefato e tráfego “para entender depois”. Quando esse tipo de appliance vira entrada, o atacante ganha uma posição bonita demais na rede. CISA deu prazo apertado para agências federais: corrigir até 19 de julho. Para o resto do mundo, o calendário deveria ser o mesmo, só sem o memorando bonito.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar FortiSandbox para versões corrigidas, checar exposição externa, procurar sinais de command injection, revisar contas/processos novos no appliance, preservar logs e tratar instâncias vulneráveis como potencialmente comprometidas antes de simplesmente aplicar patch e fingir que nada aconteceu.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://www.bleepingcomputer.com/news/security/cisa-warns-feds-to-patch-exploited-fortinet-fortisandbox-flaws-by-sunday/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://fortiguard.fortinet.com/psirt/FG-IR-26-100" target="_blank" rel="noopener">Fortinet PSIRT FG-IR-26-100</a></p>
+  </div>
+</section>
+
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">CISA KEV / ERP</span></div>
+    <h2>Oracle E-Business Suite também entrou no KEV — e sistema de negócio exposto nunca é “só TI”</h2>
+    <p>A CISA adicionou CVE-2026-46817, falha de improper privilege management no Oracle E-Business Suite, ao KEV em 15 de julho com base em evidência de exploração ativa. No mesmo alerta, entrou também CVE-2023-4346 no KNX Protocol, associada a mecanismo de lockout excessivamente restritivo na opção de autorização de conexão.</p><p>EBS é aquele tipo de alvo que faz atacante sorrir com calma: financeiro, compras, cadeia de suprimentos, dados internos e credenciais com cheiro de privilégio. Mesmo quando o advisory não vem com narrativa cinematográfica, entrada no KEV significa uma coisa simples: alguém já está usando isso no mundo real. Então não é item para backlog “Q3”. É fila de incêndio.</p>
+    <div class="callout"><strong>O que fazer:</strong> Priorizar Oracle E-Business Suite em inventário e patching, validar se há exposição direta ou via VPN/portal, revisar privilégios e logs de acesso recentes, investigar abuso antes de corrigir e isolar interfaces desnecessárias. Para KNX, mapear dispositivos/instalações afetadas e aplicar mitigação do fornecedor onde existir.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.cisa.gov/news-events/alerts/2026/07/15/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA - alerta de 15 de julho</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV</a> · <a href="https://www.cve.org/CVERecord?id=CVE-2026-46817" target="_blank" rel="noopener">CVE.org - CVE-2026-46817</a></p>
+  </div>
+</section>
+
+<section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">WordPress / RCE</span></div>
+    <h2>WordPress Core teve cadeia “wp2shell” com PoCs públicos — patch agora, sem romantizar auto-update</h2>
+    <p>A semana trouxe uma daquelas frases que ninguém queria ler: RCE pré-autenticação em WordPress Core. A cadeia wp2shell combina CVE-2026-63030, uma confusão em batch route da REST API, com CVE-2026-60137, SQL injection no parâmetro author__not_in do WP_Query. Segundo a cobertura, a cadeia completa afeta WordPress 6.9.0 a 6.9.4 e 7.0.0 a 7.0.1; o SQLi também afeta parte da linha 6.8, mas sem a mesma cadeia de RCE.</p><p>O WordPress habilitou atualizações automáticas forçadas para versões suportadas e recomendou atualização imediata para 7.0.2 ou 6.9.5. A Searchlight Cyber segurou detalhes técnicos, mas PoCs públicos já apareceram e a watchTowr relatou primeiros sinais de exploração em campo. WordPress Core raramente ganha esse tipo de RCE sem plugin envolvido. Quando ganha, a internet inteira vira honeypot involuntário. Fofo. Horrível.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar para WordPress 7.0.2 ou 6.9.5, confirmar que auto-update realmente aplicou, bloquear temporariamente /wp-json/batch/v1 e ?rest_route=/batch/v1 no WAF se não puder corrigir agora, revisar contas admin, plugins recém-instalados, arquivos em uploads e logs de REST API.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/wordpress-core-wp2shell-rce-flaws-get-public-exploits-patch-now/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://wordpress.org/news/2026/07/wordpress-7-0-2-release/" target="_blank" rel="noopener">WordPress 7.0.2 Security Release</a> · <a href="https://slcyber.io/research-center/wp2shell-pre-authentication-rce-in-wordpress-core/" target="_blank" rel="noopener">Searchlight Cyber</a> · <a href="https://blog.cloudflare.com/wordpress-vulnerabilities/" target="_blank" rel="noopener">Cloudflare</a></p>
+  </div>
+</section>
+
+<section class="art" id="a4" data-sev="high">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">npm / CI-CD</span></div>
+    <h2>AsyncAPI foi envenenado no npm: trusted publishing não salva pipeline comprometido</h2>
+    <p>Microsoft detalhou o comprometimento coordenado da organização @asyncapi no npm em 14 de julho. Cinco versões em quatro nomes de pacote foram republicadas em cerca de 90 minutos com loader malicioso: @asyncapi/specs 6.11.2 e 6.11.2-alpha.1, @asyncapi/generator 3.3.1, @asyncapi/generator-components 0.7.1 e @asyncapi/generator-helpers 1.1.1.</p><p>A parte mais perigosa é que o payload não dependia de postinstall. Ele rodava quando o módulo era importado/carregado por Node.js, então npm install --ignore-scripts não neutralizava. A Microsoft atribui a origem a um “pwn request” em workflow GitHub Actions pull_request_target mal configurado: código de PR não confiável rodou em contexto privilegiado, o atacante conseguiu push e deixou o release legítimo publicar pacotes com proveniência válida. Provenance provou que a pipeline publicou. Não provou que a pipeline estava sã.</p>
+    <div class="callout"><strong>O que fazer:</strong> Remover as versões afetadas, limpar caches npm/Yarn, procurar sync.js e diretórios NodeJS mascarados, bloquear C2 indicado pela Microsoft, rotacionar credenciais acessíveis em máquinas/CI que importaram os pacotes e revisar workflows pull_request_target que fazem checkout de código não confiável.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/07/15/unpacking-asyncapi-npm-supply-chain-compromise-import-time-payload-delivery/" target="_blank" rel="noopener">Microsoft Security Blog</a> · <a href="https://thehackernews.com/2026/07/compromised-asyncapi-npm-packages.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://socket.dev/blog/asyncapi-supply-chain-attack" target="_blank" rel="noopener">Socket</a> · <a href="https://www.stepsecurity.io/blog/compromised-next-branch-pushes-malicious-asyncapi-generator-generator-helpers-and-generator-components-to-npm" target="_blank" rel="noopener">StepSecurity</a></p>
+  </div>
+</section>
+
+<section class="art" id="a5" data-sev="critical">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">SonicWall / VPN</span></div>
+    <h2>SonicWall SMA 1000 foi comprometido por cadeia de zero-days, segundo a Volexity</h2>
+    <p>A Volexity publicou detalhes de uma resposta a incidente em que appliances SonicWall Secure Mobile Access 1000 foram comprometidos por uma cadeia de múltiplos zero-days. A exploração afetou modelos 6210, 7210 e 8200v, e as falhas corrigidas em hotfix incluem CVE-2026-15409, de SSRF, e CVE-2026-15410, de command injection. A empresa observou sinais desde 22 de junho.</p><p>O relatório mostra o roteiro completo que todo time de borda teme: exploração via /wsproxy, execução privilegiada como root, webshells/backdoors, persistência em script de inicialização e malware específico para o appliance. A SonicWall divulgou o boletim em 14 de julho; a Volexity conseguiu então soltar os detalhes. VPN appliance comprometido não é “servidorzinho”. É catraca da empresa com o porteiro amarrado no banheiro.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar os hotfixes/versões 12.4.3-03453 ou 12.5.0-02835 conforme o ambiente, revisar logs citados pela Volexity (/wsproxy, endpoints anômalos, ctrl-service), procurar artefatos como xzfind/deploy_new.py e webshells, rotacionar credenciais acessadas via VPN e considerar rebuild do appliance se houver indicador de comprometimento.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.volexity.com/blog/2026/07/17/proxying-to-compromise-sonicwall-secure-mobile-access-0-day-exploitation/" target="_blank" rel="noopener">Volexity</a> · <a href="https://psirt.global.sonicwall.com/vuln-detail/SNWLID-2026-0008" target="_blank" rel="noopener">SonicWall PSIRT</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-15409" target="_blank" rel="noopener">NVD - CVE-2026-15409</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-15410" target="_blank" rel="noopener">NVD - CVE-2026-15410</a></p>
+  </div>
+</section>
+
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">NGINX / Edge</span></div>
+    <h2>NGINX 1.31.3 corrigiu três falhas de segurança — uma delas com overflow em worker</h2>
+    <p>O changelog oficial do nginx 1.31.3, de 15 de julho, trouxe três correções de segurança: CVE-2026-42533, heap buffer overflow em worker envolvendo map com regex/captures e expressões de string; CVE-2026-60005, acesso a memória não inicializada que pode vazar memória do worker ou derrubar processo; e CVE-2026-56434, use-after-free ao processar resposta de backend especialmente criada no módulo SSI.</p><p>Não há afirmação pública ali de exploração ativa, então não vamos inventar terror para vender clique. Mas NGINX é borda, proxy, cache, gateway, entrada de app e cola invisível de muita arquitetura. Falha em worker não é trivia: crash vira DoS, disclosure vira vazamento lateral, e bug condicionado a configuração específica ainda pode pegar ambientes grandes porque configuração de proxy é onde nasce muita criatividade triste.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar para nginx 1.31.3 quando aplicável, revisar se o ambiente usa map com regex/captures, slice/background cache update e SSI, priorizar instâncias internet-facing, testar config antes do deploy e observar crashes de worker, respostas anômalas e logs de upstream após atualização.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://nginx.org/en/CHANGES" target="_blank" rel="noopener">nginx.org - CHANGES</a></p>
+  </div>
+</section>
+
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Infostealer / ClickFix</span></div>
+    <h2>ACR Stealer cresceu em clientes Microsoft usando ClickFix, WebDAV e PowerShell ofuscado</h2>
+    <p>A Microsoft Defender Experts observou aumento de atividade do ACR Stealer entre o fim de abril e meados de junho. As cadeias vistas usam ClickFix para convencer a vítima a executar comandos, depois divergem: uma usa WebDAV, rundll32, PowerShell, loaders Python e até resolução de C2 via blockchain; outra aposta em MSHTA, PowerShell ofuscado e execução em memória com apoio de esteganografia.</p><p>O objetivo é clássico e caro: senhas salvas em navegador, cookies, tokens de autenticação, documentos sensíveis e arquivos sincronizados em OneDrive/SharePoint. ClickFix continua funcionando porque terceiriza a execução para a vítima com uma interface que parece suporte técnico barato — e usuário em pressão copia e cola comando como quem assina pacto com demônio em fonte 12.</p>
+    <div class="callout"><strong>O que fazer:</strong> Monitorar prompts ClickFix, execução suspeita de cmd/rundll32/mshta/PowerShell, WebDAV montado via pushd, conhost headless, tarefas agendadas mascaradas e acesso a stores de credenciais do navegador. Reforçar bloqueio de scripts, EDR em comportamento, treinamento específico contra “copie e execute este comando” e revogação de sessões/tokens após infecção.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/07/16/acr-stealer-two-observed-intrusion-chains-amid-increased-threat-activity/" target="_blank" rel="noopener">Microsoft Security Blog</a> · <a href="https://www.bleepingcomputer.com/news/security/microsoft-warns-of-surge-in-acr-stealer-attacks-on-customers/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">APT / Update Abuse</span></div>
+    <h2>HelloNet abusou do mecanismo de update do ViPNet contra governo, energia e transporte na Rússia</h2>
+    <p>A Kaspersky descreveu uma campanha chamada HelloNet abusando do mecanismo de atualização do ViPNet, suíte russa de VPN/segurança usada em ambientes governamentais e regulados. Segundo a análise reportada, atacantes plantaram uma DLL maliciosa no diretório local do ViPNet Update System para sideload por processo legítimo na inicialização.</p><p>A cadeia traz HelloInjector, HelloProxy, HelloExecutor, HelloCleaner e HelloBackdoor, com persistência, proxy, execução de comandos, reconhecimento e limpeza de logs. A Kaspersky fez atribuição tentativa a ator chinês com baixa confiança, e isso importa: baixa confiança é baixa confiança, não licença para sair colando bandeira em slide. O fato confirmado já basta: update local confiável virando esteira de payload em setores sensíveis.</p>
+    <div class="callout"><strong>O que fazer:</strong> Em ambientes com ViPNet, monitorar diretórios de update, integridade de wtsapi32.dll e processos itcsrvup64.exe/svchost.exe, observar tráfego nas portas 5003, 5060 e 443 conforme recomendação, revisar logs apagados/anômalos e não assumir comprometimento da infraestrutura de update sem evidência.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/hackers-abuse-vipnet-software-to-target-russian-govt-agencies/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://securelist.com/" target="_blank" rel="noopener">Kaspersky Securelist</a></p>
+  </div>
+</section>
+
+<section class="art" id="a9" data-sev="high">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">7-Zip / RCE</span></div>
+    <h2>7-Zip 26.02 corrigiu RCE em XZ — e você vai ter que atualizar na mão, claro</h2>
+    <p>O 7-Zip 26.02 corrigiu uma vulnerabilidade de execução remota de código no processamento de dados XZ comprimidos. Segundo advisory da Zero Day Initiative publicado na semana, um XZ especialmente criado pode disparar heap-based buffer overflow e permitir execução de código no contexto do usuário, desde que haja interação — abrir arquivo malicioso ou visitar página preparada, por exemplo.</p><p>Não há relato público de exploração ativa dessa falha específica. Mas 7-Zip não tem atualização automática e vive instalado em estação de trabalho, jump box, máquina de admin e servidor esquecido. O atacante nem precisa explorar em massa amanhã; basta anexar arquivo “documentos_fiscais.zip” no momento certo e esperar alguém com pressa abrir. Vida adulta, esse malware com reunião.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar manualmente para 7-Zip 26.02 ou superior a partir do site oficial, empacotar update via ferramenta de gestão de endpoints, bloquear versões antigas em imagens base, reforçar sandbox de anexos e monitorar execução anômala logo após abertura de arquivos compactados.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/update-now-7-zip-fixes-rce-flaw-exploitable-with-malicious-archives/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.zerodayinitiative.com/advisories/ZDI-26-444/" target="_blank" rel="noopener">Zero Day Initiative</a> · <a href="https://www.7-zip.org/" target="_blank" rel="noopener">7-Zip</a></p>
+  </div>
+</section>
+
+<section class="art" id="a10" data-sev="high">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Ransomware / Operações</span></div>
+    <h2>Ransomware na Fairlife parou produção nos EUA e lembrou que cyber também mexe em leite</h2>
+    <p>A Coca-Cola informou em Form 8-K à SEC que sua subsidiária Fairlife sofreu ransomware com acesso não autorizado a alguns sistemas, incluindo sistemas relacionados à produção. A empresa ativou resposta a incidente e continuidade de negócios, notificou autoridades e suspendeu temporariamente a produção de produtos Fairlife nos Estados Unidos enquanto restaura sistemas. A produção no Canadá não foi afetada, segundo a divulgação.</p><p>Ainda não há confirmação pública de roubo de dados, grupo responsável ou impacto material final. E é exatamente assim que incidente real se parece nos primeiros dias: pouca certeza, muita operação parada e jurídico respirando em saco de papel. O ponto para segurança é direto: ransomware deixou de ser “arquivo criptografado” faz tempo. É disponibilidade, cadeia de suprimentos e produção física.</p>
+    <div class="callout"><strong>O que fazer:</strong> Revisar segmentação entre TI e produção, testar planos de parada/restauração, garantir backups offline e runbooks de produção manual, mapear dependências de sistemas industriais/ERP e preparar comunicação regulatória. Para fornecedores críticos, pedir evidência de continuidade e tempo de recuperação, não só questionário fofo.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/coca-cola-says-fairlife-ransomware-attack-halts-us-dairy-production/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.sec.gov/Archives/edgar/data/21344/000162828026048466/ko-20260716.htm" target="_blank" rel="noopener">SEC Form 8-K - Coca-Cola</a></p>
+  </div>
+</section>
+          <h2 class="split-title">IA estratégica e cyber</h2>
+<section class="art" id="a11" data-sev="high">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Security / Botnet</span></div>
+    <h2>NadMesh está caçando ComfyUI, Ollama, n8n, Gradio e tokens de Kubernetes</h2>
+    <p>O botnet NadMesh, escrito em Go e descrito pela XLab/QiAnXin com cobertura do The Hacker News, apareceu em julho mirando serviços de IA expostos: ComfyUI, Ollama, n8n, Open WebUI, Langflow e Gradio. O painel do operador alegava milhares de chaves AWS, mas os números internos não batiam; o que a telemetria externa confirmou foi o salto de IPs de origem e o foco em credenciais, inventário de modelos e tokens Kubernetes.</p><p>O recado é simples: serviço de IA montado rápido demais costuma virar cofre aberto. NadMesh não vive só de “falha de IA”; boa parte do tráfego observado ainda bate em Docker API, Jenkins, Redis, Telnet fraco e RCEs conhecidos. A novidade é a priorização de portas e ferramentas de IA/MCP porque ali mora o prêmio: chave cloud, token de cluster, registry login e ferramenta capaz de executar comando.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tirar ComfyUI/Ollama/Gradio/n8n/Open WebUI/Langflow/MCP da internet pública, exigir autenticação, bloquear Docker API/Jenkins/Redis expostos, rotacionar chaves em .env, ~/.aws, ~/.docker e service accounts se houver exposição, e monitorar IOCs como cdnorigin[.]net e o C2 citado pela análise.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/07/new-nadmesh-botnet-hunts-exposed-ai.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://blog.xlab.qianxin.com/nadmesh-botnet-analysis-a-product-grade-threat-for-the-ai-service-era-en/" target="_blank" rel="noopener">QiAnXin XLab</a> · <a href="https://censys.com/blog/mcp-servers-on-the-internet/" target="_blank" rel="noopener">Censys - MCP servers</a></p>
+  </div>
+</section>
+
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">OpenAI / Prompt Injection</span></div>
+    <h2>OpenAI mostrou GPT-Red: red team automatizado para treinar modelos contra prompt injection</h2>
+    <p>A OpenAI publicou GPT-Red, um modelo interno de red-teaming automatizado treinado para encontrar vulnerabilidades e gerar ataques durante o treinamento de modelos. Segundo a empresa, GPT-Red foi usado para treinar GPT-5.6 e tornar o modelo mais robusto contra prompt injections; a OpenAI afirma que o GPT-5.6 Sol teve 6x menos falhas no benchmark interno mais difícil de prompt injection em comparação com o melhor modelo de produção de quatro meses antes.</p><p>O ponto estratégico não é “olha que benchmark legal”. É que red team manual virou gargalo. Modelos agentic leem e-mail, navegam, mexem em arquivos, usam browser, chamam tool e tocam sistemas de terceiro — exatamente onde prompt injection mora. A resposta da fronteira está virando auto-red-team em escala. Isso melhora defesa, mas também confirma a óbvia desgraça: se a própria OpenAI precisa de um atacante-modelo dedicado, agente empresarial plugado em tudo sem guardrail é convite.</p>
+    <div class="callout"><strong>O que fazer:</strong> Tratar prompt injection como risco de produto, não bug exótico. Criar evals próprios com dados reais, separar dados não confiáveis de instruções, limitar ferramentas, exigir aprovação humana para ações sensíveis, registrar tool calls e testar agentes com red team automatizado e humano antes de colocar em workflow crítico.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://openai.com/index/unlocking-self-improvement-gpt-red/" target="_blank" rel="noopener">OpenAI - GPT-Red</a> · <a href="https://openai.com/index/prompt-injections/" target="_blank" rel="noopener">OpenAI - Prompt injections</a></p>
+  </div>
+</section>
+
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Agents / Identity</span></div>
+    <h2>Microsoft colocou a régua certa para agentes de IA: identidade própria, RBAC e ferramenta amarrada</h2>
+    <p>A Microsoft publicou um guia de privilégio mínimo para agentes de IA defendendo que agente não é “API caller esperto”; é principal de identidade. Ele planeja, encadeia ações e invoca ferramentas sem um humano aprovando cada passo. Sem identidade gerenciada, RBAC e escopo explícito, o agente acumula permissões, cruza sistemas e vira uma superconta com criatividade. Delícia, só que não.</p><p>A recomendação é arquitetura básica, mas pouca gente está fazendo direito: identidade dedicada, dono humano, propósito documentado, papéis por tarefa, tool binding com allowlist, elevação JIT para ações sensíveis, auditoria ponta a ponta e revogação testada. O pecado mais comum é começar com “Reader”, depois dar write, depois admin, depois ninguém lembrar por quê. Segurança corporativa, esse improviso com crachá.</p>
+    <div class="callout"><strong>O que fazer:</strong> Inventariar agentes em produção/piloto, criar identidade dedicada por agente, remover service accounts compartilhadas, aplicar RBAC por tarefa, separar leitura de escrita, exigir step-up approval para delete/export/admin, logar agente/escopo/ferramenta/recurso/action e testar botão de desligar credenciais.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.microsoft.com/en-us/security/blog/2026/07/16/least-privilege-for-ai-agents-identity-access-and-tool-binding/" target="_blank" rel="noopener">Microsoft Security Blog</a></p>
+  </div>
+</section>
+
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Regulação / Model Access</span></div>
+    <h2>União Europeia mandou Google abrir Android para assistentes de IA rivais — inclusive câmera, microfone e tela</h2>
+    <p>A Comissão Europeia adotou decisões vinculantes sob o Digital Markets Act exigindo que o Google dê a assistentes de IA rivais alcance semelhante ao Gemini em recursos do Android. A cobertura do The Hacker News resume o tamanho da coisa: câmera, microfone, conteúdo de tela, hotword, execução em background e capacidade de dirigir apps por automação, com prazos ligados ao Android 18 e, no limite, agosto de 2027 para a primeira leva.</p><p>Isso é política de competição, mas o efeito de segurança é enorme. Assistente de IA com acesso a sensor, tela, Gmail, Calendar, Docs, Maps, SMS e automação de app vira camada operacional acima do sistema. A pergunta deixou de ser “qual modelo responde melhor?”. Agora é “quem pode ver tudo, clicar em tudo e agir enquanto o usuário está fazendo outra coisa?”. A plataforma móvel vai virar arena de agent security.</p>
+    <div class="callout"><strong>O que fazer:</strong> Quem desenvolve app Android deve planejar bloqueio/ocultação de telas sensíveis contra automação, revisar consentimento e indicadores de privacidade, separar ações irreversíveis com confirmação forte e acompanhar o programa de certificação/controles do Android 18 antes que assistentes rivais passem a operar apps em background.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://thehackernews.com/2026/07/eu-orders-google-to-open-android-mic.html" target="_blank" rel="noopener">The Hacker News</a> · <a href="https://ec.europa.eu/commission/presscorner/detail/en/ip_26_1634" target="_blank" rel="noopener">European Commission - Press Corner</a> · <a href="https://digital-markets-act.ec.europa.eu/developer-portal/interoperability/alphabet-specification-proceedings-interoperability-ai-services_en" target="_blank" rel="noopener">DMA interoperability measures</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="high">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Strategy / ROI</span></div>
+    <h2>OpenAI está empurrando a métrica que importa na era agentic: trabalho útil por dólar</h2>
+    <p>A OpenAI publicou dois textos complementares sobre investimento em IA: um “scorecard” para a era de AI e outro sobre gestão de investimento na era agentic. A tese é trocar vaidade de token por resultado: custo por tarefa aceita, trabalho concluído, dependabilidade, tempo economizado, decisões melhores e capacidade de escalar workflows. GPT-5.6 aparece como família de tiers — Sol, Terra e Luna — para roteamento por custo/capacidade, não como troféu de benchmark isolado.</p><p>Para segurança, isso muda a conversa de compra. Quanto mais a empresa mede “trabalho feito”, mais vai empurrar agentes para workflows reais com ferramenta, conector, computador, código, contexto proprietário e permissão. A governança precisa entrar no orçamento junto: avaliação por tarefa, controles de gasto, contexto aprovado, ações permitidas, privacidade, retenção, model routing e observabilidade. Senão a empresa economiza token e gasta incidente. Parabéns, CFO, você criou malware com OKR.</p>
+    <div class="callout"><strong>O que fazer:</strong> Medir AI por workflow e outcome, não só por token. Para cada caso agentic, definir qualidade mínima, custo por tarefa aceita, dados acessíveis, ferramentas permitidas, aprovação para ações de risco, logs, retenção e rollback. Usar modelos menores quando bastam e reservar frontier para trabalho ambíguo/alto impacto com governança explícita.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://openai.com/index/a-scorecard-for-the-ai-age/" target="_blank" rel="noopener">OpenAI - A scorecard for the AI age</a> · <a href="https://openai.com/index/managing-ai-investments-in-agentic-era/" target="_blank" rel="noopener">OpenAI - Managing AI investments in the agentic era</a> · <a href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noopener">OpenAI - GPT-5.6</a></p>
+  </div>
+</section>
+          <div class="tip">
+            <h4>Prioridade prática da semana</h4>
+            <p>Se tiver pouco tempo, comece por borda e supply chain: FortiSandbox, SonicWall SMA, WordPress Core, Oracle EBS, NGINX e os pacotes AsyncAPI. Em paralelo, faça uma varredura honesta de serviços de IA expostos — ComfyUI, Ollama, Gradio, n8n, Langflow e MCP — porque o atacante já percebeu que ali tem chave cloud esquecida dando sopa.</p>
+          </div>
+          <div class="signoff"><p class="sig">— CyberSec News</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById("progress");function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+"%";}addEventListener("scroll",onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
