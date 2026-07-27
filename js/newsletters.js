@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-07-27", edition:"#30", date:"27 JUL 2026", title:"SharePoint, Langflow, Fastjson e VPNs em exploração; Opus 5 e Presence levam agentes para produção",
+    summary:"Semana com SharePoint roubando machine keys, Check Point SmartConsole explorado, Langflow no KEV da CISA, Fastjson 1.x com RCE crítica, Cl0p em Windchill/FlexPLM, GlobalProtect explorado, GitHub e PyPI colocando cooldown contra supply chain, SourTrade montando malware no browser, DNS de Wi-Fi de hotel roubando Microsoft 365 e ClickFix no Steam; na IA, Claude Opus 5 mexe na fronteira de custo, OpenAI Presence industrializa agentes, segurança long-horizon vira prioridade, Hermes mostra agente em pós-exploração e coding agents começam a parecer intrusão para EDR.",
+    tags:["CISA KEV","RCE","Supply Chain","VPN","AI Agents"], stories:15, crit:5, file:"newsletters/2026-07-27.html" },
   { id:"2026-07-20", edition:"#29", date:"20 JUL 2026", title:"FortiSandbox, Oracle, WordPress e AsyncAPI; Kimi K3 e Qwen 3.8 sobem a régua da IA aberta",
     summary:"Semana com FortiSandbox e Oracle E-Business Suite no KEV da CISA, WordPress Core em RCE, AsyncAPI comprometido via GitHub Actions, SonicWall SMA explorado por zero-days, NGINX corrigindo falhas, ACR Stealer, ViPNet, 7-Zip e ransomware na Fairlife; e IA puxando estratégia com NadMesh, GPT-Red, agentes com privilégio mínimo, Android aberto a assistentes rivais, ROI agentic, Kimi K3 e Qwen 3.8 acelerando a disputa de modelos open-weight.",
     tags:["CISA KEV","RCE","Supply Chain","AI Agents","Open Weights"], stories:17, crit:4, file:"newsletters/2026-07-20.html" },
