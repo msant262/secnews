@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-08-10", edition:"#32", date:"10 AGO 2026", title:"KEV em tudo que administra; IA no terminal, no peso aberto e na agenda de governo",
+    summary:"LoadMaster, TeamCity, N-central, Langflow e Tomcat entraram no KEV; Cisco FMC e Metabase expuseram o custo de zero-days; e VPNs seguem na mira de ransomware. Na IA, OpenAI e Anthropic mexeram em salvaguardas de fronteira, Meta lançou Muse Code, Alibaba abriu a nova geração Qwen e Mistral levou moderação para open weights.",
+    tags:["CISA KEV","Zero-Day","VPN","AI Agents","Open Weights"], stories:15, crit:5, file:"newsletters/2026-08-10.html" },
   { id:"2026-08-03", edition:"#31", date:"03 AGO 2026", title:"KEV na borda e agentes de fronteira: a semana em que “ambiente de teste” deixou de ser desculpa",
     summary:"Cisco FMC, Arista VeloCloud e FortiOS entraram no KEV; JFrog corrigiu Artifactory; e pipelines de datasets mostraram como HDF5 e Jinja2 viram leitura e execução. Na IA, GPT-5.6 chegou em GA, OpenAI/Hugging Face detalharam uma intrusão durante avaliação, Anthropic revelou três incidentes em evals, Mythos mexeu com cripto e GLM-5.2 apareceu na resposta forense.",
     tags:["CISA KEV","Supply Chain","AI Agents","Frontier AI","PQC"], stories:15, crit:4, file:"newsletters/2026-08-03.html" },
