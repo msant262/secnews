@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-08-17", edition:"#33", date:"17 AGO 2026", title:"KEV no stack de dados; agentes e modelos agora entram no plano de contenção",
+    summary:"MLflow, Windows IKE, vCenter, SharePoint, macOS e Ray chegaram ao KEV; o incidente LiteLLM/Trivy mostrou o raio de explosão de CI comprometido; e OpenAI, Anthropic, Google, xAI e controles de chips colocaram capacidade, agentes e infraestrutura de IA na pauta operacional.",
+    tags:["CISA KEV","Supply Chain","AI Security","Frontier Models"], stories:15, crit:6, file:"newsletters/2026-08-17.html" },
   { id:"2026-08-10", edition:"#32", date:"10 AGO 2026", title:"KEV em tudo que administra; IA no terminal, no peso aberto e na agenda de governo",
     summary:"LoadMaster, TeamCity, N-central, Langflow e Tomcat entraram no KEV; Cisco FMC e Metabase expuseram o custo de zero-days; e VPNs seguem na mira de ransomware. Na IA, OpenAI e Anthropic mexeram em salvaguardas de fronteira, Meta lançou Muse Code, Alibaba abriu a nova geração Qwen e Mistral levou moderação para open weights.",
     tags:["CISA KEV","Zero-Day","VPN","AI Agents","Open Weights"], stories:15, crit:5, file:"newsletters/2026-08-10.html" },
