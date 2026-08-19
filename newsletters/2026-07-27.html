@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CyberSec News #30 — 27 JUL 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="issue-date" content="2026-07-27">
+<meta name="description" content="Semana com SharePoint roubando machine keys, Check Point SmartConsole explorado, Langflow no KEV da CISA, Fastjson 1.x com RCE crítica, Cl0p em Windchill/FlexPLM, GlobalProtect explorado, GitHub e PyPI colocando cooldown contra supply chain, SourTrade montando malware no browser, DNS de Wi-Fi de hotel roubando Microsoft 365 e ClickFix no Steam; na IA, Claude Opus 5 mexe na fronteira de custo, OpenAI Presence industrializa agentes, segurança long-horizon vira prioridade, Hermes mostra agente em pós-exploração e coding agents começam a parecer intrusão para EDR.">
+<link rel="stylesheet" href="../css/okami.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  /* progress bar at very top */
+  .read-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--ok-cyan); box-shadow: 0 0 10px var(--ok-cyan); z-index: 300; transition: width 80ms linear; }
+
+  .read-hero { padding-bottom: var(--s-7); }
+  .read-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-6); }
+  .read-back:hover { color: var(--accent); }
+  .read-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .read-hero h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; margin: var(--s-5) 0; letter-spacing: -0.025em; max-width: 24ch; }
+
+  /* threat summary strip */
+  .threat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ok-border); border: 1px solid var(--ok-border); margin: var(--s-7) 0 0; }
+  .threat-cell { background: var(--ok-bg-1); padding: var(--s-5) var(--s-6); display: flex; align-items: baseline; gap: 12px; }
+  .threat-n { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
+  .threat-l { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ok-fg-mute); }
+  .t-crit .threat-n { color: var(--ok-danger); }
+  .t-high .threat-n { color: var(--ok-warning); }
+  .t-med .threat-n { color: var(--ok-cyan); }
+
+  /* layout */
+  .read-layout { display: grid; grid-template-columns: 250px 1fr; gap: var(--s-9); align-items: start; max-width: 1120px; margin: var(--s-9) auto 0; }
+  @media (max-width: 980px) { .read-layout { grid-template-columns: 1fr; gap: var(--s-6); } .toc { display: none; } }
+  .article-col { max-width: 760px; min-width: 0; }
+
+  /* TOC sidebar */
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); }
+  .toc-head { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ok-fg-mute); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 8px; }
+  .toc-head::before { content: "§"; color: var(--accent); }
+  .toc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .toc-link { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; padding: 9px 0; border-left: 2px solid var(--ok-border); padding-left: var(--s-4); margin-left: 4px;
+    font-size: 0.82rem; color: var(--ok-fg-mute); transition: color var(--dur-fast), border-color var(--dur-fast); }
+  .toc-dot { width: 7px; height: 7px; flex-shrink: 0; background: var(--ok-fg-dim); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
+  .toc-dot.crit, .toc-dot.critical { background: var(--ok-danger); box-shadow: 0 0 14px rgba(255,59,92,.28); }
+  .toc-dot.high { background: var(--ok-warning); box-shadow: 0 0 14px rgba(255,183,77,.25); }
+  .toc-dot.med, .toc-dot.medium { background: var(--ok-cyan); box-shadow: 0 0 14px rgba(0,229,255,.22); }
+  .toc-link:hover { color: var(--ok-fg-soft); }
+  .toc-link.active { color: var(--ok-fg); border-left-color: var(--ok-cyan); }
+  .toc-foot { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--ok-border); }
+  .toc-share { display: flex; gap: 8px; margin-top: var(--s-4); }
+  .toc-share a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--ok-border); color: var(--ok-fg-mute); border-radius: var(--r-1); transition: all var(--dur-fast); }
+  .toc-share a:hover { color: var(--ok-cyan); border-color: var(--ok-cyan); }
+  .toc-share svg { width: 16px; height: 16px; }
+
+  .read-intro { font-size: 1.1rem; line-height: 1.7; color: var(--ok-fg-soft); margin: 0 0 var(--s-8); border-left: 2px solid var(--accent); padding-left: var(--s-6); }
+
+  /* articles */
+  .art { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-5); padding: var(--s-8) 0; border-top: 1px solid var(--ok-border); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .art-num { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1; color: var(--ok-fg-dim); position: relative; }
+  .art-num::after { content: ""; display: block; width: 22px; height: 2px; margin-top: 12px; background: var(--ok-fg-dim); }
+  .art[data-sev="critical"] .art-num, .art[data-sev="critical"] .art-num::after { color: var(--ok-danger); background-color: var(--ok-danger); }
+  .art[data-sev="high"] .art-num, .art[data-sev="high"] .art-num::after { color: var(--ok-warning); background-color: var(--ok-warning); }
+  .art[data-sev="medium"] .art-num, .art[data-sev="medium"] .art-num::after { color: var(--ok-cyan); background-color: var(--ok-cyan); }
+  .art-num { background-color: transparent !important; }
+  .art-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .cve { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-magenta) 40%, transparent); color: var(--ok-magenta); background: color-mix(in oklch, var(--ok-magenta) 9%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .src { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid color-mix(in oklch, var(--ok-cyan) 35%, transparent); color: var(--ok-cyan); background: color-mix(in oklch, var(--ok-cyan) 8%, var(--ok-bg-1)); border-radius: var(--r-1); }
+  .art h3 { font-size: 1.32rem; line-height: 1.22; margin: 0 0 var(--s-4); }
+  .art p { font-size: 1rem; line-height: 1.72; color: var(--ok-fg-soft); margin: 0 0 var(--s-4); }
+  .art-action { margin-top: var(--s-5); background: var(--ok-bg-1); border: 1px solid var(--ok-border); border-left: 2px solid var(--accent); padding: var(--s-5); display: grid; gap: 8px; }
+  .art-action .lbl { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .art-action p { margin: 0; font-size: 0.92rem; color: var(--ok-fg-soft); }
+  @media (max-width: 560px) { .art { grid-template-columns: 1fr; gap: var(--s-3); } .art-num::after { display: none; } }
+
+  .tip { margin-top: var(--s-9); background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1)); border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent); border-left: 3px solid var(--ok-cyan); padding: var(--s-7); }
+  .tip h4 { color: var(--ok-cyan); margin-bottom: var(--s-4); display: flex; align-items: center; gap: 10px; }
+  .tip p { margin: 0; color: var(--ok-fg-soft); line-height: 1.7; }
+  .signoff { margin-top: var(--s-9); padding-top: var(--s-7); border-top: 1px solid var(--ok-border); }
+  .signoff .sig { font-family: var(--font-display); font-size: 1.2rem; color: var(--ok-fg); }
+
+.split-title{margin:42px 0 18px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.article-col p{line-height:1.72}
+</style>
+</head>
+<body class="dark-v" data-page="newsletter" data-base="../">
+<div class="read-progress" id="progress"></div>
+<div id="site-header"></div>
+<main>
+  <section class="section read-hero lead-orange" data-screen-label="#30 · Hero">
+    <div class="container">
+      <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+      <div class="read-meta"><span class="nl-ed">#30</span><span class="mono-tag">27 JUL 2026</span><span class="mono-tag">23 min de leitura</span></div>
+      <h1>SharePoint, Langflow, Fastjson e VPNs em exploração; Opus 5 e Presence levam agentes para produção</h1>
+      <div class="tags"><span class="badge">CISA KEV</span><span class="badge">RCE</span><span class="badge">Supply Chain</span><span class="badge">VPN</span><span class="badge">AI Agents</span></div>
+      <div class="threat">
+        <div class="threat-cell t-crit"><span class="threat-n">5</span><span class="threat-l">críticas</span></div>
+        <div class="threat-cell t-high"><span class="threat-n">9</span><span class="threat-l">altas</span></div>
+        <div class="threat-cell t-med"><span class="threat-n">1</span><span class="threat-l">média</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0">
+    <div class="container">
+      <div class="read-layout">
+        <aside class="toc" data-screen-label="#30 · Índice">
+          <div class="toc-head">Nesta edição</div>
+          <ul class="toc-list"><li><a class="toc-link" href="#a1"><span class="toc-dot critical"></span>SharePoint virou incêndio: CVE-2026-50522 já é usado para roubar machine keys</a></li>
+<li><a class="toc-link" href="#a2"><span class="toc-dot critical"></span>Check Point SmartConsole teve auth bypass explorado com token de aplicação</a></li>
+<li><a class="toc-link" href="#a3"><span class="toc-dot critical"></span>Langflow voltou ao KEV: RCE como root e caça a AWS/env/container metadata</a></li>
+<li><a class="toc-link" href="#a4"><span class="toc-dot critical"></span>Fastjson 1.x ganhou RCE crítica em configuração padrão — sem AutoType e sem gadget mágico</a></li>
+<li><a class="toc-link" href="#a5"><span class="toc-dot critical"></span>Cl0p mirou Windchill e FlexPLM expostos para roubar dados de engenharia e design</a></li>
+<li><a class="toc-link" href="#a6"><span class="toc-dot high"></span>GlobalProtect voltou para a lista de borda explorada: CVE-2026-0257 já tem abuso real</a></li>
+<li><a class="toc-link" href="#a7"><span class="toc-dot high"></span>GitHub e PyPI colocaram tempo como controle de segurança contra supply chain</a></li>
+<li><a class="toc-link" href="#a8"><span class="toc-dot high"></span>SourTrade está usando o browser como linha de montagem de malware</a></li>
+<li><a class="toc-link" href="#a9"><span class="toc-dot high"></span>DNS de Wi-Fi em hotel virou phishing de Microsoft 365 para funcionário viajando</a></li>
+<li><a class="toc-link" href="#a10"><span class="toc-dot medium"></span>ClickFix foi parar em fórum da Steam e instalou XMRig com PowerShell “de suporte”</a></li>
+<li><a class="toc-link" href="#a11"><span class="toc-dot high"></span>Claude Opus 5 reposicionou a fronteira: quase Fable 5, metade do preço e mais agente no cotidiano</a></li>
+<li><a class="toc-link" href="#a12"><span class="toc-dot high"></span>OpenAI Presence quer transformar agente em operação confiável, não demo bonita</a></li>
+<li><a class="toc-link" href="#a13"><span class="toc-dot high"></span>OpenAI puxou o freio certo: modelos long-horizon precisam de eval de ação, não só resposta bonita</a></li>
+<li><a class="toc-link" href="#a14"><span class="toc-dot high"></span>Hermes em modo YOLO apareceu automatizando pós-exploração contra ministério tailandês</a></li>
+<li><a class="toc-link" href="#a15"><span class="toc-dot high"></span>Coding agents estão acionando EDR porque trabalham como intrusos — e às vezes é só terça-feira</a></li></ul>
+          <div class="toc-foot"><a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a></div>
+        </aside>
+        <article class="article-col" data-screen-label="#30 · Leitura">
+<div class="read-intro">
+  <p>A semana veio sem educação: SharePoint com RCE e roubo de machine keys, Check Point SmartConsole permitindo login admin via token de aplicação, Langflow explorado como root, Fastjson 1.x com RCE crítica em configuração padrão, Windchill/FlexPLM virando campanha de extorsão, GlobalProtect explorado, e supply chain ganhando defesa nova baseada em tempo.</p>
+  <p>Também teve criatividade ofensiva no varejo do caos: SourTrade montando malware dentro do browser, Wi-Fi de hotel redirecionando Microsoft 365 por DNS, e fórum da Steam virando entrega de XMRig com “suporte” via PowerShell. Não é bonito, mas é didático. O atacante ama onde processo, confiança e pressa se encontram.</p>
+  <p>Na parte de IA, a semana foi estratégica de verdade: Claude Opus 5 reposicionou custo/capacidade perto da fronteira, OpenAI Presence mostrou agente empresarial com política e escala, a pauta long-horizon deixou claro que eval curta não segura automação longa, Hermes apareceu em pós-exploração com modo YOLO, e coding agents começaram a bater em EDR como se fossem operadores. Agente entrou no fluxo real, amor. Agora segurança precisa parar de tratar isso como demo de palco.</p>
+</div>
+          <h2 class="split-title">Segurança geral</h2>
+
+<section class="art" id="a1" data-sev="critical">
+  <div class="art-num">01</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">SharePoint / RCE</span></div>
+    <h2>SharePoint virou incêndio: CVE-2026-50522 já é usado para roubar machine keys</h2>
+    <p>A falha CVE-2026-50522 no Microsoft SharePoint saiu do “corrige quando der” e foi direto para o modo pânico controlado. A Microsoft descreve o problema como deserialização de dados não confiáveis que permite execução remota de código sem autenticação em SharePoint on-premise. A parte feia: pesquisadores da watchTowr viram exploração logo depois de um PoC público aparecer, e os atacantes passaram a roubar machine keys para manter acesso mesmo depois do patch.</p><p>Machine key em SharePoint não é souvenir. Com ela, o atacante pode forjar tokens de autenticação e impersonar usuários, acessando sites e documentos com os privilégios da identidade falsificada. Patch fecha a porta vulnerável, mas não apaga chave roubada nem sessão forjada. É aquela maravilha da vida adulta: corrigir é só metade do inferno.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar os updates de julho da Microsoft, procurar exploração em /_trust/default.aspx e sinais de BinaryFormatter/WS-Federation anômalos, rotacionar machine keys e credenciais expostas, revisar web shells/processos novos e tratar servidores vulneráveis como potencialmente comprometidos antes de devolver para produção.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/critical-sharepoint-rce-flaw-exploited-to-steal-machine-keys/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50522" target="_blank" rel="noopener">Microsoft MSRC</a> · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7485278595850940416/" target="_blank" rel="noopener">watchTowr</a></p>
+  </div>
+</section>
+
+<section class="art" id="a2" data-sev="critical">
+  <div class="art-num">02</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Check Point / SmartConsole</span></div>
+    <h2>Check Point SmartConsole teve auth bypass explorado com token de aplicação</h2>
+    <p>A Check Point publicou alerta para CVE-2026-16232, uma falha de bypass de autenticação no processo de login do SmartConsole usando application token. O impacto é do tipo que faz administrador engasgar no café: atacante não autenticado pode obter token de login, entrar via SmartConsole com privilégios administrativos completos e alterar política ou configuração de segurança.</p><p>A exploração exige que o Management Server esteja acessível pela internet e que Trusted Clients não estejam restritos direito. A própria Check Point diz que viu exploração contra um número pequeno de clientes. “Pequeno” é confortável até o teu management server estar no conjunto, lindo.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar hotfix/versões corrigidas da Check Point, restringir Trusted Clients a IPs/sub-redes confiáveis, nunca deixar “Any”, proteger acesso de management por firewall, buscar “Authentication method: application token” nos audit logs e caçar os IPs listados no advisory.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://support.checkpoint.com/results/sk/sk185169/" target="_blank" rel="noopener">Check Point sk185169</a> · <a href="https://www.cve.org/CVERecord?id=CVE-2026-16232" target="_blank" rel="noopener">CVE.org - CVE-2026-16232</a></p>
+  </div>
+</section>
+
+<section class="art" id="a3" data-sev="critical">
+  <div class="art-num">03</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">CISA KEV / AI AppSec</span></div>
+    <h2>Langflow voltou ao KEV: RCE como root e caça a AWS/env/container metadata</h2>
+    <p>A CISA adicionou CVE-2026-0770 ao catálogo KEV depois de exploração ativa contra Langflow, framework visual para construir agentes de IA. A falha permite execução remota de código sem autenticação como root, por problema no tratamento do parâmetro exec_globals no endpoint de validação.</p><p>A telemetria da KEVIntel passou de “checking se está vulnerável” para payload de verdade: tentativa de baixar segundo estágio, coletar variáveis de ambiente, credenciais AWS e metadata de container. Ou seja: não é só bug de ferramenta de IA. É a velha exploração de app exposto indo direto para o cofre onde alguém deixou a chave cloud em .env, porque claro que deixou.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar Langflow, restringir /api/v1/validate/code e funções de validação, tirar instâncias da internet pública, revisar histórico de requisições e host activity, rotacionar credenciais se execução não puder ser descartada e monitorar acesso a metadata cloud/container.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/cisa-orders-feds-to-patch-actively-exploited-langflow-rce-flaw/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-0770" target="_blank" rel="noopener">CISA KEV - CVE-2026-0770</a> · <a href="https://www.zerodayinitiative.com/advisories/ZDI-26-036/" target="_blank" rel="noopener">Zero Day Initiative</a></p>
+  </div>
+</section>
+
+<section class="art" id="a4" data-sev="critical">
+  <div class="art-num">04</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Java / Fastjson</span></div>
+    <h2>Fastjson 1.x ganhou RCE crítica em configuração padrão — sem AutoType e sem gadget mágico</h2>
+    <p>A equipe do fastjson2 publicou advisory para uma RCE que afeta fastjson 1.2.68 até 1.2.83, incluindo a última versão da linha 1.x. O detalhe que deixa a coisa saborosamente horrível: exploração em configuração padrão, com AutoType desligado, sem exigir gadget no classpath. O pré-requisito operacional é a aplicação rodar como Spring Boot executable fat-jar, modelo comum demais para fingir que é canto escuro.</p><p>As rotas de entrada incluem JSON.parse, JSON.parseObject(String) e JSON.parseObject(String, Class). Especificar classe alvo não resolve se o DTO tiver Object/Map aninhado. Fastjson2 não é afetado porque mudou a arquitetura de resolução de tipos; a linha 1.x, por outro lado, precisa de SafeMode, build noneautotype ou migração. Legado Java, esse cemitério com CI.</p>
+    <div class="callout"><strong>O que fazer:</strong> Inventariar fastjson 1.2.68–1.2.83, priorizar apps Spring Boot fat-jar, habilitar SafeMode (-Dfastjson.parser.safeMode=true), considerar com.alibaba:fastjson:1.2.83_noneautotype e planejar migração para fastjson2. Onde houver endpoint JSON exposto, tratar como risco crítico até provar mitigação.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://github.com/alibaba/fastjson2/wiki/Security-Advisory:-Remote-Code-Execution-in-fastjson-1.2.68%E2%80%931.2.83" target="_blank" rel="noopener">Alibaba fastjson2 Advisory</a></p>
+  </div>
+</section>
+
+<section class="art" id="a5" data-sev="critical">
+  <div class="art-num">05</div>
+  <div>
+    <div class="art-head"><span class="sev sev-critical">Crítico</span><span class="mono-tag">Cl0p / PLM</span></div>
+    <h2>Cl0p mirou Windchill e FlexPLM expostos para roubar dados de engenharia e design</h2>
+    <p>A campanha contra PTC Windchill e FlexPLM subiu de “vulnerabilidade crítica” para “campanha de extorsão com cheiro de Cl0p”. ReliaQuest, Ransom-ISAC e cobertura técnica apontam exploração de CVE-2026-12569, com RCE não autenticada, web shells JSP e exfiltração de dados sensíveis em plataformas PLM.</p><p>O Ransom-ISAC descreve cadeia com disclosure pré-auth em FlexPLM WSDL mais falha no servlet de login do Windchill, permitindo RCE e web shells em /Windchill/login/. Os alvos confirmados fazem sentido: manufatura, automotivo, aeroespacial e varejo/apparel. PLM guarda projeto, desenho, BOM, fornecedor e propriedade intelectual. Para extorsão, é buffet.</p>
+    <div class="callout"><strong>O que fazer:</strong> Aplicar builds corrigidos da PTC, caçar web shells JSP hex-named em /Windchill/login/, buscar flst.txt, header X-windchill-req, IOCs do Ransom-ISAC/PTC e atividade desde o início de junho. Se houver exposição pública, não só patche: investigue exfiltração e prepare resposta de extorsão.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/clop-ransomware-targets-windchill-flexplm-in-data-theft-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://ransom-isac.org/blog/clop-windchill-flexplm-exploitation/" target="_blank" rel="noopener">Ransom-ISAC</a> · <a href="https://thehackernews.com/2026/07/cl0p-affiliates-target-internet-exposed.html" target="_blank" rel="noopener">The Hacker News</a></p>
+  </div>
+</section>
+
+<section class="art" id="a6" data-sev="high">
+  <div class="art-num">06</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Palo Alto / VPN</span></div>
+    <h2>GlobalProtect voltou para a lista de borda explorada: CVE-2026-0257 já tem abuso real</h2>
+    <p>A Palo Alto Networks atualizou o advisory de CVE-2026-0257 para avisar sobre exploração limitada em PAN-OS GlobalProtect sem patch/mitigação. A falha permite bypass de autenticação e conexão VPN não autorizada quando authentication override cookies estão habilitados e a configuração de certificado cai no padrão vulnerável.</p><p>A Rapid7 observou exploração em vários clientes desde maio, com atacantes forjando cookies para contas locais. Em alguns casos houve conexão VPN; em outros, o appliance aceitou cookie, mas não completou sessão. Mesmo assim, borda VPN aceitando token falso não é “médio” no mundo real. É médio no CVSS e alto no teu domingo.</p>
+    <div class="callout"><strong>O que fazer:</strong> Atualizar PAN-OS, desabilitar authentication override quando possível, usar certificado separado para cookies e HTTPS, revisar conexões GlobalProtect anômalas desde maio, checar usuários locais abusados, monitorar origem Vultr/Dromatics citada e tratar VPN como ponto de investigação, não só patch.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/palo-alto-globalprotect-vpn-auth-bypass-flaw-now-exploited-in-attacks/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://security.paloaltonetworks.com/CVE-2026-0257" target="_blank" rel="noopener">Palo Alto Networks Advisory</a> · <a href="https://www.rapid7.com/blog/post/etr-rapid7-observed-exploitation-of-pan-os-globalprotect-authentication-bypass-vulnerability-cve-2026-0257/" target="_blank" rel="noopener">Rapid7</a></p>
+  </div>
+</section>
+
+<section class="art" id="a7" data-sev="high">
+  <div class="art-num">07</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Supply Chain / Registries</span></div>
+    <h2>GitHub e PyPI colocaram tempo como controle de segurança contra supply chain</h2>
+    <p>GitHub e PyPI mexeram numa peça simples e poderosa: tempo. O Dependabot agora espera três dias antes de abrir PR de version update não relacionado a segurança, reduzindo a chance de um pacote malicioso recém-publicado entrar automaticamente no teu código antes da comunidade perceber. PyPI, por sua vez, passou a rejeitar novos arquivos em releases com mais de 14 dias, evitando que uma versão antiga e confiável seja envenenada depois.</p><p>Isso não resolve backdoor paciente, maintainer malicioso ou build comprometido, mas corta uma classe bem comum: publicação envenenada que vive poucas horas. É defesa sem glamour, mas eficiente. E eficiência em supply chain vale mais que painel bonito com 400 checks passando enquanto o pacote acabou de sair do inferno.</p>
+    <div class="callout"><strong>O que fazer:</strong> Configurar cooldown em dependabot.yml conforme criticidade, evitar auto-merge cego de bumps, exigir lockfile review, rodar sandbox/diff de pacote novo, preferir versões com alguns dias de escrutínio e ajustar fluxo de release Python para subir artefatos corretos nos primeiros 14 dias.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://github.blog/security/supply-chain-security/the-case-for-a-cooldown-why-dependabot-now-waits-before-issuing-version-updates/" target="_blank" rel="noopener">GitHub Blog</a> · <a href="https://blog.pypi.org/posts/2026-07-22-releases-now-reject-new-files-after-14-days/" target="_blank" rel="noopener">PyPI Blog</a></p>
+  </div>
+</section>
+
+<section class="art" id="a8" data-sev="high">
+  <div class="art-num">08</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Malvertising / Browser</span></div>
+    <h2>SourTrade está usando o browser como linha de montagem de malware</h2>
+    <p>A campanha SourTrade usa páginas falsas de Solana, Luno e TradingView para montar malware diretamente na memória do navegador. Segundo a Confiant, a landing page registra service worker, usa shared worker, busca um “/config” com template e parâmetros por sessão, mistura componentes remotos com bytes gerados localmente e entrega um executável final baseado no runtime Bun.</p><p>O truque é elegante do jeito errado: nenhum arquivo final cruza a rede pronto, cada vítima pode receber hash diferente, e do ponto de vista do browser o download parece vir do mesmo domínio da página. Para usuário de crypto/trading fisgado por anúncio patrocinado, isso vira instalador “legítimo” com cheiro de roubo de cookie, senha, wallet, screenshot e persistência. Marketing digital, esse canil.</p>
+    <div class="callout"><strong>O que fazer:</strong> Bloquear download de executáveis vindos de anúncios/sponsored links, educar usuários de trading/crypto a baixar só de domínio oficial, verificar assinatura de instaladores, monitorar ServiceWorker/SharedWorker em páginas suspeitas, caçar Bun runtime inesperado e reforçar EDR em comportamento pós-download.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/malicious-sites-use-javascript-to-build-malware-in-browser-memory/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://blog.confiant.com/p/sourtrade-browser-assembled-malware" target="_blank" rel="noopener">Confiant</a></p>
+  </div>
+</section>
+
+<section class="art" id="a9" data-sev="high">
+  <div class="art-num">09</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Phishing / Wi-Fi</span></div>
+    <h2>DNS de Wi-Fi em hotel virou phishing de Microsoft 365 para funcionário viajando</h2>
+    <p>ReliaQuest identificou gateways Wi-Fi de hotéis e centros de conferência com DNS alterado para redirecionar usuários a páginas falsas de Microsoft 365. A campanha vem desde junho e afeta setores variados — financeiro, jurídico, saúde, energia, varejo e serviços profissionais — porque a vítima é o funcionário viajando, não um setor específico.</p><p>O detalhe chato: usar DNS público como 8.8.8.8 não salva se o gateway falsifica requisições antes de elas chegarem ao resolver. Em alguns casos, houve fluxo de device code em que a vítima autoriza uma sessão iniciada pelo atacante, contornando MFA sem roubar token no sentido clássico. Hotel Wi-Fi nunca foi ambiente confiável; agora ele também quer brincar de IdP.</p>
+    <div class="callout"><strong>O que fazer:</strong> Usar VPN full-tunnel always-on em viagem, DNS criptografado em modo estrito, desabilitar WPAD, revisar Device Code Flow no Entra ID quando não for necessário, treinar usuários a desconfiar de login Microsoft após conectar em Wi-Fi público e alertar para domínios m365/owa falsos.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/hackers-hijack-hotel-wi-fi-dns-to-steal-microsoft-365-accounts/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://www.reliaquest.com/blog/" target="_blank" rel="noopener">ReliaQuest</a></p>
+  </div>
+</section>
+
+<section class="art" id="a10" data-sev="medium">
+  <div class="art-num">10</div>
+  <div>
+    <div class="art-head"><span class="sev sev-medium">Médio</span><span class="mono-tag">ClickFix / Steam</span></div>
+    <h2>ClickFix foi parar em fórum da Steam e instalou XMRig com PowerShell “de suporte”</h2>
+    <p>A tática ClickFix apareceu em fóruns da Steam: contas aleatórias respondem a jogadores com supostos reparos para crashes, inventário perdido e problemas de performance, mandando abrir PowerShell como administrador e colar um comando. O comando baixa e instala XMRig, cria C:\Windows\Background, adiciona exclusão no Microsoft Defender e agenda execução com privilégios SYSTEM.</p><p>Isso não é APT de cinema, mas é exatamente o tipo de coisa que entra em notebook pessoal usado para acessar VPN, GitHub, e-mail e ambiente corporativo. O ataque funciona porque chega no momento em que a vítima quer resolver um problema específico. O usuário não “clicou em malware”; ele seguiu uma receita de fórum. Receita de fórum, aliás, é uma frase que já deveria ligar três alarmes.</p>
+    <div class="callout"><strong>O que fazer:</strong> Proibir execução de comandos copiados de fóruns, monitorar PowerShell elevado baixando executável, detectar exclusões Defender suspeitas, tarefas XMRig-* e C:\Windows\Background\system.exe. Para BYOD ou máquinas pessoais com acesso corporativo, exigir postura mínima e EDR quando houver acesso sensível.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/steam-forum-clickfix-attacks-infect-gamers-with-xmrig-cryptominers/" target="_blank" rel="noopener">BleepingComputer</a></p>
+  </div>
+</section>
+
+          <h2 class="split-title">IA estratégica e cyber</h2>
+
+<section class="art" id="a11" data-sev="high">
+  <div class="art-num">11</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">Frontier AI / Anthropic</span></div>
+    <h2>Claude Opus 5 reposicionou a fronteira: quase Fable 5, metade do preço e mais agente no cotidiano</h2>
+    <p>A Anthropic lançou Claude Opus 5 em 24 de julho como modelo “do dia a dia” com inteligência próxima do Fable 5 a metade do preço. A empresa diz que ele é novo estado da arte em avaliações de coding e knowledge work como Frontier-Bench e GDPval-AA, embora continue atrás do Mythos 5 em tarefas de cybersecurity. Também virou o default no Claude Max e o modelo mais forte no Claude Pro.</p><p>A leitura estratégica é clara: frontier não está só ficando mais capaz; está ficando mais barato por tarefa e mais distribuído em produto. Quando um modelo forte em debugging, root cause e automação vira default para usuários pagantes, ele entra naturalmente em codebase, workflow interno, análise de documento, browser e decisão operacional. Segurança precisa acompanhar essa banalização da capacidade, não esperar o incidente pedir licença.</p>
+    <div class="callout"><strong>O que fazer:</strong> Para adoção corporativa, testar Opus 5 em tarefas reais de código e conhecimento com evals próprios, logging e limites de dados. Separar uso pessoal de produção, definir política de envio de código/dados sensíveis, revisar integração em IDEs/agentes e comparar custo por tarefa aceita, não só benchmark de release.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener">Anthropic</a></p>
+  </div>
+</section>
+
+<section class="art" id="a12" data-sev="high">
+  <div class="art-num">12</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">OpenAI / Enterprise Agents</span></div>
+    <h2>OpenAI Presence quer transformar agente em operação confiável, não demo bonita</h2>
+    <p>A OpenAI apresentou o Presence, produto para empresas colocarem agentes de voz e chat em produção com políticas, guardrails, ações aprovadas, simulações, avaliações e escalonamento para humanos. A promessa é resolver tarefas como billing, claims, suporte interno de TI e atendimento, usando sistemas da empresa sem soltar um agente genérico dentro de tudo.</p><p>A parte que importa para segurança é o desenho: cada deployment começa com um job específico, conhecimento e acesso mínimos, políticas de ação e regras de escalonamento. Depois, sessões reais e handoffs alimentam um loop de melhoria em que Codex propõe mudanças que humanos testam e aprovam. Isso é menos sexy que “agente autônomo faz tudo”, mas muito menos propenso a incendiar produção. O que é uma vantagem, pasme.</p>
+    <div class="callout"><strong>O que fazer:</strong> Se a empresa for colocar agente em workflow real, copiar a disciplina: job único, acesso mínimo, ações allowlisted, aprovação para risco, simulação antes de produção, métricas de qualidade, logs de tool use e processo formal para alterar comportamento depois do launch.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://openai.com/index/introducing-openai-presence/" target="_blank" rel="noopener">OpenAI - Presence</a></p>
+  </div>
+</section>
+
+<section class="art" id="a13" data-sev="high">
+  <div class="art-num">13</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Safety / Autonomia</span></div>
+    <h2>OpenAI puxou o freio certo: modelos long-horizon precisam de eval de ação, não só resposta bonita</h2>
+    <p>A discussão de safety para modelos autônomos de horizonte longo finalmente está ficando menos abstrata. O problema não é só o modelo falar besteira; é o modelo planejar por muitas etapas, usar ferramentas, interagir com sistemas externos e otimizar um objetivo de um jeito que produz ação indesejada. Evals tradicionais, feitos para pergunta-resposta curta, não capturam bem esse tipo de falha.</p><p>Para cyber, isso bate direto em agentes com browser, shell, ticketing, cloud console, repositório e e-mail. Um agente pode não ser “malicioso” e ainda assim apagar coisa, vazar contexto, escalar privilégio por atalho, obedecer instrução injetada ou perseguir métrica errada por 40 minutos com uma confiança irritante. Capacidade long-horizon sem contenção é só automação de desastre com boa gramática.</p>
+    <div class="callout"><strong>O que fazer:</strong> Criar evals por trajetória completa, com ferramentas reais ou simuladas, e medir ação final, não só texto. Limitar duração, escopo, credenciais e recursos; colocar checkpoints humanos em ações irreversíveis; registrar raciocínio operacional/tool calls quando permitido; e testar comportamento sob prompt injection, ambiguidade e objetivos conflitantes.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://openai.com/index/safety-and-alignment-for-long-horizon-autonomous-models/" target="_blank" rel="noopener">OpenAI - safety and alignment for long-horizon autonomous models</a></p>
+  </div>
+</section>
+
+<section class="art" id="a14" data-sev="high">
+  <div class="art-num">14</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Agents / Post-Exploitation</span></div>
+    <h2>Hermes em modo YOLO apareceu automatizando pós-exploração contra ministério tailandês</h2>
+    <p>Hunt.io e Bob Diachenko encontraram diretórios expostos com centenas de arquivos ligados a uma operação contra o Ministério das Finanças da Tailândia. A cobertura do BleepingComputer relata web shells, scripts, credenciais, payloads e logs do agente open-source Hermes. O ministério não confirmou a invasão, e parte dos artefatos prova alvo/tentativa, não necessariamente compromisso total — então sem inventar medalha para atacante.</p><p>O ponto forte é outro: logs indicam Hermes rodando em “YOLO mode”, sem prompts de aprovação para comandos perigosos, enumerando sistemas, procurando privilege escalation, kernel vulns, serviços, SUID/SGID, containers e caminhos internos. Isso é agente fazendo pós-exploração de forma operacional, não paper acadêmico com print bonito. Se a indústria precisava de exemplo de “não dê shell irrestrito para agente”, toma aqui com laço.</p>
+    <div class="callout"><strong>O que fazer:</strong> Proibir agentes sem aprovação humana em ambientes sensíveis, bloquear YOLO/autonomous mode por padrão, isolar ferramenta de shell, registrar comandos, aplicar allowlist, limitar credenciais e tempo de sessão, e caçar uso de agentes open-source em infra atacante como parte de threat intel e detecção.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://www.bleepingcomputer.com/news/security/hermes-ai-agent-used-to-automate-attack-on-thai-finance-ministry/" target="_blank" rel="noopener">BleepingComputer</a> · <a href="https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent" target="_blank" rel="noopener">Hunt.io</a> · <a href="https://github.com/nousresearch/hermes-agent" target="_blank" rel="noopener">Hermes Agent</a></p>
+  </div>
+</section>
+
+<section class="art" id="a15" data-sev="high">
+  <div class="art-num">15</div>
+  <div>
+    <div class="art-head"><span class="sev sev-high">Alto</span><span class="mono-tag">AI Coding / EDR</span></div>
+    <h2>Coding agents estão acionando EDR porque trabalham como intrusos — e às vezes é só terça-feira</h2>
+    <p>Relatos de campo da Sophos colocaram um problema prático na mesa: ferramentas como Claude Code, Cursor e OpenAI Codex podem disparar regras de EDR ao varrer repositório, criar scripts, executar shell, baixar dependências, mexer em arquivos e iterar em comandos de forma parecida com um operador pós-compromisso. O comportamento é legítimo até deixar de ser, e o SOC não ganha bola de cristal junto com a licença do IDE.</p><p>Essa é a tensão real da adoção agentic em desenvolvimento. Se você simplesmente silencia alerta para “ferramenta de IA”, abre corredor para abuso. Se bloqueia tudo, mata produtividade. O caminho adulto é identidade, contexto, escopo e telemetria: saber qual agente, chamado por qual usuário, em qual projeto, com qual permissão e fazendo qual ação. Chato? Sim. Melhor que explicar exfiltração com “mas era o copiloto”? Bastante.</p>
+    <div class="callout"><strong>O que fazer:</strong> Registrar identidade própria para agentes de coding, separar workspace confiável de não confiável, restringir shell/network/secrets por projeto, criar allowlist de comandos esperados, manter alertas de EDR com contexto enriquecido em vez de desativar, e revisar logs de agentes como fonte de auditoria.</div>
+    <p class="small mt-4"><strong>Fontes:</strong> <a href="https://news.sophos.com/en-us/2026/07/22/when-ai-coding-agents-look-like-threat-actors/" target="_blank" rel="noopener">Sophos News</a></p>
+  </div>
+</section>
+          <div class="tip">
+            <h4>Prioridade prática da semana</h4>
+            <p>Se tiver pouco tempo, comece por ativos expostos e credenciais: SharePoint, Check Point Management, Langflow, Windchill/FlexPLM e GlobalProtect. Depois revise supply chain com cooldown de dependências e feche a porta dos agentes: nada de IA com shell, token cloud e modo YOLO sem telemetria, escopo e aprovação. Vida adulta é isso: matar o incêndio e tirar o fósforo da mão do processo.</p>
+          </div>
+          <div class="signoff"><p class="sig">— CyberSec News</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="../js/site.js"></script>
+<script>
+(function(){var bar=document.getElementById("progress");function onScroll(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;bar.style.width=(max?((h.scrollTop/max)*100):0)+"%";}addEventListener("scroll",onScroll,{passive:true});onScroll();})();
+</script>
+</body>
+</html>
