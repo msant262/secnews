@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-08-31", edition:"#35", date:"31 AGO 2026", title:"KEV em cadeia, e IA deixando de ser ferramenta para virar infraestrutura controlada",
+    summary:"Gitea, Oracle, SQL Server, NetScaler, Linux, ownCloud e Artifactory entram no KEV; Cursor perde modelos da OpenAI, e o caso Hugging Face reforça que agentes, evals e compute exigem governança de produção.",
+    tags:["CISA KEV","RCE","DevSecOps","AI Security"], stories:17, crit:5, file:"newsletters/2026-08-31.html" },
   { id:"2026-08-24", edition:"#34", date:"24 AGO 2026", title:"RCE em colaboração, malware no build e IA virando dependência de infraestrutura",
     summary:"Zimbra e TrueConf entraram no KEV; uma cadeia em crates Rust executou malware durante a compilação; e a campanha do Cl0p em Windchill ganhou novas vítimas. Na IA, capacidade cyber, agentes em cloud, modelos locais e controles de chips passaram a ser decisão operacional.",
     tags:["CISA KEV","Supply Chain","Ransomware","AI Security"], stories:15, crit:5, file:"newsletters/2026-08-24.html" },

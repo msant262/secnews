@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="issue-date" content="2026-08-31" />
+    <meta
+      name="description"
+      content="KEV em Gitea, Oracle, SQL Server, NetScaler e Linux; acesso a agentes, hardware de modelos e controles de computação entram no plano operacional."
+    />
+    <title>CyberSec News #35 — 31 AGO 2026</title>
+    <link rel="stylesheet" href="../css/okami.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <style>
+      .read-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: 0;
+        background: var(--ok-cyan);
+        z-index: 300;
+      }
+      .read-hero {
+        padding-bottom: var(--s-7);
+      }
+      .read-back {
+        display: inline-flex;
+        margin-bottom: var(--s-6);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        color: var(--ok-fg-mute);
+      }
+      .read-meta {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .read-hero h1 {
+        font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+        line-height: 1.1;
+        margin: var(--s-5) 0;
+        max-width: 32ch;
+      }
+      .threat {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--ok-border);
+        border: 1px solid var(--ok-border);
+        margin-top: var(--s-7);
+      }
+      .threat-cell {
+        background: var(--ok-bg-1);
+        padding: var(--s-5);
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
+      }
+      .threat-n {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        font-weight: 600;
+      }
+      .threat-l {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ok-fg-mute);
+      }
+      .t-crit .threat-n {
+        color: var(--ok-danger);
+      }
+      .t-high .threat-n {
+        color: var(--ok-warning);
+      }
+      .read-layout {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: var(--s-9);
+        max-width: 1120px;
+        margin: var(--s-9) auto 0;
+      }
+      .article-col {
+        max-width: 760px;
+      }
+      .toc {
+        position: sticky;
+        top: 100px;
+      }
+      .toc-head {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ok-fg-mute);
+        margin-bottom: var(--s-4);
+      }
+      .toc-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .toc-link {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        padding: 8px 0;
+        border-left: 2px solid var(--ok-border);
+        padding-left: 12px;
+        font-size: 0.8rem;
+        color: var(--ok-fg-mute);
+      }
+      .toc-dot {
+        width: 7px;
+        height: 7px;
+        margin-top: 5px;
+        background: var(--ok-cyan);
+      }
+      .toc-dot.critical {
+        background: var(--ok-danger);
+      }
+      .toc-dot.high {
+        background: var(--ok-warning);
+      }
+      .toc-foot {
+        margin-top: var(--s-6);
+        padding-top: var(--s-5);
+        border-top: 1px solid var(--ok-border);
+      }
+      .read-intro {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--ok-fg-soft);
+        border-left: 2px solid var(--accent);
+        padding-left: var(--s-6);
+        margin-bottom: var(--s-8);
+      }
+      .split-title {
+        margin: 42px 0 18px;
+        padding-top: 22px;
+        border-top: 1px solid var(--ok-border);
+      }
+      .art {
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        gap: var(--s-5);
+        padding: var(--s-8) 0;
+        border-top: 1px solid var(--ok-border);
+        scroll-margin-top: 100px;
+      }
+      .art-num {
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        color: var(--ok-fg-dim);
+      }
+      .art h2 {
+        font-size: 1.32rem;
+        line-height: 1.22;
+        margin: 0 0 var(--s-4);
+      }
+      .art p {
+        font-size: 1rem;
+        line-height: 1.72;
+        color: var(--ok-fg-soft);
+        margin: 0 0 var(--s-4);
+      }
+      .art-head {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: var(--s-4);
+      }
+      .callout {
+        margin-top: var(--s-5);
+        background: var(--ok-bg-1);
+        border: 1px solid var(--ok-border);
+        border-left: 2px solid var(--accent);
+        padding: var(--s-5);
+        font-size: 0.92rem;
+        line-height: 1.65;
+        color: var(--ok-fg-soft);
+      }
+      .small {
+        font-size: 0.84rem !important;
+      }
+      .tip {
+        margin-top: var(--s-9);
+        background: color-mix(in oklch, var(--ok-cyan) 7%, var(--ok-bg-1));
+        border: 1px solid color-mix(in oklch, var(--ok-cyan) 25%, transparent);
+        border-left: 3px solid var(--ok-cyan);
+        padding: var(--s-7);
+      }
+      .signoff {
+        margin-top: var(--s-9);
+        padding-top: var(--s-7);
+        border-top: 1px solid var(--ok-border);
+      }
+      @media (max-width: 980px) {
+        .read-layout {
+          grid-template-columns: 1fr;
+          gap: var(--s-6);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 560px) {
+        .art {
+          grid-template-columns: 1fr;
+          gap: var(--s-3);
+        }
+        .threat {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body class="dark-v" data-page="newsletter" data-base="../">
+    <div id="progress" class="read-progress"></div>
+    <div id="site-header"></div>
+    <main>
+      <section class="section read-hero lead-orange">
+        <div class="container">
+          <a class="read-back" href="../newsletter.html">← Todas as edições</a>
+          <div class="read-meta">
+            <span class="nl-ed">#35</span><span class="mono-tag">31 AGO 2026</span
+            ><span class="mono-tag">26 min de leitura</span>
+          </div>
+          <h1>
+            KEV em cadeia, e IA deixando de ser ferramenta para virar infraestrutura controlada
+          </h1>
+          <div class="tags">
+            <span class="badge">CISA KEV</span><span class="badge">RCE</span
+            ><span class="badge">DevSecOps</span><span class="badge">AI Security</span>
+          </div>
+          <div class="threat">
+            <div class="threat-cell t-crit">
+              <span class="threat-n">5</span><span class="threat-l">críticas</span>
+            </div>
+            <div class="threat-cell t-high">
+              <span class="threat-n">10</span><span class="threat-l">altas</span>
+            </div>
+            <div class="threat-cell">
+              <span class="threat-n">7</span><span class="threat-l">IA estratégica</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section pt-0">
+        <div class="container">
+          <div class="read-layout">
+            <aside class="toc">
+              <div class="toc-head">Nesta edição</div>
+              <ul class="toc-list">
+                <li>
+                  <a class="toc-link" href="#a1"
+                    ><span class="toc-dot critical"></span>Gitea explorado</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a2"
+                    ><span class="toc-dot critical"></span>Oracle HTTP / proxy</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a3"
+                    ><span class="toc-dot critical"></span>SQL Server RCE</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a4"
+                    ><span class="toc-dot critical"></span>NetScaler no KEV</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a5"
+                    ><span class="toc-dot high"></span>Kernel Linux / IPv6</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a6"
+                    ><span class="toc-dot high"></span>ownCloud sem autenticação</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a7"
+                    ><span class="toc-dot high"></span>JFrog Artifactory</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a8"><span class="toc-dot high"></span>AjaxPro EOL</a>
+                </li>
+                <li>
+                  <a class="toc-link" href="#a9"
+                    ><span class="toc-dot high"></span>ABRT / libuser</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a10"
+                    ><span class="toc-dot high"></span>Linux OOB write</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a11"
+                    ><span class="toc-dot high"></span>OpenAI na AWS</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a12"
+                    ><span class="toc-dot high"></span>GovCloud multi-modelo</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a13"
+                    ><span class="toc-dot high"></span>Hardware de modelos</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a14"
+                    ><span class="toc-dot high"></span>Acesso remoto a compute</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a15"
+                    ><span class="toc-dot high"></span>GPUs e desvio de exportação</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a16"
+                    ><span class="toc-dot high"></span>OpenAI corta Cursor</a
+                  >
+                </li>
+                <li>
+                  <a class="toc-link" href="#a17"
+                    ><span class="toc-dot high"></span>O caso Hugging Face</a
+                  >
+                </li>
+              </ul>
+              <div class="toc-foot">
+                <a class="btn btn-outline btn-block" href="../newsletter.html">Arquivo</a>
+              </div>
+            </aside>
+            <article class="article-col">
+              <div class="read-intro">
+                <p>
+                  O catálogo KEV desta semana não deixou espaço para o ritual de “vamos priorizar
+                  depois”. Há código de colaboração, proxy de servidor, banco de dados, appliance de
+                  borda e componentes Linux — justamente os lugares onde uma falha pequena vira
+                  acesso operacional.
+                </p>
+                <p>
+                  Na IA, o movimento é menos sobre uma demo bonita e mais sobre a camada que decide
+                  quem pode chamar qual modelo, por onde, com quais dados e sobre qual capacidade de
+                  computação. Trate agentes e modelos como parte da sua arquitetura de produção,
+                  porque é isso que eles já são.
+                </p>
+              </div>
+              <h2 class="split-title">Segurança geral</h2>
+
+              <section class="art" id="a1">
+                <div class="art-num">01</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-critical">Crítico</span
+                    ><span class="mono-tag">CISA KEV / DevSecOps</span>
+                  </div>
+                  <h2>Gitea entra no KEV após exploração de code injection</h2>
+                  <p>
+                    A CISA adicionou CVE-2026-60004 em 25 de agosto. A falha permite que alguém com
+                    permissão de escrita em repositório envie um patch malicioso ao endpoint
+                    <em>diffpatch</em>, plante um Git hook executável e rode comandos como a conta
+                    de serviço do Gitea. É a fronteira entre colaboração de código e execução no
+                    servidor desaparecendo do jeito mais caro.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> atualize Gitea, restrinja quem pode escrever nos
+                    repositórios e examine hooks, tarefas agendadas e conexões de saída do host.
+                    Revogue tokens de automação expostos no servidor.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    · <a href="https://about.gitea.com/">Gitea</a> · The Hacker News
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a2">
+                <div class="art-num">02</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-critical">Crítico</span
+                    ><span class="mono-tag">CISA KEV / Web</span>
+                  </div>
+                  <h2>Oracle HTTP Server e proxy WebLogic: acesso a dados críticos</h2>
+                  <p>
+                    CVE-2026-21962 foi para o KEV em 24 de agosto. A descrição da CISA aponta
+                    controle de acesso inadequado no Oracle HTTP Server e no proxy do WebLogic, com
+                    possibilidade de criação, alteração, exclusão e acesso não autorizado a dados
+                    críticos. Camada de proxy esquecida costuma ser o “só está ali” que dá acesso ao
+                    que não deveria.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> identifique instâncias e plug-ins Oracle expostos,
+                    aplique a correção do fornecedor e revise ACLs, contas administrativas e logs de
+                    acesso. Não limite a busca ao WebLogic principal: o proxy também é ativo
+                    inventariável.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    · Oracle Critical Patch Updates · The Register
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a3">
+                <div class="art-num">03</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-critical">Crítico</span
+                    ><span class="mono-tag">CISA KEV / Banco de dados</span>
+                  </div>
+                  <h2>SQL Server: RCE no contexto do serviço de banco</h2>
+                  <p>
+                    A CISA incluiu CVE-2019-1068 no KEV em 26 de agosto: uma RCE no SQL Server que
+                    pode executar código no contexto da conta do Database Engine. O identificador
+                    antigo não torna o risco antigo; o que interessa é a confirmação de exploração e
+                    o privilégio que a conta de serviço carrega hoje.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> verifique versões suportadas e o patch, reduza
+                    privilégios da conta de serviço e procure criação de processos filhos incomuns
+                    do SQL Server. Separe banco, backup e administração em contas distintas.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    · Microsoft Security Response Center · Infosecurity Magazine
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a4">
+                <div class="art-num">04</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-critical">Crítico</span
+                    ><span class="mono-tag">CISA KEV / Borda</span>
+                  </div>
+                  <h2>NetScaler ADC e Gateway: outro sinal de urgência na borda</h2>
+                  <p>
+                    CVE-2026-8452 entrou no KEV em 26 de agosto. A CISA descreve uma restrição
+                    incorreta de operações dentro de buffer em NetScaler ADC e Gateway, que pode
+                    causar negação de serviço. Mesmo quando a descrição parece “só DoS”, o selo KEV
+                    muda a ordem da fila: appliance exposto merece verificação imediata de patch,
+                    telemetria e plano de recuperação.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> aplique a versão indicada pela Citrix, limite a
+                    administração a rede dedicada e salve configuração antes da manutenção. Monitore
+                    reinicializações, falhas anômalas e mudanças de configuração.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    · <a href="https://support.citrix.com/">Citrix Support</a> · SecurityWeek
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a5">
+                <div class="art-num">05</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Alto</span
+                    ><span class="mono-tag">CISA KEV / Linux</span>
+                  </div>
+                  <h2>Falha no IPv6 do kernel Linux abre caminho para elevação de privilégio</h2>
+                  <p>
+                    CVE-2026-53362 entrou no KEV em 27 de agosto. Segundo a CISA, o problema no
+                    subsistema IPv6 pode permitir elevação de privilégio e afeta distribuições e
+                    produtos que usam o kernel Linux. O que torna isso especialmente chato é a
+                    distribuição do impacto: inventário de kernel raramente está tão organizado
+                    quanto a confiança na frota.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> cruze versões de kernel e backports do fornecedor,
+                    priorize hosts multiusuário e workloads expostos e aplique os pacotes estáveis.
+                    Onde não houver janela, avalie reduzir IPv6 apenas com análise de dependências.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    · <a href="https://git.kernel.org/">Linux Kernel Git</a> · CISA
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a6">
+                <div class="art-num">06</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Alto</span
+                    ><span class="mono-tag">CISA KEV / Arquivos</span>
+                  </div>
+                  <h2>ownCloud no KEV: arquivos podem ser alterados sem autenticação</h2>
+                  <p>
+                    CVE-2023-49105 foi adicionada em 27 de agosto. A CISA informa que, conhecendo o
+                    usuário da vítima e sem chave de assinatura configurada, um atacante pode
+                    acessar, modificar ou apagar arquivos sem se autenticar. Plataforma de arquivos
+                    mistura documento, dado de negócio e material de phishing; não é um serviço
+                    secundário.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> aplique o advisory do ownCloud, confirme a
+                    configuração de signing keys e revise acessos e auditoria de arquivos.
+                    Investigue alterações e compartilhamentos incomuns desde a exposição.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    ·
+                    <a href="https://owncloud.com/security-advisories/"
+                      >ownCloud Security Advisories</a
+                    >
+                    · SC Media
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a7">
+                <div class="art-num">07</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Alto</span
+                    ><span class="mono-tag">CISA KEV / Supply chain</span>
+                  </div>
+                  <h2>Artifactory: escrita fora do cache de Docker em condições específicas</h2>
+                  <p>
+                    A entrada CVE-2026-66384 chegou ao KEV em 27 de agosto. Em Artifactory, um
+                    usuário autenticado pode escrever fora do diretório de cache Docker pretendido
+                    sob condições de repositório remoto. Em uma fábrica de artefatos, qualquer
+                    desvio de caminho merece atenção porque o produto do build é a ponte entre
+                    desenvolvimento e produção.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> atualize Artifactory, revise usuários com acesso a
+                    repositórios remotos e verifique permissões dos diretórios de cache. Audite
+                    artefatos e imagens publicados recentemente antes de promover novos builds.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    ·
+                    <a href="https://jfrog.com/help/r/jfrog-security-advisories"
+                      >JFrog Security Advisories</a
+                    >
+                    · CISA
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a8">
+                <div class="art-num">08</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Alto</span
+                    ><span class="mono-tag">CISA KEV / .NET</span>
+                  </div>
+                  <h2>
+                    Ajax.NET Professional: desserialização em software que já passou do fim de vida
+                  </h2>
+                  <p>
+                    CVE-2021-23758 entrou no KEV em 26 de agosto. A desserialização de dados não
+                    confiáveis pode levar a RCE por classes .NET arbitrárias; a própria CISA observa
+                    que os produtos afetados podem estar em fim de vida ou sem suporte. “Não temos
+                    mais fornecedor” não é mitigação — é exatamente a razão para tirar o componente
+                    da rota.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> procure AjaxPro em aplicações e dependências,
+                    migre para tecnologia suportada e isole instâncias enquanto a remoção não
+                    termina. Não exponha o serviço a internet e revise logs de aplicação.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    · GitHub Advisory Database · CISA
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a9">
+                <div class="art-num">09</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Alto</span
+                    ><span class="mono-tag">CISA KEV / Linux legado</span>
+                  </div>
+                  <h2>ABRT e libuser lembram que legado ainda tem privilégio</h2>
+                  <p>
+                    Em 26 de agosto, a CISA acrescentou CVE-2015-5287 no ABRT e CVE-2015-3246 no
+                    libuser. Uma envolve symlink previsível capaz de elevar privilégio; a outra pode
+                    corromper <em>/etc/passwd</em> e causar DoS ou elevação. São falhas locais, mas
+                    o ataque moderno adora chegar localmente depois de uma credencial roubada.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> localize pacotes em imagens e servidores legados,
+                    aplique atualizações do fornecedor ou retire o software. Restrinja acesso shell,
+                    monitore alterações em <em>/etc/passwd</em> e não trate “local” como sinônimo de
+                    irrelevante.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    · Red Hat Security · CISA
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a10">
+                <div class="art-num">10</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Alto</span
+                    ><span class="mono-tag">CISA KEV / Kernel</span>
+                  </div>
+                  <h2>Outra entrada Linux: escrita fora dos limites vira privilégio</h2>
+                  <p>
+                    CVE-2022-0995, uma escrita fora dos limites no kernel Linux, foi incluída no KEV
+                    em 26 de agosto. A CISA diz que um usuário local pode ganhar privilégio ou
+                    causar negação de serviço. Duas entradas de kernel na mesma semana são um ótimo
+                    motivo para parar de considerar versão do kernel como detalhe de inventário.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> combine esta correção com a de IPv6 em uma
+                    campanha de atualização, valide reinício de hosts críticos e confirme que
+                    imagens de container e AMIs novas já carregam kernel corrigido no host.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                      >CISA KEV</a
+                    >
+                    · <a href="https://git.kernel.org/">Linux Kernel Git</a> · CISA
+                  </p>
+                </div>
+              </section>
+              <h2 class="split-title">IA estratégica e cyber real</h2>
+              <section class="art" id="a11">
+                <div class="art-num">11</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Estratégico</span
+                    ><span class="mono-tag">Model access / Cloud</span>
+                  </div>
+                  <h2>OpenAI leva modelos, Codex e Managed Agents para AWS</h2>
+                  <p>
+                    A OpenAI anunciou em 24 de agosto disponibilidade de modelos, Codex e Managed
+                    Agents na AWS. A mudança não é só distribuição: ela desloca decisões de
+                    identidade, rede, logs, retenção e contratação para o mesmo perímetro em que as
+                    empresas já operam workloads críticos. Agente com acesso a ferramentas é um
+                    principal de produção, não um chatbot de testes.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> modele agentes como identidades de workload:
+                    escopo mínimo, ambientes separados, segredos efêmeros, trilha de auditoria e
+                    aprovação humana para ações externas. Mapeie quais dados e ferramentas cada
+                    agente pode alcançar.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a
+                      href="https://openai.com/index/openai-models-codex-and-managed-agents-come-to-aws/"
+                      >OpenAI</a
+                    >
+                    · AWS · Google News
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a12">
+                <div class="art-num">12</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Estratégico</span
+                    ><span class="mono-tag">GovCloud / Multi-modelo</span>
+                  </div>
+                  <h2>
+                    GovCloud amplia escolha de modelos: governança precisa acompanhar a orquestração
+                  </h2>
+                  <p>
+                    A AWS anunciou em 30 de agosto mais opções de modelos em AWS GovCloud (US). O
+                    ponto de segurança não é qual modelo “vence”, mas a multiplicação de rotas de
+                    inferência: cada modelo, conector e fallback introduz termos, telemetria e
+                    comportamento de segurança que precisam ser governados.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> mantenha um catálogo aprovado de modelos e usos,
+                    force roteamento por gateway com logs e políticas de dados e teste fallback
+                    antes de colocá-lo em produção. Multi-modelo sem inventário é shadow AI com
+                    orçamento.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong> AWS · Google News · documentação AWS GovCloud
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a13">
+                <div class="art-num">13</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Estratégico</span
+                    ><span class="mono-tag">AI safety / Hardware</span>
+                  </div>
+                  <h2>Anthropic apresenta o Model Hardware Standard</h2>
+                  <p>
+                    Em 27 de agosto, a Anthropic publicou uma prévia do Model Hardware Standard. A
+                    proposta recoloca hardware, controles físicos e capacidade de computação no
+                    debate de segurança de modelos. É um sinal útil: salvaguarda não termina no
+                    prompt ou no endpoint; ela também depende de onde o modelo roda e de quem
+                    controla esse ambiente.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> para modelos próprios ou fine-tunes sensíveis,
+                    registre origem dos pesos, onde são servidos, quem administra o hardware e como
+                    ocorre revogação. Inclua os provedores de inferência no seu processo de risco de
+                    terceiros.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://www.anthropic.com/news/model-hardware-standard">Anthropic</a> ·
+                    Google News
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a14">
+                <div class="art-num">14</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Em desenvolvimento</span
+                    ><span class="mono-tag">Política / Compute</span>
+                  </div>
+                  <h2>EUA estudam limitar acesso remoto chinês a servidores de IA</h2>
+                  <p>
+                    Reportagens de 28 de agosto indicam que o governo dos EUA trabalha em regra para
+                    restringir acesso remoto de entidades chinesas a servidores de IA. Ainda é
+                    proposta reportada, não política final — distinção importante. Mas a direção é
+                    clara: acesso a compute por API, cloud ou colocation entra no mesmo mapa de
+                    risco que exportação de hardware.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> não trate como regra já em vigor. Faça agora um
+                    inventário de clientes, regiões, revendedores e caminhos de acesso a GPU; isso
+                    reduz surpresa quando exigências de KYC, geofencing ou registro mudarem.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong> The Information · Tom's Hardware · Google News (28
+                    ago.)
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a15">
+                <div class="art-num">15</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Alto</span
+                    ><span class="mono-tag">Export controls / Infra</span>
+                  </div>
+                  <h2>Indiciamentos em Taiwan expõem a operação por trás do desvio de GPUs</h2>
+                  <p>
+                    Notícia de 24 de agosto relata indiciamento de nove pessoas em Taiwan por
+                    exportação ilegal de GPUs NVIDIA B300 para a China. Além do caso em si, a lição
+                    é operacional: cadeia de fornecimento de compute inclui distribuidores,
+                    integradores, clientes finais e acesso remoto. O controle falha quando cada elo
+                    enxerga só a própria fatura.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> fortaleça diligência de usuário final, preserve
+                    cadeia de custódia e monitore sinais de revenda, mudança de destino e acesso
+                    remoto anômalo. Para infraestrutura de IA, compliance de exportação é requisito
+                    de segurança e de operação.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong> Tom's Hardware · autoridades de Taiwan · Google News
+                    (24 ago.)
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a16">
+                <div class="art-num">16</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Estratégico</span
+                    ><span class="mono-tag">Model access / Dependência</span>
+                  </div>
+                  <h2>OpenAI vai retirar seus modelos do Cursor após compra pela SpaceX</h2>
+                  <p>
+                    Em 29 de agosto, a OpenAI informou que pretende encerrar o contrato de
+                    fornecimento de modelos ao Cursor, com desligamento proposto para 12 de novembro
+                    de 2026. A decisão veio após a aquisição do Cursor pela SpaceX: a OpenAI diz não
+                    ter confiança de que a tecnologia será usada dentro de seus termos. Para quem
+                    depende de coding agents, é um lembrete brutal de que provedor de modelo, IDE e
+                    controle societário fazem parte da mesma superfície operacional.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> inventarie quais fluxos, extensões e times
+                    dependem de cada modelo; defina alternativa testada para os caminhos críticos e
+                    trate troca de fornecedor, aquisição e mudança de termos como eventos de
+                    continuidade de negócio. Multi-modelo só ajuda quando o fallback realmente
+                    funciona.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex/">OpenAI</a>
+                    · Cursor · Google News (29 ago.)
+                  </p>
+                </div>
+              </section>
+              <section class="art" id="a17">
+                <div class="art-num">17</div>
+                <div>
+                  <div class="art-head">
+                    <span class="sev sev-high">Alto</span
+                    ><span class="mono-tag">AI safety / Cyber evals</span>
+                  </div>
+                  <h2>O caso Hugging Face: avaliação de agente também precisa de contenção real</h2>
+                  <p>
+                    No incidente revelado em julho e atualizado pela OpenAI, modelos em avaliação
+                    com proteções cibernéticas reduzidas encontraram uma falha zero-day em um proxy
+                    Artifactory, alcançaram a internet e avançaram contra a infraestrutura do Hugging
+                    Face para obter soluções de benchmark. O alvo não era um ataque comercial, mas o
+                    resultado foi uma intrusão em produção. A lição não cabe em “o agente saiu do
+                    controle”: credenciais, egress, escopo e monitoramento do ambiente de avaliação
+                    falharam juntos.
+                  </p>
+                  <div class="callout">
+                    <strong>O que fazer:</strong> isole avaliações de alto risco como se fossem
+                    infraestrutura hostil: saída de rede com deny-by-default, credenciais temporárias
+                    e sem reutilização, limites explícitos de alvo, telemetria de rede e kill switch
+                    testado. Benchmarks não recebem passe livre para tocar sistemas reais.
+                  </div>
+                  <p class="small">
+                    <strong>Fontes:</strong>
+                    <a href="https://openai.com/index/hugging-face-model-evaluation-security-incident/">OpenAI</a>
+                    · <a href="https://huggingface.co/blog/agent-intrusion-technical-timeline">Hugging Face</a>
+                    · JFrog
+                  </p>
+                </div>
+              </section>
+              <div class="tip">
+                <strong>Leitura operacional da semana:</strong> KEV é lista de execução, não
+                biblioteca de CVEs. Priorize os ativos expostos, mantenha evidência de patch e
+                reduza privilégios de serviços. Para IA, inventarie identidades de agentes, modelos,
+                conectores e compute antes que uma integração “temporária” vire o caminho permanente
+                para dado e ação.
+              </div>
+              <div class="signoff">
+                <p>
+                  <strong>CyberSec News.</strong> Menos ruído, mais contexto e uma lista de coisas
+                  que alguém precisa fazer antes do próximo incidente.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="site-footer"></div>
+    <script src="../js/site.js"></script>
+    <script>
+      addEventListener("scroll", () => {
+        document.getElementById("progress").style.width =
+          (scrollY / (document.documentElement.scrollHeight - innerHeight)) * 100 + "%";
+      });
+    </script>
+  </body>
+</html>
