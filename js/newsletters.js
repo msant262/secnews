@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-09-07", edition:"#36", date:"07 SET 2026", title:"Quem vai controlar a porta de entrada da IA?",
+    summary:"Chrome, LiteLLM, Starlette, Kestra, Artifactory, Switchvox, SonicWall e PaperCut entram no KEV; na IA, Astra, Fable 5.1, Gemini 3.8 Flash e a compra da Hugging Face pela NVIDIA colocam acesso, governança e portabilidade no centro da operação.",
+    tags:["CISA KEV","RCE","AI Security","Frontier Models","Open Models"], stories:18, crit:6, file:"newsletters/2026-09-07.html" },
   { id:"2026-08-31", edition:"#35", date:"31 AGO 2026", title:"KEV em cadeia, e IA deixando de ser ferramenta para virar infraestrutura controlada",
     summary:"Gitea, Oracle, SQL Server, NetScaler, Linux, ownCloud e Artifactory entram no KEV; Cursor perde modelos da OpenAI, e o caso Hugging Face reforça que agentes, evals e compute exigem governança de produção.",
     tags:["CISA KEV","RCE","DevSecOps","AI Security"], stories:17, crit:5, file:"newsletters/2026-08-31.html" },
