@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-09-21", edition:"#38", date:"21 SET 2026", title:"A identidade virou o ponto de ruptura",
+    summary:"Cisco ISE e Secure Email Gateway entram no KEV, três falhas do kernel Linux exigem ação e uma campanha de supply chain alcança WordPress. Na IA, abuso, desalinhamento, storage e consistência de agentes tornam acesso e desligamento controles de produção.",
+    tags:["Identity","CISA KEV","Supply Chain","Frontier AI","AI Governance"], stories:16, crit:6, file:"newsletters/2026-09-21.html" },
   { id:"2026-09-14", edition:"#37", date:"14 SET 2026", title:"A porta de administração caiu — e os agentes querem a chave",
     summary:"13 novas entradas no KEV atingem Artifactory, ScreenConnect, GitLab, NetScaler, Cisco, MikroTik, Windows e RMM. Na IA, GPT-6 Astra, Agents API, abuso de modelos, distilação e coding agents tornam acesso e governança parte do perímetro.",
     tags:["CISA KEV","Admin Plane","Supply Chain","AI Agents","Frontier Models"], stories:20, crit:7, file:"newsletters/2026-09-14.html" },
