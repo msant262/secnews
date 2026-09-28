@@ -11,7 +11,7 @@
  * a generated article fragment. It waits for the shared styles and JS chrome,
  * then prints backgrounds. That prevents a valid-looking but unstyled PDF.
  */
-import { access, mkdir } from 'node:fs/promises';
+import { access, mkdir, stat } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -70,7 +70,15 @@ try {
     margin: { top: '0', right: '0', bottom: '0', left: '0' },
     preferCSSPageSize: false,
   });
-  console.log(JSON.stringify({ ok: true, source, output, check }, null, 2));
+  const pdfBytes = (await stat(output)).size;
+  // A raw browser print of this edition is roughly 70 KB. Styled editions use
+  // embedded fonts/background resources and have consistently been much larger.
+  // Refuse a suspiciously tiny output instead of letting a superficially valid
+  // `%PDF-` file reach review.
+  if (pdfBytes < 250_000) {
+    throw new Error(`Rendered PDF is suspiciously small (${pdfBytes} bytes); refusing unstyled candidate`);
+  }
+  console.log(JSON.stringify({ ok: true, source, output, pdfBytes, check }, null, 2));
 } finally {
   await browser.close();
 }

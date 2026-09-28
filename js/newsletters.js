@@ -1,5 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-09-28", edition:"#39", date:"28 SET 2026", title:"O perímetro agora roda dentro do appliance",
+    summary:"NetScaler, F5, SharePoint, WordPress e MikroTik entram em exploração conhecida; na IA, GPT-6 Sol/Luna, Gemini 3.8, Copilot e agentes de fuzzing tornam modelo, rede e token controles de produção.",
+    tags:["KEV","Appliance","RCE","AI Agents","Model Access"], stories:18, crit:7, file:"newsletters/2026-09-28.html" },
   { id:"2026-09-21", edition:"#38", date:"21 SET 2026", title:"A identidade virou o ponto de ruptura",
     summary:"Cisco ISE e Secure Email Gateway entram no KEV, três falhas do kernel Linux exigem ação e uma campanha de supply chain alcança WordPress. Na IA, abuso, desalinhamento, storage e consistência de agentes tornam acesso e desligamento controles de produção.",
     tags:["Identity","CISA KEV","Supply Chain","Frontier AI","AI Governance"], stories:16, crit:6, file:"newsletters/2026-09-21.html" },
