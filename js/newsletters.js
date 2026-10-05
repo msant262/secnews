@@ -1,8 +1,8 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
   { id:"2026-10-05", edition:"#40", date:"05 OUT 2026", title:'Um zero-day terceirizado drenou US$ 387,5 milhões — e a corrida dos agentes aperta o cerco',
-    summary:'FortiMail, NetScaler, SD-WAN, GitLab e Zimbra concentram falhas exploradas ou críticas; Bitget atribui um roubo de US$ 387,5 milhões a um zero-day em software de terceiro. Na IA, Google abre Gemini 4 Argon a defensores, OpenAI limita o GPT-5.6 Sol e a Anthropic vê capacidade de exploração avançada chegar a pesos abertos.',
-    tags:["Zero-Day","CISA KEV","Supply Chain","Frontier AI","AI Agents"], stories:22, crit:7, file:"newsletters/2026-10-05.html" },
+    summary:'FortiMail, SD-WAN, GitLab e Zimbra concentram riscos críticos; o caso Bitget destaca o efeito sistêmico de software terceirizado. GPT-6.1 Sol, modelos cyber e agentes ampliam o perímetro.',
+    tags:["Zero-Day","Supply Chain","Frontier AI","AI Agents","Model Access"], stories:20, crit:3, file:"newsletters/2026-10-05.html" },
   { id:"2026-09-28", edition:"#39", date:"28 SET 2026", title:"O perímetro agora roda dentro do appliance",
     summary:"NetScaler, F5, SharePoint, WordPress e MikroTik entram em exploração conhecida; na IA, GPT-6 Sol/Luna, Gemini 3.8, Copilot e agentes de fuzzing tornam modelo, rede e token controles de produção.",
     tags:["KEV","Appliance","RCE","AI Agents","Model Access"], stories:18, crit:7, file:"newsletters/2026-09-28.html" },
