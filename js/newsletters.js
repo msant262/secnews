@@ -1,5 +1,7 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-10-12", edition:"#41", date:"12 OUT 2026", title:"O código de terceiros virou rota de entrada — e a IA aberta disputa o próximo perímetro", summary:"NetScaler e Atlassian sob exploração, KEV com cinco produtos, worm Shai-Hulud no npm e breaches expõem dependências confiáveis. Na IA, Anthropic amplia defesa cyber, Mistral e Reflection disputam modelos abertos, e Google, GitHub e NVIDIA levam agentes ao trabalho e ao endpoint.", tags:["Zero-Day","Supply Chain","Open Models","AI Agents"], stories:23, crit:2, file:"newsletters/2026-10-12.html" },
+
   { id:"2026-10-05", edition:"#40", date:"05 OUT 2026", title:'Um zero-day terceirizado drenou US$ 387,5 milhões — e a corrida dos agentes aperta o cerco',
     summary:'FortiMail, SD-WAN, GitLab e Zimbra concentram riscos críticos; o caso Bitget destaca o efeito sistêmico de software terceirizado. GPT-6.1 Sol, modelos cyber e agentes ampliam o perímetro.',
     tags:["Zero-Day","Supply Chain","Frontier AI","AI Agents","Model Access"], stories:20, crit:3, file:"newsletters/2026-10-05.html" },
