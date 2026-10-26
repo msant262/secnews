@@ -1,5 +1,6 @@
 /* CyberSec News — newsletter data + renderers */
 var NEWSLETTERS = [
+  { id:"2026-10-26", edition:"#42", date:"26 OUT 2026", title:"A corrida de patch encurtou — e energia virou limite do poder de IA", summary:"Oito entradas exploradas no KEV, correção coordenada de open source e uma campanha na cadeia ConnectWise. Na IA, contenção de frontier models, agentes como insiders e compute definem o próximo perímetro.", tags:["KEV","Supply Chain","Frontier AI","AI Agents"], stories:19, crit:4, file:"newsletters/2026-10-26.html" },
   { id:"2026-10-12", edition:"#41", date:"12 OUT 2026", title:"O código de terceiros virou rota de entrada — e a IA aberta disputa o próximo perímetro", summary:"NetScaler e Atlassian sob exploração, KEV com cinco produtos, worm Shai-Hulud no npm e breaches expõem dependências confiáveis. Na IA, Anthropic amplia defesa cyber, Mistral e Reflection disputam modelos abertos, e Google, GitHub e NVIDIA levam agentes ao trabalho e ao endpoint.", tags:["Zero-Day","Supply Chain","Open Models","AI Agents"], stories:23, crit:2, file:"newsletters/2026-10-12.html" },
 
   { id:"2026-10-05", edition:"#40", date:"05 OUT 2026", title:'Um zero-day terceirizado drenou US$ 387,5 milhões — e a corrida dos agentes aperta o cerco',
@@ -37,7 +38,7 @@ var NEWSLETTERS = [
     tags:["CISA KEV","RCE","Supply Chain","VPN","AI Agents"], stories:15, crit:5, file:"newsletters/2026-07-27.html" },
   { id:"2026-07-20", edition:"#29", date:"20 JUL 2026", title:"FortiSandbox, Oracle, WordPress e AsyncAPI; Kimi K3 e Qwen 3.8 sobem a régua da IA aberta",
     summary:"Semana com FortiSandbox e Oracle E-Business Suite no KEV da CISA, WordPress Core em RCE, AsyncAPI comprometido via GitHub Actions, SonicWall SMA explorado por zero-days, NGINX corrigindo falhas, ACR Stealer, ViPNet, 7-Zip e ransomware na Fairlife; e IA puxando estratégia com NadMesh, GPT-Red, agentes com privilégio mínimo, Android aberto a assistentes rivais, ROI agentic, Kimi K3 e Qwen 3.8 acelerando a disputa de modelos open-weight.",
-    tags:["CISA KEV","RCE","Supply Chain","AI Agents","Open Weights"], stories:17, crit:4, file:"newsletters/2026-07-20.html" },
+    tags:["CISA KEV","RCE","Supply Chain","AI Agents","Open Weights"], stories:19, crit:4, file:"newsletters/2026-07-20.html" },
   { id:"2026-07-13", edition:"#28", date:"13 JUL 2026", title:"ShareFile em alerta, Gitea explorado, CMS no KEV e agentes de IA virando risco de build",
     summary:"Semana com CISA colocando Adobe ColdFusion, Joomla/Langflow, iCagenda e Balbooa no KEV; Progress mandando clientes ShareFile derrubarem Storage Zone Controllers; Gitea Docker sendo explorado por auth bypass; U-Boot, WordPress, RedHook, Injective SDK, OpenMandriva e AssuranceAmerica mostrando que supply chain e dados pessoais seguem caros; e IA puxando a pauta com GPT-5.6 Sol, Claude Fable 5, Microsoft usando AI para achar bugs, Friendly Fire e GitLost/GhostApproval.",
     tags:["CISA KEV","Exploited","Supply Chain","AI Agents","Frontier AI"], stories:15, crit:3, file:"newsletters/2026-07-13.html" },
